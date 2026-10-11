@@ -1,5 +1,6 @@
 import './global.css'
 import { setupAboutMe } from './sections/aboutme.ts'
+import { setupBackgroundparticles } from './sections/backgroundparticles.ts'
 import { setupFloat } from './sections/float.ts'
 import { setupHello } from './sections/hello.ts'
 
@@ -17,6 +18,7 @@ app.innerHTML = `
 </main>
 `
 
+// setupBackgroundparticles()
 setupHello()
 setupFloat()
 setupAboutMe()
