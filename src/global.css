@@ -20,19 +20,46 @@ main {
   place-items: center;
 }
 
-
 #hello {
   position: absolute;
   top: 20%;
   font-size:  clamp(5.2rem, calc(3.3rem + 0.5vw), 0.2rem);
-  animation: slidefromleft 2s ease-in-out; 
 }
 
 #aboutme {
   position: absolute;
-  top: 40%;
+  top: 35%;
   font-size:  clamp(1.2rem, calc(4.3rem + 1vw), 1.2rem);
-  animation: slidefrombottom 3s ease-in-out;
+  animation: slidetotop 3s ease-in-out;
+  color: #767575;
+}
+
+
+#aboutme.slide-out {
+  animation: fadefrombottom 0.6s ease-out reverse both;
+}
+
+#aboutme.slide-in {
+  animation: fadefrombottom 0.8s ease-out both;
+}
+
+
+#float {
+  width: 120px;
+  height: 120px;
+  background-color: blue;
+  display: grid;
+  place-items: center;
+  cursor: grab;
+  user-select: none;
+  position: absolute;
+  top: 80%;
+  left:10%;
+  display: none; /* remove if retaining draggable feature */
+}
+
+#float.grabbed {
+  cursor: grabbing;
 }
 
 
@@ -43,9 +70,9 @@ main {
   to {transform: translate(0);}
 }
 
-@keyframes slidefrombottom {
-  from {transform: translateY(800%); opacity: 0;}
-  to {transform: translateY(0); opacity: 1;}
+@keyframes fadefrombottom {
+ from {transform: translateY(0); opacity: 0;}
+ to {transform: translateY(50%); opacity: 1;} 
 }
 
 
