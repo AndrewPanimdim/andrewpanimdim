@@ -47,7 +47,6 @@ main {
 #float {
   width: 120px;
   height: 120px;
-  background-color: blue;
   display: grid;
   place-items: center;
   cursor: grab;
@@ -61,6 +60,32 @@ main {
 #float.grabbed {
   cursor: grabbing;
 }
+
+
+
+
+
+@media (max-width: 768px) {
+  #hello {
+    font-size:  clamp(3.2rem, calc(3.3rem + 0.5vw), 0.2rem);
+  }
+  #aboutme {
+    font-size:  clamp(1.2rem, calc(1.3rem + 0.5vw), 0.2rem);
+    top: 32%;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -82,12 +107,30 @@ main {
 }
 
 
-@media (max-width: 768px) {
-  #hello {
-    font-size:  clamp(3.2rem, calc(3.3rem + 0.5vw), 0.2rem);
-  }
-  #aboutme {
-    font-size:  clamp(1.2rem, calc(1.3rem + 0.5vw), 0.2rem);
-    top: 32%;
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.liquid-glass {
+  position: relative;
+  border-radius: 28px;
+  overflow: hidden;
+
+  filter: drop-shadow(-8px -10px 46px rgba(0, 0, 0, 0.35));
+  backdrop-filter: brightness(1.1) blur(2px) url(#displacementFilter);
+  -webkit-backdrop-filter: blur(12px); /* Safari fallback - see note below */
+
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
 }

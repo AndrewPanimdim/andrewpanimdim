@@ -13,7 +13,7 @@ app.innerHTML = `
 <main>
   <h1 id='hello'>${hello}</h1>
   <div id='aboutme'>${aboutme}</div>
-  <div id='float'>float</div>
+  <div id='float' class='liquid-glass'>float</div>
 </main>
 `
 

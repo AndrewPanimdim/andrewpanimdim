@@ -9,7 +9,7 @@ const sleep = (ms: number): Promise<void> =>
   // Keep these in sync with the durations in global.css
   const SLIDE_IN_MS = 800
   const SLIDE_OUT_MS = 600
-  const HOLD_MS = 6000
+  const HOLD_MS = 4000
   
   async function play(
     el: HTMLElement,
