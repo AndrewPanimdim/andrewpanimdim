@@ -14,5 +14,5 @@ My current main tech stacks are Python, HTML/CSS, and Javascript.
 I'm currently working on my little unfinished portfolio:
 https://andrewpanimdim.github.io/andrewpanimdim/
 
-but you can visit my practice website i created during my first year to get to know me more: 
+but you can visit a practice website i created during my first year to get to know me more: 
 https://andrewpanimdim.github.io/practiceportfolio/
