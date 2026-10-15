@@ -3,7 +3,7 @@
 I'm Andrew, a student currently pursuing a Bachelor of Science in Computer Science major in Cybersecurity and Forensics in National University - Asia Pacific College, in the Philippines.
 
 I love creating softwares i am curious about. I'm currently learning software architecture and Machine Learning.
-My current main tech stacks are Python, HTML/CSS, and Javascript. 
+My current tech stacks are Python, HTML/CSS, and Javascript. 
 
 
 
