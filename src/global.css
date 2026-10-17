@@ -22,13 +22,13 @@ main {
 
 #hello {
   position: absolute;
-  top: 20%;
+  top: 30%;
   font-size:  clamp(5.2rem, calc(3.3rem + 0.5vw), 0.2rem);
 }
 
 #aboutme {
   position: absolute;
-  top: 35%;
+  top: 42%;
   font-size:  clamp(1.2rem, calc(4.3rem + 1vw), 1.2rem);
   animation: slidetotop 3s ease-in-out;
   color: #767575;
@@ -60,29 +60,6 @@ main {
 #float.grabbed {
   cursor: grabbing;
 }
-
-
-
-
-
-@media (max-width: 768px) {
-  #hello {
-    font-size:  clamp(3.2rem, calc(3.3rem + 0.5vw), 0.2rem);
-  }
-  #aboutme {
-    font-size:  clamp(1.2rem, calc(1.3rem + 0.5vw), 0.2rem);
-    top: 32%;
-  }
-}
-
-
-
-
-
-
-
-
-
 
 
 
@@ -168,3 +145,25 @@ main {
   opacity: 0.35;
   transform: scale(0);
 }
+
+
+
+
+@media (max-width: 768px) {
+  #hello {
+    font-size:  clamp(3.2rem, calc(3.3rem + 0.5vw), 0.2rem);
+  }
+  #aboutme {
+    font-size:  clamp(1.2rem, calc(1.3rem + 0.5vw), 0.2rem);
+    top: 37%;
+  } 
+}
+
+
+
+
+
+
+
+
+

@@ -1,5 +1,6 @@
 import { animate, utils } from 'animejs'
 
+
 const PARTICLE_COUNT = 100
 
 export function setupBackgroundparticles(): void {
@@ -23,3 +24,4 @@ export function setupBackgroundparticles(): void {
     })
   }
 }
+
