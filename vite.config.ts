@@ -1,14 +1,19 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv } from 'vite'
 
-export default defineConfig({
-  // GitHub Pages is served from /andrewpanimdim/; Vercel is served from /
-  base: process.env.BASE_PATH ?? '/',
-  server: {
-    proxy: {
-      '/api': {
-        target: 'http://127.0.0.1:8000',
-        changeOrigin: true,
+export default defineConfig(({ mode }) => {
+  // loadEnv also picks up real environment variables (e.g. BASE_PATH set by CI)
+  const env = loadEnv(mode, '.', '')
+
+  return {
+    // GitHub Pages is served from /andrewpanimdim/; Vercel is served from /
+    base: env.BASE_PATH || '/',
+    server: {
+      proxy: {
+        '/api': {
+          target: 'http://127.0.0.1:8000',
+          changeOrigin: true,
+        },
       },
     },
-  },
+  }
 })

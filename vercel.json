@@ -5,6 +5,7 @@
   },
   "services": {
     "frontend": {
+      "root": "./",
       "framework": "vite",
       "installCommand": "npm ci",
       "buildCommand": "npm run build",
