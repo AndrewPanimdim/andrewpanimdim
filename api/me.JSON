@@ -1,0 +1,39 @@
+{
+    "profile": {
+      "name": "Andrew Panimdim",
+      "nickname": "Drew",
+      "location": "Makati City, Philippines",
+      "bio": "i love building and learning about softwares.",
+      "email": "earlandrew0423@gmail.com"
+    },
+
+    "facts": [
+        { "id": 1, "fact": "i like playing basketball" }
+    ],
+
+    "skills": [
+      { "name": "Python", "level": "intermediate", "category": "backend" },
+      { "name": "JavaScript", "level": "intermediate", "category": "frontend" },
+      { "name": "HTML/CSS", "level": "intermediate", "category": "frontend" }
+    ],
+    "projects": [
+      {
+        "id": 1,
+        "title": "Personal Website",
+        "description": "My portfolio site and its own API.",
+        "tags": ["web", "python"],
+        "url": "https://example.com"
+      },
+      {
+        "id": 2,
+        "title": "Project Transparency Tracker",
+        "description": "An idea for verifying public infrastructure projects.",
+        "tags": ["civic", "maps"],
+        "url": null
+      }
+    ],
+    "socials": {
+      "github": "https://github.com/AndrewPanimdim",
+      "linkedin": "https://www.linkedin.com/in/andrewpanimdim/"
+    }
+  }
