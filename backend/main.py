@@ -4,7 +4,7 @@ from pathlib import Path
 from fastapi import APIRouter, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
-DATA = json.loads((Path(__file__).parent / "me.JSON").read_text(encoding="utf-8"))
+DATA = json.loads((Path(__file__).parent / "me.json").read_text(encoding="utf-8"))
 
 app = FastAPI(
     title="About Andrew Panimdim API",
