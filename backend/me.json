@@ -10,9 +10,8 @@
     "facts": [
       
         { "id": 1, "fact": "I am a BSCS Cyber Forensics Student at NU-APC" }, 
-        { "id": 2, "fact": "i love building softwares" },
-        { "id": 3, "fact": "i like playing basketball" },
-        { "id": 4, "fact": "i am currently a second year college student" }
+        { "id": 2, "fact": "i like playing basketball" },
+        { "id": 3, "fact": "i am currently a second year college student" }
         
         
     ],
