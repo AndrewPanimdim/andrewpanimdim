@@ -3,15 +3,15 @@
       "name": "Andrew Panimdim",
       "nickname": "Drew",
       "location": "Makati City, Philippines",
-      "bio": "i love building and learning about softwares.",
+      "bio": "I love building and learning about softwares.",
       "email": "earlandrew0423@gmail.com"
     },
 
     "facts": [
       
         { "id": 1, "fact": "I am a BSCS Cyber Forensics Student at NU-APC" }, 
-        { "id": 2, "fact": "i like playing basketball" },
-        { "id": 3, "fact": "i am currently a second year college student" }
+        { "id": 2, "fact": "I like playing Basketball" },
+        { "id": 3, "fact": "I am currently a Second Year College Student" }
         
         
     ],

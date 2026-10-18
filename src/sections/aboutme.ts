@@ -41,10 +41,10 @@ async function loadAboutLines(): Promise<string[]> {
     ])
 
     const lines = [
-      profile.bio,
       profile.name && profile.location
         ? `${profile.name} · ${profile.location}`
         : profile.name,
+        profile.bio,
       ...facts.map((item) => item.fact),
     ].filter((line): line is string => Boolean(line?.trim()))
 
