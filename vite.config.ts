@@ -1,5 +1,6 @@
-import {defineConfig } from 'vite'
+/// <reference types="node" />
+import { defineConfig } from 'vite'
 
-export default defineConfig ({
-    base: '/andrewpanimdim/'
+export default defineConfig({
+  base: process.env.BASE_PATH ?? '/',
 })
