@@ -21,7 +21,7 @@ app.add_middleware(
 )
 
 # ---------- 3. Load the data once, when the server starts ----------
-DATA = json.loads((Path(__file__).parent / "me.json").read_text(encoding="utf-8"))
+DATA = json.loads((Path(__file__).parent / "me.JSON").read_text(encoding="utf-8"))
 
 
 # ---------- 4. Routes ----------
@@ -31,7 +31,7 @@ def root():
     return {
         "message": "Hi! This is my About Me API.",
         "docs": "/docs",
-        "routes": ["/me", "/skills", "/projects", "/projects/{id}", "/socials", "/facts{id}"],
+        "routes": ["/me", "/skills", "/projects", "/projects/{id}", "/socials", "/facts"],
     }
 
 
