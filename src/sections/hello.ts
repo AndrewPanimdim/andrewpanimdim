@@ -1,4 +1,4 @@
-import { animate, scrambleText, splitText, stagger } from 'animejs'
+import { scrambleText, splitText } from '../lib/andrewpanimdim-textfx/index.ts'
 
 const sleep = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms))
@@ -10,26 +10,25 @@ export async function setupHello(): Promise<void> {
   const title = document.querySelector<HTMLElement>('#hello')
   if (!title) throw new Error('Missing #hello element')
 
-  // Step 1: fade in word by word
-  const split = splitText(title, { words: true })
+  // Step 1: fade in word by word (the browser's built-in element.animate)
+  const { elements, revert } = splitText(title, { by: 'words' })
 
-  split.addEffect(({ words }) =>
-    animate(words, {
-      opacity: [0, 1],
-      duration: 1500,
-      ease: 'outQuad',
-      delay: stagger(600, { start: 1500 }),
-    }),
-  )
+  elements.forEach((word, i) => {
+    word.animate(
+      { opacity: [0, 1] },
+      {
+        duration: 1500,
+        delay: 1500 + i * 600, // each word starts 600ms after the previous one
+        easing: 'ease-out',
+        fill: 'backwards', // stay invisible until this word's turn
+      },
+    )
+  })
 
-  // Step 2: wait 5 seconds
+  // Step 2: wait
   await sleep(4000)
 
   // Step 3: undo the word split, then scramble into the new text
-  split.revert()
-
-  animate(title, {
-    innerHTML: scrambleText({ text: SCRAMBLE_TO }),
-    duration: 1500,
-  })
+  revert()
+  await scrambleText(title, { text: SCRAMBLE_TO, duration: 1500 }).finished
 }

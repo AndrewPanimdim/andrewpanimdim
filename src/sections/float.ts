@@ -1,14 +1,13 @@
-import { createDraggable } from 'animejs'
+import { draggable } from '../lib/andrewpanimdim-textfx/index.ts'
 
 export function setupFloat(): void {
   const box = document.querySelector<HTMLDivElement>('#float')
   if (!box) throw new Error('Missing #float element')
 
-  createDraggable(box, {
+  draggable(box, {
     container: 'main',
     containerPadding: 10,
-    releaseStiffness: 40,
-    releaseEase: 'out(3)',
+    friction: 6,
     onGrab: () => box.classList.add('grabbed'),
     onRelease: () => box.classList.remove('grabbed'),
   })
