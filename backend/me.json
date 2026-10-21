@@ -2,18 +2,21 @@
     "profile": {
       "name": "Andrew Panimdim",
       "nickname": "Drew",
-      "location": "Makati City, Philippines",
+      "course": "Bachelor of Science in Computer Science Major in Cybersecurity and Forensics",
+      "school": "National University - Asia Pacific College",
       "bio": "I love building and learning about softwares.",
+      "location": "Makati City, Philippines",
       "email": "earlandrew0423@gmail.com"
     },
 
-    "facts": [
-      
+    "facts": [  
         { "id": 1, "fact": "I am a BSCS Cyber Forensics Student at NU-APC" }, 
         { "id": 2, "fact": "I like playing Basketball" },
-        { "id": 3, "fact": "I am currently a Second Year College Student" }
-        
-        
+        { "id": 3, "fact": "I am currently a Second Year College Student" },
+        { "id": 4, "fact": "" },
+        { "id": 5, "fact": "I am currently a Second Year College Student" },
+        { "id": 6, "fact": "I am currently a Second Year College Student" },
+        { "id": 7, "fact": "I am currently a Second Year College Student" }   
     ],
 
     "skills": [
@@ -24,21 +27,36 @@
     "projects": [
       {
         "id": 1,
-        "title": "Personal Website",
-        "description": "My portfolio site and its own API.",
-        "tags": ["web", "python"],
-        "url": "https://example.com"
+        "title": "andrew's practice website",
+        "description": "i created this practice website during my early first year as a side project to practice mainly Javascript, html, and CSS.",
+        "tags": ["CSS", "Javascript", "HTML", "github", "git"],
+        "url": "https://andrewspracticewebsite.vercel.app/"
       },
       {
         "id": 2,
-        "title": "Project Transparency Tracker",
-        "description": "An idea for verifying public infrastructure projects.",
-        "tags": ["civic", "maps"],
-        "url": null
+        "title": "NRoutes",
+        "description": "a little project for my Data Structures and Algorithms subject that aims to help delivery riders find the best order of delivery stops",
+        "tags": ["haversine", "leafleet maps", "Brute Force algorithm", "Nearest Neighbor algorithm ", "2 opt improvement algorithm", "python", "javascript"],
+        "url": "https://nroutes.onrender.com/"
+      }, 
+      {
+        "id": 3,
+        "title": "chat-cache",
+        "description": "a little chatting application that relies on caching for saving its conversation details, mainly inspired by chatkool",
+        "tags": ["javascript","HTML", "CSS"],
+        "url": "https://chat-k25f.onrender.com/"
+      }, 
+      {
+        "id": "4",
+        "title": "American Sign Language Reader ",
+        "description": "an asl Machine Learning practice project reader that uses mediapipe hand landmarks for its hand tracking", 
+        "tags" : ["python", "mediapipe", "JSON"],
+        "url": "https://github.com/AndrewPanimdim/mini-ASL-reader-ML-"
       }
     ],
     "socials": {
       "github": "https://github.com/AndrewPanimdim",
-      "linkedin": "https://www.linkedin.com/in/andrewpanimdim/"
+      "linkedin": "https://www.linkedin.com/in/andrewpanimdim/",
+      "instagram": "https://www.instagram.com/"
     }
   }
