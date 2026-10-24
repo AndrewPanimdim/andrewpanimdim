@@ -1,6 +1,5 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bungee&display=swap');
-
-
 
 * {
   margin: 0;
@@ -19,22 +18,23 @@ main {
   min-height: 100vh;
   display: grid;
   place-items: center;
+  position: relative;
+  z-index: 1;
 }
 
 #hello {
   position: absolute;
   top: 30%;
-  font-size:  clamp(5.2rem, calc(3.3rem + 0.5vw), 0.2rem);
+  font-size: clamp(5.2rem, calc(3.3rem + 0.5vw), 0.2rem);
 }
 
 #aboutme {
   position: absolute;
   top: 42%;
-  font-size:  clamp(1.2rem, calc(4.3rem + 1vw), 1.2rem);
+  font-size: clamp(1.2rem, calc(4.3rem + 1vw), 1.2rem);
   animation: slidetotop 3s ease-in-out;
   color: #767575;
 }
-
 
 #aboutme.slide-out {
   animation: fadefrombottom 0.6s ease-out reverse both;
@@ -43,7 +43,6 @@ main {
 #aboutme.slide-in {
   animation: fadefrombottom 0.8s ease-out both;
 }
-
 
 #float {
   width: 120px;
@@ -54,8 +53,8 @@ main {
   user-select: none;
   position: absolute;
   top: 80%;
-  left:10%;
-  display: none; /* remove if retaining draggable feature */
+  left: 10%;
+  display: none;
 }
 
 #float.grabbed {
@@ -68,7 +67,6 @@ main {
   left: 0;
   width: 15px;
   height: 21px;
-
   background: transparent;
   pointer-events: none;
   z-index: 99999;
@@ -79,104 +77,180 @@ main {
   background-size: contain;
 }
 
+/* =========================
+   TOP NAVIGATION
+   ========================= */
+
 #topnav {
-  position: fixed; top: 15px; left: 50%;
+  position: fixed;
+  top: 15px;
+  left: 50%;
   transform: translateX(-50%);
-  width: min(92vw, 900px);        /* wide state */
+  width: min(92vw, 900px);
   height: 56px;
   border-radius: 999px;
   background: rgba(20, 20, 20, 0.6);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: #fff;
-  display: flex; align-items: center; justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   z-index: 1000;
   transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   animation: slidedownnav 1s ease-in-out;
 }
-#topnav.compact { width: 120px; transition: 0.6s; } /* compressed state */
 
-
-
-#topnav .tn-full, #topnav .tn-mini {
-  position: absolute; white-space: nowrap;
-  transition: opacity 0.3s;
+#topnav.compact {
+  width: 120px;
 }
-#topnav .tn-mini { opacity: 0; pointer-events: none; font-weight: 700; letter-spacing: 0.1em; }
+
+#topnav .tn-full,
+#topnav .tn-mini {
+  position: absolute;
+  white-space: nowrap;
+  transition: opacity 0.3s ease;
+}
 
 #topnav .tn-full {
   position: absolute;
   inset: 0;
-  white-space: nowrap;
-  transition: opacity 0.3s;
 }
 
-#topnav.compact .tn-mini { opacity: 1; pointer-events: auto; }
+#topnav .tn-mini {
+  opacity: 0;
+  pointer-events: none;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
 
-/* Hide GitHub icon when navbar is compact */
-#topnav.compact .tn-icon {
+#topnav.compact .tn-full {
   opacity: 0;
   pointer-events: none;
 }
 
-#topnav .tn-icon {
+#topnav.compact .tn-mini {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* =========================
+   GITHUB REPOSITORY CONTAINER
+   Requires .tn-repo markup
+   ========================= */
+
+#topnav .tn-repo {
   position: absolute;
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
+
   display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  padding: 6px 10px;
+  border-radius: 12px;
+
   color: inherit;
-  opacity: 0.8;
+  text-decoration: none;
   cursor: none;
-  transition: opacity 0.5s, transform 0.2s;
+
+  background: transparent;
+
+  transition:
+    opacity 0.3s ease,
+    background 0.3s ease;
+
+  -webkit-tap-highlight-color: transparent;
 }
 
-#topnav .tn-icon:hover {
+#topnav .tn-repo:hover {
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* Icon area */
+#topnav .tn-icon-box {
+  position: relative;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+/* Stack GitHub and star SVGs */
+#topnav .tn-icon-box svg {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+
+  transition:
+    opacity 0.25s ease,
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Default GitHub icon */
+#topnav .tn-github-icon {
   opacity: 1;
-  transform: translateY(-50%) scale(1.5);
+  transform: scale(1);
 }
 
-#weight{
+/* Yellow star is initially hidden */
+#topnav .tn-star-icon {
+  opacity: 0;
+  transform: scale(0.5) rotate(-20deg);
+}
+
+/* Only the icon changes on hover */
+#topnav .tn-repo:hover .tn-github-icon {
+  opacity: 0;
+  transform: scale(0.5) rotate(20deg);
+}
+
+#topnav .tn-repo:hover .tn-star-icon {
+  opacity: 1;
+  transform: scale(1.15) rotate(0deg);
+}
+
+/* Live star count */
+#topnav .tn-star-count {
+  display: inline-block;
+  min-width: 1ch;
+  color: inherit;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.85;
+}
+
+/* Hide repository container when navbar is compact */
+#topnav.compact .tn-repo {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+/* Keyboard accessibility */
+#topnav .tn-repo:focus-visible {
+  outline: 2px solid #ffdf38;
+  outline-offset: 3px;
+}
+
+/* =========================
+   OTHER ELEMENTS
+   ========================= */
+
+#weight {
   position: absolute;
   top: 400%;
 }
-
-
-
-@keyframes slidefromleft {
-  from {transform: translate(-500%);}
-  to {transform: translate(0);}
-}
-
-@keyframes fadefrombottom {
- from {transform: translateY(0); opacity: 0;}
- to {transform: translateY(50%); opacity: 1;} 
-}
-
-
-@keyframes fadein {
-  from {opacity: 0; }
-  to {opacity: 1; }
-}
-
-@keyframes slidedownnav {
-  from {top: -50px}
-  to {top: 15px}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 .liquid-glass {
   position: relative;
@@ -184,24 +258,12 @@ main {
   overflow: hidden;
 
   filter: drop-shadow(-8px -10px 46px rgba(0, 0, 0, 0.35));
-  backdrop-filter: brightness(1.1) blur(2px) url(#displacementFilter);
-  -webkit-backdrop-filter: blur(12px); /* Safari fallback - see note below */
 
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.15);
-}
 
-
-
-
-
-
-main {
-  min-height: 100vh;
-  display: grid;
-  place-items: center;
-  position: relative;
-  z-index: 1;
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
 }
 
 .particles {
@@ -225,28 +287,68 @@ main {
   transform: scale(0);
 }
 
+/* =========================
+   ANIMATIONS
+   ========================= */
 
+@keyframes slidefromleft {
+  from {
+    transform: translateX(-500%);
+  }
 
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadefrombottom {
+  from {
+    transform: translateY(0);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(50%);
+    opacity: 1;
+  }
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slidedownnav {
+  from {
+    top: -50px;
+  }
+
+  to {
+    top: 15px;
+  }
+}
+
+/* =========================
+   MOBILE
+   ========================= */
 
 @media (max-width: 768px) {
   #hello {
-    font-size:  clamp(3.2rem, calc(3.3rem + 0.5vw), 0.2rem);
+    font-size: clamp(3.2rem, calc(3.3rem + 0.5vw), 0.2rem);
   }
+
   #aboutme {
-    font-size:  clamp(1.2rem, calc(1.3rem + 0.5vw), 0.2rem);
+    font-size: clamp(1.2rem, calc(1.3rem + 0.5vw), 0.2rem);
     top: 37%;
-  } 
-  #cursertrack, #topnav {
+  }
+
+  #cursertrack,
+  #topnav {
     display: none;
   }
-
 }
-
-
-
-
-
-
-
-
-

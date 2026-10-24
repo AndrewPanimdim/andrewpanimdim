@@ -1,44 +1,183 @@
+
 export function initTopNav() {
-    const nav = document.createElement('nav')
-    nav.id = 'topnav'
-    nav.innerHTML = `
-      <div class="tn-full">
+  // Create the navbar
+  const nav = document.createElement('nav')
+  nav.id = 'topnav'
 
-        <a class="tn-icon" href="https://github.com/AndrewPanimdim" target="_blank" rel="noopener noreferrer" aria-label="GitHub profile">
-            <svg viewBox="0 0 16 16" width="22" height="22" fill="currentColor" aria-hidden="true">
-                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-            </svg> 
-        </a>
+  nav.innerHTML = `
+    <div class="tn-full">
 
-        
-            
-      </div>
-      <div class="tn-mini">AP</div>
-    `
-    document.body.prepend(nav)
-  
-    let lastY = window.scrollY
-    let waiting = false
-  
-    const update = () => {
-      const y = window.scrollY
-      const delta = y - lastY
-  
-      if (y < 10) nav.classList.remove('compact')          // at the top: wide
-      else if (delta > 4) nav.classList.add('compact')     // scrolling down: compressed
-      else if (delta < -4) nav.classList.remove('compact') // scrolling up: wide
-  
-      if (Math.abs(delta) > 4) lastY = y
-      waiting = false
+
+
+      <!-- GitHub repository container -->
+      <a
+        class="tn-repo"
+        href="https://github.com/AndrewPanimdim/andrewpanimdim"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="View GitHub repository and star count"
+      >
+        <span class="tn-icon-box">
+
+          <!-- Normal GitHub icon -->
+          <svg
+            class="tn-github-icon"
+            viewBox="0 0 16 16"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+          </svg>
+
+          <!-- Custom yellow star -->
+          <svg
+            class="tn-star-icon"
+            viewBox="0 0 100 100"
+            aria-hidden="true"
+          >
+            <path
+              d="M49 7
+                 Q43 7 39 16
+                 L26 42
+                 Q24 47 18 48
+                 L8 50
+                 Q1 52 7 59
+                 L25 77
+                 Q28 80 27 85
+                 L23 94
+                 Q22 99 29 96
+                 L46 86
+                 Q50 84 54 87
+                 L72 97
+                 Q79 100 77 92
+                 L73 73
+                 Q72 69 76 65
+                 L94 48
+                 Q100 42 92 41
+                 L73 38
+                 Q68 37 65 31
+                 L57 14
+                 Q54 7 49 7 Z"
+              fill="#FFAA22"
+              stroke="#191C3B"
+              stroke-width="4"
+              stroke-linejoin="round"
+            />
+
+            <!-- Highlight -->
+            <path
+              d="M43 18
+                 Q47 10 51 20
+                 L62 42
+                 Q70 58 61 76
+                 L32 91
+                 Q27 94 30 83
+                 L33 62
+                 Q34 56 28 51
+                 L15 57
+                 Q10 54 17 52
+                 L34 46 Z"
+              fill="#FFDF38"
+            />
+
+            <!-- Shine -->
+            <ellipse
+              cx="34"
+              cy="73"
+              rx="2.5"
+              ry="5"
+              fill="#FFFBE7"
+              transform="rotate(15 34 73)"
+            />
+          </svg>
+
+        </span>
+
+        <!-- Live GitHub star count -->
+        <span class="tn-star-count" id="tn-star-count">—</span>
+      </a>
+
+    </div>
+
+
+    
+
+
+    <!-- Compact navbar label -->
+    <div class="tn-mini">AP</div>
+  `
+
+  document.body.prepend(nav)
+
+  // Fetch the repository's live star count
+  const starCount = nav.querySelector('#tn-star-count')
+
+  const updateStarCount = async () => {
+    try {
+      const response = await fetch(
+        'https://api.github.com/repos/AndrewPanimdim/andrewpanimdim'
+      )
+
+      if (!response.ok) {
+        throw new Error(`GitHub API error: ${response.status}`)
+      }
+
+      const repo = await response.json()
+
+      if (starCount) {
+        starCount.textContent =
+          Number(repo.stargazers_count).toLocaleString()
+      }
+    } catch (error) {
+      console.error('Could not fetch GitHub stars:', error)
+
+      if (starCount) {
+        starCount.textContent = '—'
+      }
     }
-  
-    window.addEventListener(
-      'scroll',
-      () => {
-        if (waiting) return
-        waiting = true
-        requestAnimationFrame(update) // run at most once per frame
-      },
-      { passive: true },
-    )
   }
+
+  updateStarCount()
+
+  // Refresh the star count every five minutes
+  const starRefresh = window.setInterval(updateStarCount, 5 * 60 * 1000)
+
+  // Existing compact-on-scroll behavior
+  let lastY = window.scrollY
+  let waiting = false
+
+  const update = () => {
+    const y = window.scrollY
+    const delta = y - lastY
+
+    if (y < 10) {
+      nav.classList.remove('compact')
+    } else if (delta > 4) {
+      nav.classList.add('compact')
+    } else if (delta < -4) {
+      nav.classList.remove('compact')
+    }
+
+    if (Math.abs(delta) > 4) {
+      lastY = y
+    }
+
+    waiting = false
+  }
+
+  const onScroll = () => {
+    if (waiting) return
+
+    waiting = true
+    requestAnimationFrame(update)
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true })
+
+  // Cleanup if the navbar is removed or reinitialized
+  return () => {
+    window.removeEventListener('scroll', onScroll)
+    window.clearInterval(starRefresh)
+    nav.remove()
+  }
+}
