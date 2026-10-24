@@ -63,14 +63,24 @@ main {
 }
 
 #cursertrack {
-  position: fixed; top: 0; left: 0;
-  width: 24px; height: 24px; border-radius: 50%;
-  background: #fff; mix-blend-mode: difference;
-  pointer-events: none; z-index: 9999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 15px;
+  height: 21px;
+
+  background: transparent;
+  pointer-events: none;
+  z-index: 99999;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 38'%3E%3Cpath d='M5 4 Q4 2 7 3 L27 22 Q30 26 25 27 L17 28 L13 35 Q11 38 9 34 L4 6 Q3 4 5 4 Z' fill='black' stroke='white' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E");
+
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 #topnav {
-  position: fixed; top: 12px; left: 50%;
+  position: fixed; top: 15px; left: 50%;
   transform: translateX(-50%);
   width: min(92vw, 900px);        /* wide state */
   height: 56px;
@@ -82,6 +92,8 @@ main {
   overflow: hidden;
   z-index: 1000;
   transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation: slidedownnav 1s ease-in-out;
+  transition: 0.5s ;
 }
 #topnav.compact { width: 120px; } /* compressed state */
 
@@ -89,9 +101,22 @@ main {
   position: absolute; white-space: nowrap;
   transition: opacity 0.3s;
 }
-#topnav .tn-mini { opacity: 0; font-weight: 700; letter-spacing: 0.1em; }
+#topnav .tn-mini { opacity: 0; pointer-events: none; font-weight: 700; letter-spacing: 0.1em; }
 #topnav.compact .tn-full { opacity: 0; pointer-events: none; }
-#topnav.compact .tn-mini { opacity: 1; }
+#topnav.compact .tn-mini { opacity: 1; pointer-events: auto; }
+
+#topnav .tn-icon {
+  display: inline-flex;
+  color: inherit;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.5s, transform 0.2s;
+  cursor: none;
+}
+#topnav .tn-icon:hover {
+  opacity: 1;
+  transform: scale(1.5);
+}
 
 #weight{
   position: absolute;
@@ -116,7 +141,10 @@ main {
   to {opacity: 1; }
 }
 
-
+@keyframes slidedownnav {
+  from {top: -50px}
+  to {top: 15px}
+}
 
 
 

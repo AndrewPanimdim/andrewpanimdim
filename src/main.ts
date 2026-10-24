@@ -12,8 +12,12 @@ if (!app) throw new Error('Missing #app element in index.html')
 app.innerHTML = `
 <main>
   <h1 id='hello'>Hello, World</h1>
+
   <div id='aboutme'></div>
+  
   <div id='float' class='liquid-glass'>float</div>
+
+
   <div id="weight">weight</div>
 </main>
 `
@@ -23,5 +27,5 @@ app.innerHTML = `
 setupHello()
 setupFloat()
 setupAboutMe()
-initCurserTrack()
+initCurserTrack() // hides the system cursor; uncomment to use the custom tracker
 initTopNav()
