@@ -97,25 +97,44 @@ main {
 }
 #topnav.compact { width: 120px; } /* compressed state */
 
+
+
 #topnav .tn-full, #topnav .tn-mini {
   position: absolute; white-space: nowrap;
   transition: opacity 0.3s;
 }
 #topnav .tn-mini { opacity: 0; pointer-events: none; font-weight: 700; letter-spacing: 0.1em; }
-#topnav.compact .tn-full { opacity: 0; pointer-events: none; }
+
+#topnav .tn-full {
+  position: absolute;
+  inset: 0;
+  white-space: nowrap;
+  transition: opacity 0.3s;
+}
+
 #topnav.compact .tn-mini { opacity: 1; pointer-events: auto; }
 
+/* Hide GitHub icon when navbar is compact */
+#topnav.compact .tn-icon {
+  opacity: 0;
+  pointer-events: none;
+}
+
 #topnav .tn-icon {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
   display: inline-flex;
   color: inherit;
-  cursor: pointer;
   opacity: 0.8;
-  transition: opacity 0.5s, transform 0.2s;
   cursor: none;
+  transition: opacity 0.5s, transform 0.2s;
 }
+
 #topnav .tn-icon:hover {
   opacity: 1;
-  transform: scale(1.5);
+  transform: translateY(-50%) scale(1.5);
 }
 
 #weight{
