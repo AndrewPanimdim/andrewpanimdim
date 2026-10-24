@@ -28,7 +28,8 @@ __pycache__/
 *.pyc
 .env
 .env.*
-
+library/node_modules/
+library/dist/
 
 
 

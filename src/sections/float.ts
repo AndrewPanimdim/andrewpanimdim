@@ -1,4 +1,4 @@
-import { draggable } from '../lib/andrewpanimdim-textfx/index.ts'
+import { draggable } from 'andrewpanimdim'
 
 export function setupFloat(): void {
   const box = document.querySelector<HTMLDivElement>('#float')

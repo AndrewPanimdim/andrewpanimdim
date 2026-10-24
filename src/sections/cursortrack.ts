@@ -1,4 +1,4 @@
-import { cursertrack } from '../lib/andrewpanimdim-textfx/cursortrack'
+import { cursertrack } from 'andrewpanimdim'
 
 export function initCurserTrack() {
   const dot = document.createElement('div')

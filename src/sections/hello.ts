@@ -1,4 +1,4 @@
-import { scrambleText, splitText } from '../lib/andrewpanimdim-textfx/index.ts'
+import { scrambleText, splitText } from 'andrewpanimdim'
 
 const sleep = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms))
