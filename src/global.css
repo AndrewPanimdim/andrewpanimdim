@@ -93,9 +93,8 @@ main {
   z-index: 1000;
   transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   animation: slidedownnav 1s ease-in-out;
-  transition: 0.5s ;
 }
-#topnav.compact { width: 120px; } /* compressed state */
+#topnav.compact { width: 120px; transition: 0.6s; } /* compressed state */
 
 
 
@@ -122,7 +121,7 @@ main {
 
 #topnav .tn-icon {
   position: absolute;
-  left: 20px;
+  right: 20px;
   top: 50%;
   transform: translateY(-50%);
   display: inline-flex;
