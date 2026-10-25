@@ -67,6 +67,18 @@ export function initTopNav() {
           <!-- Live GitHub star count -->
           <span class="tn-star-count" id="tn-star-count">—</span>
         </a>
+
+
+
+
+
+
+
+
+
+
+
+        
       </div>
   
       <!-- Compact navbar label -->
