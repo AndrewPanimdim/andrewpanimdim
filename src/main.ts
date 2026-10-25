@@ -5,6 +5,9 @@ import { setupFloat } from './sections/float.ts'
 import { setupHello } from './sections/hello.ts'
 import { initCurserTrack } from './sections/cursortrack.ts'
 import { initTopNav } from './sections/topnav'
+import { initScrollDelay } from "./sections/scrolldelay.ts";
+
+
 
 const app = document.querySelector<HTMLDivElement>('#app')
 if (!app) throw new Error('Missing #app element in index.html')
@@ -29,3 +32,4 @@ setupFloat()
 setupAboutMe()
 initCurserTrack() // hides the system cursor; uncomment to use the custom tracker
 initTopNav()
+initScrollDelay();
