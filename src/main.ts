@@ -6,6 +6,7 @@ import { setupHello } from './sections/hello.ts'
 import { initCurserTrack } from './sections/cursortrack.ts'
 import { initTopNav } from './sections/topnav'
 import { initScrollDelay } from "./sections/scrolldelay.ts";
+import { setmoreaboutme} from "./sections/moreAM.ts"
 
 
 
@@ -21,6 +22,8 @@ app.innerHTML = `
   <div id='float' class='liquid-glass'>float</div>
 
 
+  <div id="moreAM"></div>
+
   <div id="weight">weight</div>
 </main>
 `
@@ -33,3 +36,4 @@ setupAboutMe()
 initCurserTrack() // hides the system cursor; uncomment to use the custom tracker
 initTopNav()
 initScrollDelay();
+setmoreaboutme();

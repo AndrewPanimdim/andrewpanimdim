@@ -167,7 +167,7 @@ main {
 }
 
 #topnav .tn-repo:hover {
-  background: rgba(255, 255, 255, 0.09);
+  background: rgba(64, 36, 36, 0.09);
 }
 
 /* Icon area (a bit bigger so the star details show) */
@@ -256,6 +256,14 @@ main {
   outline: 2px solid #ffdf38;
   outline-offset: 3px;
 }
+
+#moreAM {
+  position: absolute;
+  top: 120%;
+  right: 20%;
+  animation: slidefromRight 0.8s ease-out both;;
+}
+
 
 /* =========================
    OTHER ELEMENTS
@@ -358,6 +366,17 @@ main {
   }
 }
 
+
+@keyframes slidefromRight {
+  from {
+    transform: translateX(500%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
+
+}
 /* =========================
    MOBILE
    ========================= */
