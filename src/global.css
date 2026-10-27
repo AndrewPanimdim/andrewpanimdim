@@ -263,24 +263,23 @@ main {
   top: 100%;
   left: 0;
   right: 0;
-  margin-inline: auto;     
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
-  height:60%;
+  margin-inline: auto;
   width: 100%;
-
+  height: 100%;
+  max-width: 100%;
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 24px;
+  align-items: start;
+  background-color: rgba(0, 225, 255, 0);
 }
 
 .am-card {
-  position: absolute;
-  flex: 1 1 300px;
-  padding: 28px;
+  padding: 12px;
   border-radius: 28px;
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.15);
 
-  /* B's animation (fade up), used by every card unless overridden */
   opacity: 0;
   transform: translateY(40px);
   transition:
@@ -289,7 +288,11 @@ main {
   will-change: opacity, transform;
 }
 
+
+
 .am-card.visible {
+  
+  position: absolute;
   opacity: 1;
   transform: translateY(0);
 }
@@ -298,8 +301,6 @@ main {
 #am-a {
   left: 3%;
   width: 50%;
-  height: 75%;
-
   transform: translateX(-120px);
   transition:
     opacity 0.8s ease-out,
@@ -311,11 +312,22 @@ main {
   transform: translateX(0);
 }
 
+/* B sits a bit lower than A for a staggered look; use 0 to line them up */
 #am-b {
-  top: 40%;
-  right: 3%;
-  width: 40%;
-  height: 80%;
+  top: 15%;
+  width: 42%;
+  margin-top: 80px;
+  right: 2%;
+}
+
+#am-c {
+  top: 67%;
+  width: 25%;
+  margin-top: 80px;
+  left: 5%;
+  transition:
+    opacity 1s ease-out,
+    transform 4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 .am-card h2 {
@@ -331,7 +343,7 @@ main {
 .am-media {
   margin-bottom: 16px;
   border-radius: 18px;
-  overflow: hidden;   /* keeps the warped edges inside the frame */
+  overflow: hidden;
   line-height: 0;
 }
 
@@ -342,6 +354,35 @@ main {
   user-select: none;
 }
 
+/* "See more" button under the cards */
+.am-more {
+  grid-column: 1 / -1;
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 6px 26px;
+  border-radius: 999px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.6rem;
+  cursor: none;
+  position: absolute;
+  top: 120%;
+}
+
+.am-more:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.am-more-arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+}
+
+.am-more:hover .am-more-arrow {
+  transform: translateX(6px);
+}
 
 /* =========================
    OTHER ELEMENTS
@@ -463,4 +504,18 @@ main {
   #topnav {
     display: none;
   }
+
+
+
+
+
+  #moreAM {
+    grid-template-columns: 1fr;
+  }
+
+  #am-b {
+    margin-top: 0;
+  }
 }
+
+

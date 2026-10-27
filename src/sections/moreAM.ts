@@ -1,9 +1,8 @@
-import { distortOnHover } from './distort.ts'
-
-// Put your GIFs in the "public/gifs" folder and list their file names here
+// Put your GIFs in the "public/gif" folder and list their file names here
 const CARDS = [
   { id: 'am-a', title: 'Content A', text: 'Write the first block of content here.', gif: 'a.gif' },
   { id: 'am-b', title: 'Content B', text: 'Write the second block of content here.', gif: 'b.gif' },
+  { id: 'am-c', title: 'Content c', text: 'Write the third block of content here.', gif: 'b.gif' },
 ]
 
 export function setmoreaboutme(): () => void {
@@ -13,16 +12,25 @@ export function setmoreaboutme(): () => void {
   // BASE_URL keeps the paths working on GitHub Pages (/andrewpanimdim/) and Vercel (/)
   const base = import.meta.env.BASE_URL
 
-  root.innerHTML = CARDS.map(
+  const cardsHtml = CARDS.map(
     (card) => `
     <div class="am-card" id="${card.id}">
       <div class="am-media">
-        <img src="${base}gifs/${card.gif}" alt="${card.title}" draggable="false" />
+        <img src="${base}gif/${card.gif}" alt="${card.title}" draggable="false" />
       </div>
       <h2>${card.title}</h2>
       <p>${card.text}</p>
     </div>`,
   ).join('')
+
+  // The "see more" block goes after the cards and links to the projects page
+  const seeMoreHtml = `
+    <a class="am-card am-more" id="am-more" href="${base}projects.html">
+      <span>See more</span>
+      <span class="am-more-arrow" aria-hidden="true">→</span>
+    </a>`
+
+  root.innerHTML = cardsHtml + seeMoreHtml
 
   const cards = root.querySelectorAll<HTMLElement>('.am-card')
 
@@ -38,21 +46,14 @@ export function setmoreaboutme(): () => void {
     { threshold: 0.15 },
   )
 
-  // Distort each GIF while the pointer is over its frame
-  const cleanups: Array<() => void> = []
-
   cards.forEach((card, i) => {
-    card.style.transitionDelay = `${i * 150}ms` // B appears just after A
+    card.style.transitionDelay = `${i * 150}ms` // each card follows the one before
     observer.observe(card)
-
-    const media = card.querySelector<HTMLElement>('.am-media')
-    const img = card.querySelector<HTMLImageElement>('img')
-    if (media && img) cleanups.push(distortOnHover(media, img, { strength: 40 }))
   })
 
+  // Cleanup, same pattern as the other sections
   return () => {
     observer.disconnect()
-    cleanups.forEach((fn) => fn())
     root.innerHTML = ''
   }
 }
