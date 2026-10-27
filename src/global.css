@@ -11,6 +11,7 @@ body {
   background-color: #070707;
   color: #fff;
   cursor: none;
+  overflow-x: hidden;
 }
 
 main {
@@ -167,7 +168,7 @@ main {
 }
 
 #topnav .tn-repo:hover {
-  background: rgba(64, 36, 36, 0.09);
+  background: rgba(64, 36, 36, 0);
 }
 
 /* Icon area (a bit bigger so the star details show) */
@@ -259,9 +260,86 @@ main {
 
 #moreAM {
   position: absolute;
-  top: 120%;
-  right: 20%;
-  animation: slidefromRight 0.8s ease-out both;;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-inline: auto;     
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  height:60%;
+  width: 100%;
+
+}
+
+.am-card {
+  position: absolute;
+  flex: 1 1 300px;
+  padding: 28px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  /* B's animation (fade up), used by every card unless overridden */
+  opacity: 0;
+  transform: translateY(40px);
+  transition:
+    opacity 1s ease-out,
+    transform 2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: opacity, transform;
+}
+
+.am-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* A's animation: slide in from the left */
+#am-a {
+  left: 3%;
+  width: 50%;
+  height: 75%;
+
+  transform: translateX(-120px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#am-a.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+#am-b {
+  top: 40%;
+  right: 3%;
+  width: 40%;
+  height: 80%;
+}
+
+.am-card h2 {
+  margin-bottom: 10px;
+  font-size: 2rem;
+}
+
+.am-card p {
+  color: #a0a0a0;
+  font-size: 1.3rem;
+}
+
+.am-media {
+  margin-bottom: 16px;
+  border-radius: 18px;
+  overflow: hidden;   /* keeps the warped edges inside the frame */
+  line-height: 0;
+}
+
+.am-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  user-select: none;
 }
 
 
@@ -367,16 +445,6 @@ main {
 }
 
 
-@keyframes slidefromRight {
-  from {
-    transform: translateX(500%);
-  }
-
-  to {
-    transform: translateX(0);
-  }
-
-}
 /* =========================
    MOBILE
    ========================= */

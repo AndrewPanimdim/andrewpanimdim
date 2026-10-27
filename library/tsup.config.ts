@@ -7,6 +7,7 @@ export default defineConfig({
     split: 'src/split.ts',
     draggable: 'src/draggable.ts',
     cursortrack: 'src/cursortrack.ts',
+    scrolltilt: 'src/scrolltilt.ts',
   },
   format: ['esm', 'cjs'],
   dts: true,

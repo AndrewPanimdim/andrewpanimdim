@@ -1,6 +1,6 @@
 {
   "name": "andrewpanimdim",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "Tiny dependency-free web effects: scramble text, split text, draggable, cursertrack.",
   "license": "MIT",
   "author": "Andrew Panimdim",
@@ -68,6 +68,16 @@
       "require": {
         "types": "./dist/cursortrack.d.cts",
         "default": "./dist/cursortrack.cjs"
+      }
+    },
+    "./scrolltilt": {
+      "import": {
+        "types": "./dist/scrolltilt.d.ts",
+        "default": "./dist/scrolltilt.js"
+      },
+      "require": {
+        "types": "./dist/scrolltilt.d.cts",
+        "default": "./dist/scrolltilt.cjs"
       }
     }
   },
