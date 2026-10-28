@@ -5,6 +5,7 @@ import { setupFloat } from './sections/float.ts'
 import { setupHello } from './sections/hello.ts'
 import { initCurserTrack } from './sections/cursortrack.ts'
 import { initTopNav } from './sections/topnav'
+import { initGithubBadge } from './sections/githubbadge.ts'
 import { initScrollDelay } from "./sections/scrolldelay.ts";
 import { setmoreaboutme} from "./sections/moreAM.ts"
 
@@ -37,3 +38,4 @@ initCurserTrack() // hides the system cursor; uncomment to use the custom tracke
 initTopNav()
 initScrollDelay();
 setmoreaboutme();
+initGithubBadge()

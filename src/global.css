@@ -136,126 +136,184 @@ main {
 }
 
 /* =========================
-   GITHUB REPOSITORY CONTAINER
-   Requires .tn-repo markup
+   GITHUB BADGE (top right corner)
+   Slides in at the top of the page, slides away when you scroll down.
+   Built by githubbadge.ts
    ========================= */
 
-#topnav .tn-repo {
-  position: absolute;
-  right: 20px;
-  top: 50%;
-  transform: translateY(-50%);
+.gh-badge {
+  position: fixed;
+  top: 3%;
+  right: 2%;
+  z-index: 1001;
 
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
 
-  padding: 6px 10px;
-  border-radius: 12px;
-
-  color: inherit;
+  color: #fff;
   text-decoration: none;
   cursor: none;
-
-  background: transparent;
-
-  transition:
-    opacity 0.3s ease,
-    background 0.3s ease;
-
   -webkit-tap-highlight-color: transparent;
+
+  opacity: 1;
+  transform: translateX(0);
+  visibility: visible;
+  transition:
+    transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.4s ease,
+    visibility 0s linear 0s;
 }
 
-#topnav .tn-repo:hover {
-  background: rgba(64, 36, 36, 0);
+/* hidden state: pushed to the right and faded out */
+.gh-badge.is-hidden {
+  opacity: 0;
+  transform: translateX(48px);
+  pointer-events: none;
+  visibility: hidden;
+  /* wait for the fade before switching visibility off */
+  transition:
+    transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    opacity 0.3s ease,
+    visibility 0s linear 0.5s;
 }
 
-/* Icon area (a bit bigger so the star details show) */
-#topnav .tn-icon-box {
+/* icon area: a little bigger than the icon so the star details have room */
+.gh-icon-box {
   position: relative;
   display: inline-block;
-  width: 34px;
-  height: 34px;
   flex-shrink: 0;
+  width: 22px;
+  height: 22px;
 }
 
-/* Stack GitHub and star SVGs */
-#topnav .tn-icon-box svg {
+.gh-icon-box svg {
   position: absolute;
   inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   overflow: visible;
-
   transition:
     opacity 0.25s ease,
     transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-/* Default GitHub icon (kept at its old visual size) */
-#topnav .tn-github-icon {
+.gh-github-icon {
   opacity: 1;
   transform: scale(0.8);
 }
 
-/* Star is initially hidden */
-#topnav .tn-star-icon {
+.gh-star-icon {
   opacity: 0;
   transform: scale(0.5) rotate(-20deg);
 }
 
-/* Only the icon changes on hover */
-#topnav .tn-repo:hover .tn-github-icon {
+/* hover: the GitHub icon turns into the glossy star */
+.gh-badge:hover .gh-github-icon {
   opacity: 0;
   transform: scale(0.4) rotate(20deg);
 }
 
-#topnav .tn-repo:hover .tn-star-icon {
+.gh-badge:hover .gh-star-icon {
   opacity: 1;
   transform: scale(1.1) rotate(0deg);
 }
 
-/* Little stars twinkle while hovered */
-#topnav .tn-repo:hover .tn-mini-star {
+.gh-badge:hover .gh-mini-star {
   transform-box: fill-box;
   transform-origin: center;
   animation: tn-twinkle 1s ease-in-out infinite;
 }
 
-#topnav .tn-repo:hover .tn-mini-star.s2 {
+.gh-badge:hover .gh-mini-star.s2 {
   animation-delay: 0.3s;
 }
 
-#topnav .tn-repo:hover .tn-mini-star.s3 {
+.gh-badge:hover .gh-mini-star.s3 {
   animation-delay: 0.6s;
 }
 
-/* Live star count */
-#topnav .tn-star-count {
-  display: inline-block;
-  min-width: 1ch;
-  color: inherit;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 15px;
+/* "AndrewPanimdim/practiceportfolio"
+   hover: an underline draws itself from left to right */
+.gh-name {
+  padding-bottom: 3px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  white-space: nowrap;
+  color: #fff;
+
+  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 1px;
+  transition: background-size 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.gh-badge:hover .gh-name {
+  background-size: 100% 1px;
+}
+
+/* star glyph + live count, in grey */
+.gh-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #8b8b8b;
+  font-size: 0.85rem;
   font-weight: 600;
   line-height: 1;
+  transition: color 0.3s ease;
+}
+
+.gh-stars-glyph {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+  transition:
+    color 0.3s ease,
+    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.gh-star-count {
   font-variant-numeric: tabular-nums;
-  opacity: 0.85;
+  min-width: 1ch;
 }
 
-/* Hide repository container when navbar is compact */
-#topnav.compact .tn-repo {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
+/* hover: the small star turns gold and gives a little spin, the count brightens */
+.gh-badge:hover .gh-stars {
+  color: #fff;
 }
 
-/* Keyboard accessibility */
-#topnav .tn-repo:focus-visible {
+.gh-badge:hover .gh-stars-glyph {
+  color: #ffd92f;
+  transform: rotate(72deg) scale(1.2);
+}
+
+.gh-badge:focus-visible {
   outline: 2px solid #ffdf38;
-  outline-offset: 3px;
+  outline-offset: 6px;
+  border-radius: 8px;
+}
+
+/* smaller screens: slightly smaller text, then drop the name */
+@media (max-width: 480px) {
+  .gh-name {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .gh-name {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gh-badge,
+  .gh-badge.is-hidden {
+    transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+    transform: none;
+  }
 }
 
 /* =========================
@@ -316,7 +374,8 @@ main {
 
 #am-a.visible,
 #am-d.visible,
-#am-c.visible {
+#am-c.visible, 
+#am-b.visible {
   opacity: 1;
   transform: translateX(0);
 }
@@ -327,10 +386,11 @@ main {
   width: 35%;
   margin-top: var(--am-offset);
   right: 0%;
+  transform: translateX(120px);
 }
 
 #am-c {
-  top: 35%;
+  top: 30%;
   width: 35%;
   margin-top: var(--am-offset);
   right: 0%;
@@ -342,7 +402,7 @@ main {
 }
 
 #am-d {
-  top: 50%;
+  top: 45%;
   left: 0%;
   width: 30%;
   margin-top: var(--am-offset);
@@ -354,24 +414,48 @@ main {
 }
 
 #am-e {
-  top: 50%;
+  top: 45%;
   left: 32%;
   width: 30%;
   margin-top: var(--am-offset);
 }
 
-.am-card h2 {
-  margin-bottom: 10px;
-  font-size: clamp(1.2rem, 1.7vw, 2rem);
+/* Title + tech stack under each GIF: kept small so the GIF stays the star */
+.am-info {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  padding: 0 4px 2px;
 }
 
-.am-card p {
-  color: #a0a0a0;
-  font-size: clamp(0.95rem, 1.1vw, 1.3rem);
+.am-card .am-info h2 {
+  margin: 0;
+  font-size: clamp(0.95rem, 1.05vw, 1.1rem);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.am-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 6px;
+  list-style: none;
+}
+
+.am-stack li {
+  padding: 3px 8px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  color: #8f8f8f;
+  font-size: clamp(0.68rem, 0.75vw, 0.8rem);
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .am-media {
-  margin-bottom: 16px;
+  margin-bottom: clamp(8px, 0.8vw, 12px);
   border-radius: 18px;
   overflow: hidden;
   line-height: 0;
@@ -398,14 +482,11 @@ main {
   font-size: clamp(1.2rem, 1.6vw, 1.6rem);
   cursor: none;
   position: absolute;
-  right: inherit;
-  top: 80%;
-  transition: 0.5s;
+  top: 110%;
 }
 
 .am-more:hover {
   background: rgba(255, 255, 255, 0.14);
-  scale: 1.1;
 }
 
 .am-more-arrow {
@@ -593,22 +674,12 @@ main {
     grid-column: auto;
   }
 
-  /* hide the titles, keep the short description */
-  .am-card h2 {
-    display: none;
-  }
-
-  .am-card p {
-    font-size: 1rem;
-    line-height: 1.35;
-  }
-
   .am-media {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
   }
 
-  /* WANT GIFs ONLY (no text at all)? Add these two rules here:
-  .am-card p { display: none; }
+  /* WANT GIFs ONLY on phones (no text at all)? Take the comment marks off these two rules:
+  .am-info { display: none; }
   .am-media { margin-bottom: 0; }
   */
 }
