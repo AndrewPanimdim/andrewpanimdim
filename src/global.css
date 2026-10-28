@@ -330,7 +330,7 @@ main {
 }
 
 #am-c {
-  top: 40%;
+  top: 35%;
   width: 35%;
   margin-top: var(--am-offset);
   right: 0%;
@@ -342,7 +342,7 @@ main {
 }
 
 #am-d {
-  top: 57%;
+  top: 50%;
   left: 0%;
   width: 30%;
   margin-top: var(--am-offset);
@@ -354,7 +354,7 @@ main {
 }
 
 #am-e {
-  top: 57%;
+  top: 50%;
   left: 32%;
   width: 30%;
   margin-top: var(--am-offset);
@@ -398,11 +398,14 @@ main {
   font-size: clamp(1.2rem, 1.6vw, 1.6rem);
   cursor: none;
   position: absolute;
-  top: 110%;
+  right: inherit;
+  top: 80%;
+  transition: 0.5s;
 }
 
 .am-more:hover {
   background: rgba(255, 255, 255, 0.14);
+  scale: 1.1;
 }
 
 .am-more-arrow {
