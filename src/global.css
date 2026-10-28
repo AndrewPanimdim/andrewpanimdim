@@ -258,26 +258,35 @@ main {
   outline-offset: 3px;
 }
 
+/* =========================
+   MORE ABOUT ME
+   Desktop = collage, tablet = 2 columns, phone = 1 column.
+   (the tablet and phone rules are at the very bottom of this file)
+   ========================= */
+
 #moreAM {
+  /* the old fixed 80px gap, now it shrinks on smaller screens */
+  --am-offset: clamp(24px, 4vw, 80px);
+
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
   margin-inline: auto;
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
+  width: 70%;
+  /* height follows width, so the percentage tops below stay
+     proportional at every desktop size (replaces height: 100%) */
+  aspect-ratio: 5 / 4;
   display: grid;
   grid-template-columns: 1.25fr 1fr;
   gap: 24px;
   align-items: start;
-  background-color: rgba(0, 225, 255, 0);
 }
 
 .am-card {
   position: absolute;
-  padding: 12px;
-  border-radius: 28px;
+  padding: clamp(8px, 1vw, 12px);
+  border-radius: clamp(18px, 2vw, 28px);
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.15);
 
@@ -289,8 +298,6 @@ main {
   will-change: opacity, transform;
 }
 
-
-
 .am-card.visible {
   opacity: 1;
   transform: translateY(0);
@@ -298,52 +305,69 @@ main {
 
 /* A's animation: slide in from the left */
 #am-a {
-  left: 3%;
-  width: 50%;
+  top: 0;
+  left: 0%;
+  width: 62%;
   transform: translateX(-120px);
   transition:
     opacity 0.8s ease-out,
     transform 3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
-#am-a.visible {
+#am-a.visible,
+#am-d.visible,
+#am-c.visible {
   opacity: 1;
   transform: translateX(0);
 }
 
 /* B sits a bit lower than A for a staggered look; use 0 to line them up */
 #am-b {
-  top: 10%;
-  width: 42%;
-  margin-top: 80px;
-  right: 2%;
+  top: -5%;
+  width: 35%;
+  margin-top: var(--am-offset);
+  right: 0%;
 }
 
 #am-c {
-  top: 67%;
-  width: 25%;
-  margin-top: 80px;
-  left: 5%;
+  top: 40%;
+  width: 35%;
+  margin-top: var(--am-offset);
+  right: 0%;
+  transform: translateX(120px);
+
   transition:
     opacity 1s ease-out,
-    transform 4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
 #am-d {
-  top: 105%;
-  right: 8%;
-  width: 35%;
-  margin-top: 80px;
+  top: 57%;
+  left: 0%;
+  width: 30%;
+  margin-top: var(--am-offset);
+
+  transform: translateX(-120px);
+  transition:
+    opacity 0.8s ease-out,
+    transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#am-e {
+  top: 57%;
+  left: 32%;
+  width: 30%;
+  margin-top: var(--am-offset);
 }
 
 .am-card h2 {
   margin-bottom: 10px;
-  font-size: 2rem;
+  font-size: clamp(1.2rem, 1.7vw, 2rem);
 }
 
 .am-card p {
   color: #a0a0a0;
-  font-size: 1.3rem;
+  font-size: clamp(0.95rem, 1.1vw, 1.3rem);
 }
 
 .am-media {
@@ -371,10 +395,10 @@ main {
   border-radius: 999px;
   color: #fff;
   text-decoration: none;
-  font-size: 1.6rem;
+  font-size: clamp(1.2rem, 1.6vw, 1.6rem);
   cursor: none;
   position: absolute;
-  top: 120%;
+  top: 110%;
 }
 
 .am-more:hover {
@@ -515,13 +539,73 @@ main {
 
 
 
-  #moreAM {
-    grid-template-columns: 1fr;
-  }
-
-  #am-b {
-    margin-top: 0;
-  }
 }
 
 
+/* =========================
+   MORE ABOUT ME: TABLET AND PHONE
+   Keep this at the END of the file so it overrides the desktop rules.
+   ========================= */
+
+/* ---- Tablet and small laptops: 2 columns, cards stack in normal flow ---- */
+@media (max-width: 1024px) {
+  #moreAM {
+    width: min(92%, 760px);
+    aspect-ratio: auto; /* height now comes from the cards */
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    align-items: stretch;
+    padding-bottom: 72px; /* breathing room at the bottom of the page */
+  }
+
+  /* every card (and the See more button) goes back into normal flow */
+  #moreAM .am-card {
+    position: relative;
+    inset: auto;
+    width: auto;
+    margin-top: 0;
+  }
+
+  /* on narrow screens every card fades up (a 120px sideways start
+     would poke past the screen edge) */
+  #moreAM .am-card:not(.visible) {
+    transform: translateY(40px);
+  }
+
+  #moreAM #am-a {
+    grid-column: 1 / -1; /* A gets a full-width row */
+  }
+}
+
+/* ---- Phone: 1 column ---- */
+@media (max-width: 640px) {
+  #moreAM {
+    width: calc(100% - 32px); /* 16px gutter each side */
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding-bottom: 56px;
+  }
+
+  #moreAM #am-a {
+    grid-column: auto;
+  }
+
+  /* hide the titles, keep the short description */
+  .am-card h2 {
+    display: none;
+  }
+
+  .am-card p {
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+
+  .am-media {
+    margin-bottom: 10px;
+  }
+
+  /* WANT GIFs ONLY (no text at all)? Add these two rules here:
+  .am-card p { display: none; }
+  .am-media { margin-bottom: 0; }
+  */
+}

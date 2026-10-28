@@ -4,6 +4,7 @@ const CARDS = [
   { id: 'am-b', title: 'Content B', text: 'Write the second block of content here.', gif: 'b.gif' },
   { id: 'am-c', title: 'Content c', text: 'Write the third block of content here.', gif: 'b.gif' },
   { id: 'am-d', title: 'Content d', text: 'Write the fourth block of content here.', gif: 'a.gif' },
+  { id: 'am-e', title: 'Content e', text: 'Write the fifth block of content here.', gif: 'b.gif' }
 ]
 
 // How much of a card must be on screen before it appears (0.2 = 20%)
