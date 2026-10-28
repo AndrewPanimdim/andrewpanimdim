@@ -275,6 +275,7 @@ main {
 }
 
 .am-card {
+  position: absolute;
   padding: 12px;
   border-radius: 28px;
   background: rgba(255, 255, 255, 0.06);
@@ -291,8 +292,6 @@ main {
 
 
 .am-card.visible {
-  
-  position: absolute;
   opacity: 1;
   transform: translateY(0);
 }
@@ -314,7 +313,7 @@ main {
 
 /* B sits a bit lower than A for a staggered look; use 0 to line them up */
 #am-b {
-  top: 15%;
+  top: 10%;
   width: 42%;
   margin-top: 80px;
   right: 2%;
@@ -328,6 +327,13 @@ main {
   transition:
     opacity 1s ease-out,
     transform 4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#am-d {
+  top: 105%;
+  right: 8%;
+  width: 35%;
+  margin-top: 80px;
 }
 
 .am-card h2 {

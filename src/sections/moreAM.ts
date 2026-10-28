@@ -3,7 +3,14 @@ const CARDS = [
   { id: 'am-a', title: 'Content A', text: 'Write the first block of content here.', gif: 'a.gif' },
   { id: 'am-b', title: 'Content B', text: 'Write the second block of content here.', gif: 'b.gif' },
   { id: 'am-c', title: 'Content c', text: 'Write the third block of content here.', gif: 'b.gif' },
+  { id: 'am-d', title: 'Content d', text: 'Write the fourth block of content here.', gif: 'a.gif' },
 ]
+
+// How much of a card must be on screen before it appears (0.2 = 20%)
+const SHOW_WHEN_VISIBLE = 0.2
+// Ignore the bottom part of the screen, so a card appears once it is
+// comfortably in view and not the instant its top edge peeks in
+const BOTTOM_MARGIN = '12%'
 
 export function setmoreaboutme(): () => void {
   const root = document.querySelector<HTMLElement>('#moreAM')
@@ -34,7 +41,7 @@ export function setmoreaboutme(): () => void {
 
   const cards = root.querySelectorAll<HTMLElement>('.am-card')
 
-  // Show each card when it scrolls into view (and keep it shown)
+  // Show each card only when ITS OWN spot is in the scroll view (and keep it shown)
   const observer = new IntersectionObserver(
     (entries) => {
       for (const entry of entries) {
@@ -43,11 +50,13 @@ export function setmoreaboutme(): () => void {
         observer.unobserve(entry.target)
       }
     },
-    { threshold: 0.15 },
+    {
+      threshold: SHOW_WHEN_VISIBLE,
+      rootMargin: `0px 0px -${BOTTOM_MARGIN} 0px`,
+    },
   )
 
-  cards.forEach((card, i) => {
-    card.style.transitionDelay = `${i * 150}ms` // each card follows the one before
+  cards.forEach((card) => {
     observer.observe(card)
   })
 
