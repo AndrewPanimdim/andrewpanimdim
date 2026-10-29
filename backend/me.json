@@ -14,10 +14,8 @@
         { "id": 2, "fact": "I like playing Basketball" },
         { "id": 3, "fact": "I am currently a Second Year College Student" },
         { "id": 4, "fact": "" },
-        { "id": 5, "fact": "I am currently a Second Year College Student" },
-        { "id": 6, "fact": "I am currently a Second Year College Student" },
-        { "id": 7, "fact": "I am currently a Second Year College Student" }   
-    ],
+        { "id": 5, "fact": "I am currently a Second Year College Student" }
+        ],
 
     "skills": [
       { "name": "Python", "level": "intermediate", "category": "backend" },

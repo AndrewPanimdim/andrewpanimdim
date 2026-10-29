@@ -1,0 +1,724 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Documentation for the AndrewPanimdim website: tech stack, project breakdown, the About Me API and the andrewpanimdim npm package."
+    />
+    <title>Docs · AndrewPanimdim</title>
+  </head>
+  <body>
+    <div class="docs">
+      <header class="docs-top">
+        <a class="docs-back" href="%BASE_URL%">← Home</a>
+        <span class="docs-title">Documentation</span>
+        <span class="docs-spacer"></span>
+        <a class="docs-ext" href="https://github.com/AndrewPanimdim/andrewpanimdim" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a class="docs-ext" href="https://www.npmjs.com/package/andrewpanimdim" target="_blank" rel="noopener noreferrer">npm</a>
+      </header>
+
+      <div class="docs-shell">
+        <nav class="docs-toc" aria-label="On this page">
+          <a href="#overview">Overview</a>
+          <a href="#stack">Tech stack</a>
+          <a href="#getting-started">Getting started</a>
+          <a href="#structure">Project structure</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#api">API</a>
+          <a href="#library">npm package</a>
+          <a href="#deployment">Deployment</a>
+          <a href="#config">Configuration</a>
+          <a href="#customize">Customize</a>
+          <a href="#security">Security notes</a>
+          <a href="#troubleshooting">Troubleshooting</a>
+        </nav>
+
+        <div class="docs-content">
+          <section id="overview">
+            <h1>Documentation</h1>
+            <p class="lead">
+              Everything about my portfolio website: what it is made of, how each part works, the
+              small API behind it, and the npm package I publish from the same repository.
+            </p>
+
+            <p>
+              The project has three parts that live in one repository:
+            </p>
+            <div class="flow" aria-label="Architecture">
+              <div class="flow-box"><b>Website</b><span>Vite + TypeScript</span></div>
+              <div class="flow-arrow" aria-hidden="true">→</div>
+              <div class="flow-box"><b>API</b><span>FastAPI (Python)</span></div>
+              <div class="flow-arrow" aria-hidden="true">→</div>
+              <div class="flow-box"><b>Data</b><span>backend/me.json</span></div>
+            </div>
+            <ul>
+              <li><b>The website</b> is a single-page front end written in plain TypeScript and CSS (no framework). Each part of the page is its own small module.</li>
+              <li><b>The API</b> is a tiny read-only FastAPI app that returns information about me as JSON. The website reads from it, and anyone can call it.</li>
+              <li><b>The npm package</b> <code>andrewpanimdim</code> contains the effects the website uses (text scramble, text split, drag with momentum, the growing cursor). The website installs it like any other dependency.</li>
+            </ul>
+
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Link</th><th>Where</th></tr></thead>
+                <tbody>
+                  <tr><td>Source code</td><td><a href="https://github.com/AndrewPanimdim/andrewpanimdim" target="_blank" rel="noopener noreferrer">github.com/AndrewPanimdim/andrewpanimdim</a></td></tr>
+                  <tr><td>Live site and API (Vercel)</td><td><a href="https://andrewpanimdim.vercel.app" target="_blank" rel="noopener noreferrer">andrewpanimdim.vercel.app</a></td></tr>
+                  <tr><td>npm package</td><td><a href="https://www.npmjs.com/package/andrewpanimdim" target="_blank" rel="noopener noreferrer">npmjs.com/package/andrewpanimdim</a></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="stack">
+            <h2>Tech stack</h2>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Layer</th><th>Technology</th><th>Used for</th></tr></thead>
+                <tbody>
+                  <tr><td>Language</td><td>TypeScript 6</td><td>All front-end code, with strict compiler flags (<code>noUnusedLocals</code>, <code>noUnusedParameters</code>, <code>erasableSyntaxOnly</code>)</td></tr>
+                  <tr><td>Build tool</td><td>Vite 8</td><td>Dev server, bundling, the multi-page build and the <code>/api</code> proxy</td></tr>
+                  <tr><td>UI</td><td>Plain DOM + CSS</td><td>No framework. Sections build their own markup; CSS lives in <code>src/global.css</code></td></tr>
+                  <tr><td>Fonts</td><td>Barlow Condensed, Bungee</td><td>Loaded from Google Fonts</td></tr>
+                  <tr><td>Backend</td><td>Python 3.12, FastAPI, Uvicorn</td><td>The read-only JSON API</td></tr>
+                  <tr><td>Data</td><td>JSON file</td><td><code>backend/me.json</code> holds profile, facts, skills, projects and socials</td></tr>
+                  <tr><td>Library tooling</td><td>tsup, Vitest, jsdom</td><td>Builds ESM + CommonJS + type declarations, and runs the tests</td></tr>
+                  <tr><td>External data</td><td>GitHub REST API</td><td>Star count and the tech-stack chips on the project cards (public, no token)</td></tr>
+                  <tr><td>CI/CD</td><td>GitHub Actions</td><td>Builds and deploys on every push to <code>main</code></td></tr>
+                  <tr><td>Hosting</td><td>GitHub Pages and Vercel</td><td>Pages serves the static site; Vercel serves the site and the API</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="getting-started">
+            <h2>Getting started</h2>
+            <p>You need <b>Node.js 22</b> and, to run the API locally, <b>Python 3.12</b>.</p>
+
+            <h3>Run the website</h3>
+<pre><code>git clone https://github.com/AndrewPanimdim/andrewpanimdim.git
+cd andrewpanimdim
+npm install
+npm run dev</code></pre>
+            <p>Open the address Vite prints (usually <code>http://localhost:5173</code>).</p>
+
+            <h3>Run the API (second terminal)</h3>
+<pre><code>python -m venv backend/.venv
+
+# Windows PowerShell
+backend\.venv\Scripts\Activate.ps1
+# macOS / Linux
+# source backend/.venv/bin/activate
+
+pip install -r backend/requirements.txt
+npm run dev:api</code></pre>
+            <p>
+              The API starts on port 8000. The dev server forwards every <code>/api</code> request to it, so the
+              website works without any extra setup. If the API is not running, the page still loads and shows its
+              built-in fallback text.
+            </p>
+
+            <h3>Scripts</h3>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+                <tbody>
+                  <tr><td><code>npm run dev</code></td><td>Starts the Vite dev server with hot reload</td></tr>
+                  <tr><td><code>npm run dev:api</code></td><td>Starts the FastAPI server on port 8000 and reloads when Python or <code>.json</code> files change</td></tr>
+                  <tr><td><code>npm run build</code></td><td>Type-checks with <code>tsc</code>, then builds the site into <code>dist/</code></td></tr>
+                  <tr><td><code>npm run preview</code></td><td>Serves the built <code>dist/</code> folder locally</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="structure">
+            <h2>Project structure</h2>
+<pre><code>andrewpanimdim/
+├─ index.html            main page (an empty #app and the script tag)
+├─ projects.html         the projects page
+├─ docs.html             this documentation page
+├─ vite.config.ts        base path, /api proxy, multi-page build
+├─ vercel.json           Vercel services and rewrites
+├─ public/
+│  ├─ favicon.svg
+│  └─ gif/               the GIFs shown on the project cards
+├─ src/
+│  ├─ main.ts            entry: builds the page and starts every section
+│  ├─ api.ts             apiUrl() and fetchJson()
+│  ├─ global.css         all site styles
+│  ├─ projects.ts        script for projects.html
+│  ├─ docs.ts, docs.css  script and styles for this page
+│  └─ sections/          one file per part of the page
+├─ backend/
+│  ├─ main.py            the FastAPI app
+│  ├─ me.json            the data the API serves
+│  └─ requirements.txt
+├─ library/              the npm package "andrewpanimdim"
+│  ├─ src/               scramble, split, draggable, cursortrack, scrolltilt
+│  ├─ test/              Vitest tests
+│  └─ package.json
+└─ .github/workflows/deploy.yml</code></pre>
+          </section>
+
+          <section id="how-it-works">
+            <h2>How the app works</h2>
+
+            <h3>Page load, step by step</h3>
+            <ol>
+              <li>The browser loads <code>index.html</code>. It contains only an empty <code>&lt;div id="app"&gt;</code> and a script tag.</li>
+              <li><code>src/main.ts</code> runs. It imports <code>global.css</code> and writes the page markup (<code>#hello</code>, <code>#aboutme</code>, <code>#float</code>, <code>#moreAM</code>) into <code>#app</code>.</li>
+              <li><code>main.ts</code> then calls one function per section, so every section finds its element already on the page.</li>
+              <li>Sections that need data (<code>aboutme</code>, the project cards, the GitHub badge) fetch it in the background. Each one has fallback content, so a slow or offline API never leaves a blank space.</li>
+            </ol>
+
+            <h3>The files in <code>src/</code></h3>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>File</th><th>What it does</th></tr></thead>
+                <tbody>
+                  <tr><td><code>main.ts</code></td><td>The entry point described above</td></tr>
+                  <tr><td><code>api.ts</code></td><td><code>apiUrl(path)</code> puts the <code>VITE_API_URL</code> prefix in front of a path. <code>fetchJson&lt;T&gt;(path)</code> fetches it and throws if the response is not OK</td></tr>
+                  <tr><td><code>sections/hello.ts</code></td><td>Splits "Hello, World" into words and fades them in one by one with <code>splitText</code>, then undoes the split and scrambles it into "Hello, I'm Andrew" with <code>scrambleText</code></td></tr>
+                  <tr><td><code>sections/aboutme.ts</code></td><td>Loads <code>/api/me</code> and <code>/api/facts</code>, then cycles through the lines with slide-in and slide-out animations. Uses built-in lines if the API is unreachable</td></tr>
+                  <tr><td><code>sections/float.ts</code></td><td>Makes the <code>#float</code> glass box draggable with momentum using <code>draggable</code> (the box is currently hidden in the CSS)</td></tr>
+                  <tr><td><code>sections/cursortrack.ts</code></td><td>Creates the <code>#cursertrack</code> dot and starts <code>cursertrack</code>. The dot grows when the mouse moves fast and hides when the pointer leaves the page</td></tr>
+                  <tr><td><code>sections/topnav.ts</code></td><td>The floating navigation pill. It compresses when you scroll down and widens when you scroll up. The Docs button lives on its left</td></tr>
+                  <tr><td><code>sections/githubbadge.ts</code></td><td>The GitHub link in the top-right corner with a live star count. It slides in at the top of the page and away when you scroll</td></tr>
+                  <tr><td><code>sections/scrolldelay.ts</code></td><td>Smooth, slightly delayed mouse-wheel scrolling. It stops its animation loop once settled so keyboard and touch scrolling are not disturbed</td></tr>
+                  <tr><td><code>sections/moreAM.ts</code></td><td>The "more about me" project cards (see below)</td></tr>
+                  <tr><td><code>sections/backgroundparticles.ts</code></td><td>Optional floating dots. It is commented out in <code>main.ts</code></td></tr>
+                  <tr><td><code>projects.ts</code></td><td>Builds the projects page from <code>/api/projects</code></td></tr>
+                  <tr><td><code>docs.ts</code></td><td>Powers this page: copy buttons, the highlighted table of contents and the "Try it" buttons</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>The project cards (<code>moreAM.ts</code>)</h3>
+            <p>
+              Each card is one entry in the <code>CARDS</code> list at the top of the file:
+            </p>
+<pre><code>{ id: 'am-a', title: 'Portfolio site', gif: 'a.gif', repo: 'andrewpanimdim', stack: ['TypeScript', 'Vite', 'FastAPI'] }</code></pre>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Field</th><th>Meaning</th></tr></thead>
+                <tbody>
+                  <tr><td><code>id</code></td><td>The element id, used by the CSS to place and animate the card (<code>#am-a</code>, <code>#am-b</code>, ...)</td></tr>
+                  <tr><td><code>title</code></td><td>The name shown under the GIF</td></tr>
+                  <tr><td><code>gif</code></td><td>File name inside <code>public/gif/</code></td></tr>
+                  <tr><td><code>repo</code></td><td>Optional. A repository name under my GitHub account. When set, the chips are filled from GitHub</td></tr>
+                  <tr><td><code>stack</code></td><td>The chips shown first, and kept if GitHub cannot be reached</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <ul>
+              <li><b>Reveal on scroll.</b> An <code>IntersectionObserver</code> adds the class <code>visible</code> to a card when 20% of it is on screen. The CSS then transitions it from its hidden state (faded and shifted) to its final place. JavaScript only toggles the class; the CSS does the animating.</li>
+              <li><b>Tech-stack chips.</b> For a card with a <code>repo</code>, two public GitHub requests are made: <code>/repos/{user}/{repo}/languages</code> (top three languages) and <code>/repos/{user}/{repo}</code> (topics). Up to four chips are shown. The answer is cached in <code>localStorage</code> for one hour because GitHub allows 60 requests per hour per visitor without a token.</li>
+              <li><b>Safe rendering.</b> Text that comes from GitHub is inserted with <code>textContent</code>, never as HTML.</li>
+            </ul>
+
+            <h3>Responsive layout</h3>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Screen width</th><th>Project cards</th><th>Other changes</th></tr></thead>
+                <tbody>
+                  <tr><td>Above 1024px</td><td>Collage: cards are placed with percentages inside a box that keeps a 5:4 shape, so the arrangement scales with the screen</td><td>Full nav and GitHub badge</td></tr>
+                  <tr><td>1024px and below</td><td>Two columns in normal page flow; every card fades up</td><td></td></tr>
+                  <tr><td>768px and below</td><td></td><td>Top nav and the custom cursor are hidden</td></tr>
+                  <tr><td>640px and below</td><td>One column</td><td></td></tr>
+                  <tr><td>360px and below</td><td></td><td>The GitHub badge shows only the icon and star count</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Pages</h3>
+            <ul>
+              <li><code>index.html</code>: the main page.</li>
+              <li><code>projects.html</code>: the full list of projects, loaded from <code>/api/projects</code>. The "See more" card links here.</li>
+              <li><code>docs.html</code>: this page.</li>
+            </ul>
+            <p>
+              Vite builds each HTML file as its own page (see <code>build.rollupOptions.input</code> in
+              <code>vite.config.ts</code>). Because the body hides the system cursor, <b>every page must start the
+              custom cursor</b>, otherwise the visitor has no pointer.
+            </p>
+          </section>
+
+          <section id="api">
+            <h2>API</h2>
+            <p>
+              A small, read-only JSON API built with FastAPI. All routes live under <code>/api</code>, accept only
+              <code>GET</code>, <code>HEAD</code> and <code>OPTIONS</code>, and allow requests from any origin (CORS),
+              because the data is public.
+            </p>
+
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Where</th><th>Base URL</th></tr></thead>
+                <tbody>
+                  <tr><td>Production</td><td><code>https://andrewpanimdim.vercel.app/api</code></td></tr>
+                  <tr><td>Local (through Vite)</td><td><code>http://localhost:5173/api</code></td></tr>
+                  <tr><td>Local (direct)</td><td><code>http://127.0.0.1:8000/api</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              FastAPI also generates interactive documentation:
+              <a href="https://andrewpanimdim.vercel.app/api/docs" target="_blank" rel="noopener noreferrer">/api/docs</a> (Swagger UI),
+              <code>/api/redoc</code> and the raw schema at <code>/api/openapi.json</code>.
+            </p>
+
+            <h3>Endpoints</h3>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Method</th><th>Path</th><th>Query</th><th>Returns</th></tr></thead>
+                <tbody>
+                  <tr><td><span class="m">GET</span></td><td><code>/api</code></td><td></td><td>A welcome message and the list of routes</td></tr>
+                  <tr><td><span class="m">GET</span></td><td><code>/api/me</code></td><td></td><td>My profile (name, course, school, bio, location, email)</td></tr>
+                  <tr><td><span class="m">GET</span></td><td><code>/api/skills</code></td><td><code>category</code>, <code>level</code></td><td>A list of skills, optionally filtered</td></tr>
+                  <tr><td><span class="m">GET</span></td><td><code>/api/projects</code></td><td><code>tag</code></td><td>A list of projects, optionally filtered by tag</td></tr>
+                  <tr><td><span class="m">GET</span></td><td><code>/api/projects/{id}</code></td><td></td><td>One project, or 404 if the id does not exist</td></tr>
+                  <tr><td><span class="m">GET</span></td><td><code>/api/socials</code></td><td></td><td>Links to my GitHub, LinkedIn and Instagram</td></tr>
+                  <tr><td><span class="m">GET</span></td><td><code>/api/facts</code></td><td></td><td>A list of short facts about me</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Try it</h3>
+            <p>These buttons call the API your copy of the site is configured to use and show the real response.</p>
+            <div class="try-row">
+              <div class="try-box"><button class="try" type="button" data-path="/api">GET /api</button></div>
+              <div class="try-box"><button class="try" type="button" data-path="/api/skills">GET /api/skills</button></div>
+              <div class="try-box"><button class="try" type="button" data-path="/api/projects">GET /api/projects</button></div>
+              <div class="try-box"><button class="try" type="button" data-path="/api/projects/2">GET /api/projects/2</button></div>
+              <div class="try-box"><button class="try" type="button" data-path="/api/socials">GET /api/socials</button></div>
+              <div class="try-box"><button class="try" type="button" data-path="/api/facts">GET /api/facts</button></div>
+            </div>
+            <pre class="try-out" id="try-out" hidden><code></code></pre>
+
+            <h3>Filtering</h3>
+            <ul>
+              <li><code>/api/skills?category=frontend</code> returns only skills in that category. <code>level</code> works the same way (for example <code>level=intermediate</code>). Both ignore letter case and can be combined.</li>
+              <li><code>/api/projects?tag=python</code> returns only projects whose tags include that value. Matching is exact, and the query is lowercased, so use lowercase tags such as <code>python</code> or <code>javascript</code>.</li>
+            </ul>
+
+            <h3>Example response</h3>
+            <p><code>GET /api/skills?category=frontend</code></p>
+<pre><code>[
+  { "name": "JavaScript", "level": "intermediate", "category": "frontend" },
+  { "name": "HTML/CSS",   "level": "intermediate", "category": "frontend" }
+]</code></pre>
+
+            <p><code>GET /api/projects/2</code> (shortened)</p>
+<pre><code>{
+  "id": 2,
+  "title": "NRoutes",
+  "description": "a little project for my Data Structures and Algorithms subject ...",
+  "tags": ["haversine", "python", "javascript"],
+  "url": "https://nroutes.onrender.com/"
+}</code></pre>
+
+            <h3>Errors</h3>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Status</th><th>When</th><th>Body</th></tr></thead>
+                <tbody>
+                  <tr><td><code>404</code></td><td>No project has that id</td><td><code>{"detail": "No project with id 99"}</code></td></tr>
+                  <tr><td><code>422</code></td><td>The id is not a whole number, e.g. <code>/api/projects/abc</code></td><td>FastAPI's validation error</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Calling it</h3>
+            <p>From a terminal:</p>
+<pre><code>curl https://andrewpanimdim.vercel.app/api/me</code></pre>
+            <p>From the website's own code, using the helper in <code>src/api.ts</code>:</p>
+<pre><code>import { fetchJson } from './api.ts'
+
+type Skill = { name: string; level: string; category: string }
+
+const skills = await fetchJson&lt;Skill[]&gt;('/api/skills?category=frontend')</code></pre>
+            <p>
+              <code>fetchJson</code> adds the <code>VITE_API_URL</code> prefix when one is set (see
+              <a href="#config">Configuration</a>) and throws an error for any non-OK response, so wrap it in
+              <code>try/catch</code> and keep a fallback.
+            </p>
+
+            <h3>Changing the data</h3>
+            <p>
+              All the content comes from <code>backend/me.json</code>, with the top-level keys <code>profile</code>,
+              <code>facts</code>, <code>skills</code>, <code>projects</code> and <code>socials</code>. Edit that file and
+              the API serves the new content; <code>npm run dev:api</code> reloads automatically when a
+              <code>.json</code> file changes. Keep each project's <code>id</code> a number, because the single-project
+              route compares it with the number in the URL.
+            </p>
+          </section>
+
+          <section id="library">
+            <h2>npm package: <code>andrewpanimdim</code></h2>
+            <p>
+              Tiny, dependency-free web effects for any website, with TypeScript types included. The source lives in
+              the <code>library/</code> folder of this repository, and the website itself uses the published package.
+              Every effect respects <code>prefers-reduced-motion</code>, and you only ship the features you import.
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Feature</th><th>What it does</th></tr></thead>
+                <tbody>
+                  <tr><td><a href="#lib-scramble"><code>scrambleText</code></a></td><td>Text appears by unscrambling random characters</td></tr>
+                  <tr><td><a href="#lib-split"><code>splitText</code></a></td><td>Wraps each word or letter in a span so you can animate them one by one</td></tr>
+                  <tr><td><a href="#lib-draggable"><code>draggable</code></a></td><td>Drag an element with mouse, touch or pen and throw it with momentum</td></tr>
+                  <tr><td><a href="#lib-cursertrack"><code>cursertrack</code></a></td><td>A cursor dot that grows when you move fast and hides when the pointer leaves the page</td></tr>
+                  <tr><td><a href="#lib-scrolltilt"><code>scrolltilt</code></a></td><td>Rotates, tilts and scales an element as the page scrolls</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Install</h3>
+<pre><code>npm install andrewpanimdim</code></pre>
+
+            <h3>Import</h3>
+            <p>Everything from the main entry:</p>
+<pre><code>import { scrambleText, splitText, draggable, cursertrack, scrolltilt } from 'andrewpanimdim'</code></pre>
+            <p>Or one feature from its own path, which keeps your bundle smaller:</p>
+<pre><code>import { scrambleText } from 'andrewpanimdim/scramble'
+import { splitText } from 'andrewpanimdim/split'
+import { draggable } from 'andrewpanimdim/draggable'
+import { cursertrack } from 'andrewpanimdim/cursortrack'
+import { scrolltilt } from 'andrewpanimdim/scrolltilt'</code></pre>
+            <p>
+              The functions need <code>document</code> and <code>window</code>, so they run in the browser. With
+              server rendering (Next.js, Nuxt) call them from client-side code, for example inside
+              <code>useEffect</code>.
+            </p>
+
+            <h3 id="lib-scramble"><code>scrambleText</code></h3>
+            <p>Animates an element's text from random characters into the real text.</p>
+<pre><code>const title = document.querySelector&lt;HTMLElement&gt;('#title')!
+const anim = scrambleText(title, { text: "Hello, I'm Andrew", duration: 1500 })
+
+await anim.finished   // resolves when the animation ends</code></pre>
+            <p><b>Signature:</b> <code>scrambleText(element, options?) → { finished, cancel }</code></p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td><code>text</code></td><td>string</td><td>the element's current text</td><td>The text to reveal</td></tr>
+                  <tr><td><code>duration</code></td><td>number</td><td><code>1500</code></td><td>Total time in milliseconds</td></tr>
+                  <tr><td><code>from</code></td><td><code>'left' | 'right' | 'center' | 'random'</code></td><td><code>'left'</code></td><td>Where the reveal starts</td></tr>
+                  <tr><td><code>chars</code></td><td>string</td><td>letters, digits and symbols</td><td>The characters used for the scrambled letters</td></tr>
+                  <tr><td><code>onUpdate</code></td><td>(text) =&gt; void</td><td>none</td><td>Called every frame with the text being shown</td></tr>
+                  <tr><td><code>random</code></td><td>() =&gt; number</td><td><code>Math.random</code></td><td>Custom random source (useful for tests)</td></tr>
+                  <tr><td><code>respectReducedMotion</code></td><td>boolean</td><td><code>true</code></td><td>Skip the animation for visitors who prefer reduced motion</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p><b>Returns:</b> <code>finished</code> is a Promise that resolves when the animation ends or is cancelled. <code>cancel()</code> stops immediately and shows the final text.</p>
+<pre><code>// Reveal from the middle outward, using only 0s and 1s
+scrambleText(el, { text: 'ACCESS GRANTED', from: 'center', chars: '01' })
+
+// Chain animations
+await scrambleText(el, { text: 'Loading...' }).finished
+await scrambleText(el, { text: 'Done!' }).finished</code></pre>
+
+            <h3 id="lib-split"><code>splitText</code></h3>
+            <p>Wraps each word (or letter) in a <code>&lt;span&gt;</code> so you can animate the pieces separately.</p>
+<pre><code>const { elements, revert } = splitText(heading, { by: 'words' })
+
+elements.forEach((word, i) =&gt; {
+  word.animate(
+    { opacity: [0, 1] },
+    { duration: 600, delay: i * 150, fill: 'backwards' },
+  )
+})
+
+revert()   // later: put the element back exactly as it was</code></pre>
+            <p><b>Signature:</b> <code>splitText(element, options?) → { elements, revert }</code></p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td><code>by</code></td><td><code>'words' | 'chars'</code></td><td><code>'words'</code></td><td>Split into words or single characters</td></tr>
+                  <tr><td><code>className</code></td><td>string</td><td><code>'tfx-piece'</code></td><td>CSS class given to every span</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Good to know: the pieces are <code>display: inline-block</code> so transforms like
+              <code>translateY</code> work. The parent gets an <code>aria-label</code> with the full sentence and the
+              pieces are <code>aria-hidden</code>, so screen readers still read the real text. Only use it on plain
+              text elements, because it replaces the element's contents.
+            </p>
+
+            <h3 id="lib-draggable"><code>draggable</code></h3>
+            <p>Makes an element draggable with mouse, touch or pen. When released, it keeps gliding and slows down.</p>
+<pre><code>const box = document.querySelector&lt;HTMLElement&gt;('#box')!
+
+const drag = draggable(box, {
+  container: 'main',
+  containerPadding: 10,
+  friction: 6,
+  onGrab: (el) =&gt; el.classList.add('grabbed'),
+  onRelease: (el) =&gt; el.classList.remove('grabbed'),
+})
+
+drag.destroy()   // later: remove listeners and put the element back</code></pre>
+            <p><b>Signature:</b> <code>draggable(element, options?) → { destroy }</code></p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td><code>container</code></td><td>HTMLElement | string</td><td>none (free movement)</td><td>Keep the element inside this element or CSS selector</td></tr>
+                  <tr><td><code>containerPadding</code></td><td>number</td><td><code>0</code></td><td>Pixels of space to keep from the container edge</td></tr>
+                  <tr><td><code>friction</code></td><td>number</td><td><code>6</code></td><td>How fast a thrown element slows down. Higher stops sooner</td></tr>
+                  <tr><td><code>onGrab</code></td><td>(el) =&gt; void</td><td>none</td><td>Called when the pointer grabs the element</td></tr>
+                  <tr><td><code>onRelease</code></td><td>(el) =&gt; void</td><td>none</td><td>Called when the pointer lets go</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>Movement uses CSS <code>transform</code>, so do not set your own <code>transform</code> on the same element.</p>
+
+            <h3 id="lib-cursertrack"><code>cursertrack</code></h3>
+            <p>
+              A cursor dot that follows the mouse. It grows when you move fast, eases back to normal size when you
+              slow down, and fades out when the pointer leaves the page or window.
+            </p>
+<pre><code>const dot = document.createElement('div')
+dot.id = 'cursertrack'
+document.body.appendChild(dot)
+
+const tracker = cursertrack(dot, { maxScale: 5 })
+
+tracker.destroy()   // later: stop tracking and reset</code></pre>
+            <p>Style the dot yourself. It must be fixed in the top-left corner so the library can position it:</p>
+<pre><code>#cursertrack {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  pointer-events: none;
+  z-index: 9999;
+}</code></pre>
+            <p><b>Signature:</b> <code>cursertrack(element, options?) → { destroy }</code></p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td><code>threshold</code></td><td>number</td><td><code>1.2</code></td><td>Speed (px per ms) below which the cursor counts as moving normally</td></tr>
+                  <tr><td><code>maxSpeed</code></td><td>number</td><td><code>5</code></td><td>Speed at which the dot reaches its biggest size</td></tr>
+                  <tr><td><code>maxScale</code></td><td>number</td><td><code>5</code></td><td>The biggest size multiplier</td></tr>
+                  <tr><td><code>grow</code></td><td>number</td><td><code>0.01</code></td><td>How fast it grows. Higher is snappier</td></tr>
+                  <tr><td><code>shrink</code></td><td>number</td><td><code>0.004</code></td><td>How fast it returns to normal. Lower is slower and smoother</td></tr>
+                  <tr><td><code>follow</code></td><td>boolean</td><td><code>true</code></td><td>Move the element to the pointer too. Set <code>false</code> to only scale it</td></tr>
+                  <tr><td><code>hideOutside</code></td><td>boolean</td><td><code>true</code></td><td>Fade out when the pointer leaves the page or window</td></tr>
+                  <tr><td><code>edge</code></td><td>number</td><td><code>2</code></td><td>Pixels from the window edge that count as leaving</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              Tuning: if the dot grows too easily, raise <code>threshold</code>. If it returns to normal too quickly,
+              lower <code>shrink</code>. For a stronger reaction to quick flicks, raise <code>maxScale</code> or lower
+              <code>maxSpeed</code>.
+            </p>
+
+            <h3 id="lib-scrolltilt"><code>scrolltilt</code></h3>
+            <p>Rotates, tilts, scales and shifts an element as the page scrolls, easing smoothly between the start and end positions.</p>
+<pre><code>const tilt = scrolltilt(image, { start: 0, end: 800, rotate: 12, scale: 1.1 })
+
+tilt.destroy()   // later: stop and restore the element's transform</code></pre>
+            <p><b>Signature:</b> <code>scrolltilt(element, options?) → { destroy }</code></p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Option</th><th>Type</th><th>Default</th><th>Description</th></tr></thead>
+                <tbody>
+                  <tr><td><code>start</code></td><td>number</td><td><code>0</code></td><td>Scroll position (px) where the effect begins</td></tr>
+                  <tr><td><code>end</code></td><td>number</td><td><code>1000</code></td><td>Scroll position (px) where it finishes</td></tr>
+                  <tr><td><code>rotate</code></td><td>number</td><td><code>12</code></td><td>Flat rotation in degrees at <code>end</code></td></tr>
+                  <tr><td><code>rotateX</code></td><td>number</td><td><code>0</code></td><td>3D tilt forward or back in degrees at <code>end</code></td></tr>
+                  <tr><td><code>rotateY</code></td><td>number</td><td><code>0</code></td><td>3D tilt left or right in degrees at <code>end</code></td></tr>
+                  <tr><td><code>scale</code></td><td>number</td><td><code>1</code></td><td>Size at <code>end</code>; 1 means unchanged</td></tr>
+                  <tr><td><code>translateY</code></td><td>number</td><td><code>0</code></td><td>Extra vertical shift in px at <code>end</code></td></tr>
+                  <tr><td><code>smooth</code></td><td>number</td><td><code>0.12</code></td><td>0 to 1. Lower is floatier, 1 is instant</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Using it with React</h3>
+            <p>Call the functions inside <code>useEffect</code> and clean up when the component unmounts:</p>
+<pre><code>import { useEffect, useRef } from 'react'
+import { scrambleText, draggable } from 'andrewpanimdim'
+
+export function Hero() {
+  const title = useRef&lt;HTMLHeadingElement&gt;(null)
+  const box = useRef&lt;HTMLDivElement&gt;(null)
+
+  useEffect(() =&gt; {
+    const anim = scrambleText(title.current!, { text: 'Hello, world' })
+    const drag = draggable(box.current!)
+    return () =&gt; {
+      anim.cancel()
+      drag.destroy()
+    }
+  }, [])
+
+  return (
+    &lt;&gt;
+      &lt;h1 ref={title}&gt;Hello&lt;/h1&gt;
+      &lt;div ref={box} style={{ width: 80, height: 80 }} /&gt;
+    &lt;/&gt;
+  )
+}</code></pre>
+
+            <h3>How the package is built</h3>
+            <ul>
+              <li><b>Pure core, thin shell.</b> Each feature keeps its maths in small pure functions (easy to test) and a thin shell that attaches events and animation frames.</li>
+              <li><b>Handles.</b> Features return a handle (<code>destroy()</code> or <code>cancel()</code>) that removes listeners and restores whatever the feature changed.</li>
+              <li><b>Output.</b> <code>tsup</code> builds ES modules, CommonJS and type declarations for every entry. The <code>exports</code> field in <code>package.json</code> maps each subpath (<code>/scramble</code>, <code>/split</code>, ...) to its files, and <code>files</code> limits what gets published to <code>dist</code>, the README and the license.</li>
+              <li><b>Zero dependencies.</b> Nothing is installed alongside it, which keeps the package small and its attack surface minimal.</li>
+            </ul>
+
+            <h3>Working on it and publishing a new version</h3>
+            <p>Run these from inside the <code>library/</code> folder, not the project root:</p>
+<pre><code>cd library
+npm install
+npm test            # Vitest (pure logic + jsdom)
+npm run typecheck
+npm run build       # writes dist/
+
+npm version patch   # or minor / major: bumps package.json
+npm publish         # prepublishOnly runs typecheck, tests and build first</code></pre>
+            <p>
+              Published versions are permanent and cannot be overwritten, so every change needs a new version number.
+              Publishing requires an npm account with two-factor authentication turned on. If <code>npm publish</code>
+              answers 404 or 403, log in again with <code>npm logout</code> then <code>npm login</code>.
+            </p>
+          </section>
+
+          <section id="deployment">
+            <h2>Deployment</h2>
+            <p>
+              Every push to <code>main</code> runs <code>.github/workflows/deploy.yml</code> (Node 22), which publishes
+              the site to two places:
+            </p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Job</th><th>When</th><th>What it does</th></tr></thead>
+                <tbody>
+                  <tr><td><code>build-pages</code></td><td>Push to <code>main</code>, or run by hand</td><td>Installs, then builds with <code>BASE_PATH=/andrewpanimdim/</code> and the API address baked in, and uploads <code>dist/</code></td></tr>
+                  <tr><td><code>deploy-pages</code></td><td>After <code>build-pages</code></td><td>Publishes the upload to GitHub Pages</td></tr>
+                  <tr><td><code>vercel-production</code></td><td>Push to <code>main</code>, or run by hand</td><td>Builds and deploys the front end and the API to Vercel production</td></tr>
+                  <tr><td><code>vercel-preview</code></td><td>Pull requests</td><td>Deploys a preview so changes can be checked before merging</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h3>Why two hosts?</h3>
+            <ul>
+              <li><b>Vercel</b> runs both the static site and the Python API. <code>vercel.json</code> defines two services (<code>frontend</code> from the project root and <code>backend</code> from <code>backend/</code>) and rewrites <code>/api</code> and <code>/api/*</code> to the backend and everything else to the front end.</li>
+              <li><b>GitHub Pages</b> can only serve static files, so it cannot run Python. That build calls the live Vercel API instead, through <code>VITE_API_URL</code>.</li>
+              <li>The two hosts use different base paths: Pages serves the site from <code>/andrewpanimdim/</code> and Vercel from <code>/</code>. The code therefore builds asset links from <code>import.meta.env.BASE_URL</code> and never hard-codes a leading slash.</li>
+            </ul>
+
+            <h3>Secrets the workflow needs</h3>
+            <p>Add these under the repository's Settings, Secrets and variables, Actions:</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Name</th><th>Type</th><th>Purpose</th></tr></thead>
+                <tbody>
+                  <tr><td><code>VERCEL_TOKEN</code></td><td>Secret</td><td>Lets the workflow deploy to your Vercel account</td></tr>
+                  <tr><td><code>VERCEL_ORG_ID</code></td><td>Secret</td><td>Identifies the Vercel team or account</td></tr>
+                  <tr><td><code>VERCEL_PROJECT_ID</code></td><td>Secret</td><td>Identifies the Vercel project</td></tr>
+                  <tr><td><code>VITE_API_URL</code></td><td>Variable (optional)</td><td>API address for the Pages build. Defaults to <code>https://andrewpanimdim.vercel.app</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="config">
+            <h2>Configuration</h2>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Name</th><th>Read by</th><th>Meaning</th></tr></thead>
+                <tbody>
+                  <tr><td><code>VITE_API_URL</code></td><td>Front end (<code>src/api.ts</code>)</td><td>Prefix for every API request. Leave it empty to use the same host (local proxy, or Vercel). Set it to a full address, without a trailing slash, when the site and API live on different hosts</td></tr>
+                  <tr><td><code>BASE_PATH</code></td><td><code>vite.config.ts</code></td><td>The folder the site is served from. <code>/</code> by default; <code>/andrewpanimdim/</code> for GitHub Pages</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              For local work, put values in a <code>.env.local</code> file in the project root. Files named
+              <code>.env</code> and <code>.env.*</code> are ignored by git.
+            </p>
+          </section>
+
+          <section id="customize">
+            <h2>Customize it</h2>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>I want to change...</th><th>Edit</th></tr></thead>
+                <tbody>
+                  <tr><td>My profile, facts, skills, projects or links</td><td><code>backend/me.json</code></td></tr>
+                  <tr><td>The project cards (title, GIF, repository, chips)</td><td><code>CARDS</code> at the top of <code>src/sections/moreAM.ts</code></td></tr>
+                  <tr><td>The GIFs</td><td>Put files in <code>public/gif/</code> and name them in <code>CARDS</code></td></tr>
+                  <tr><td>Where each card sits, and how it animates in</td><td>The <code>#am-a</code> ... <code>#am-e</code> rules in <code>src/global.css</code></td></tr>
+                  <tr><td>The GitHub repository shown in the corner badge</td><td><code>GITHUB_USER</code> and <code>GITHUB_REPO</code> at the top of <code>src/sections/githubbadge.ts</code></td></tr>
+                  <tr><td>The heading text that scrambles in</td><td><code>SCRAMBLE_TO</code> in <code>src/sections/hello.ts</code></td></tr>
+                  <tr><td>How smooth or slow scrolling feels</td><td><code>ease</code> and <code>scrollMultiplier</code> in <code>src/sections/scrolldelay.ts</code></td></tr>
+                  <tr><td>The size the cursor grows to</td><td><code>maxScale</code> in <code>src/sections/cursortrack.ts</code></td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p>
+              To add a new page, create an HTML file in the project root, add it to
+              <code>build.rollupOptions.input</code> in <code>vite.config.ts</code>, and start the custom cursor in
+              its script.
+            </p>
+          </section>
+
+          <section id="security">
+            <h2>Security notes</h2>
+            <ul>
+              <li><b>Read-only API.</b> It answers only <code>GET</code>, <code>HEAD</code> and <code>OPTIONS</code>, and serves only public information from a static JSON file. There is no database and no user input is stored.</li>
+              <li><b>No HTML injection.</b> Text from the API and from GitHub is written with <code>textContent</code>, and project links are only accepted when they start with <code>http</code> or <code>https</code>.</li>
+              <li><b>Secrets stay out of the code.</b> Deployment tokens live in GitHub Actions secrets, and <code>.env</code> files are git-ignored.</li>
+              <li><b>Package hygiene.</b> The npm package has no runtime dependencies, publishes only the files listed in <code>files</code>, and is published from an account with two-factor authentication.</li>
+              <li><b>Browser-side requests.</b> The only third-party calls the page makes are to Google Fonts and the public GitHub API.</li>
+            </ul>
+          </section>
+
+          <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Problem</th><th>Fix</th></tr></thead>
+                <tbody>
+                  <tr><td>A GIF shows locally but is missing on Vercel</td><td>File names are case-sensitive on Vercel's servers. Make the name in <code>CARDS</code> match the file exactly, including capitals</td></tr>
+                  <tr><td>Assets or pages 404 on GitHub Pages</td><td>The site must be built with <code>BASE_PATH=/andrewpanimdim/</code>. The workflow does this; a plain local build does not</td></tr>
+                  <tr><td>The page shows fallback text instead of API data</td><td>The API is offline or unreachable. Locally run <code>npm run dev:api</code>. On Pages check <code>VITE_API_URL</code>. If the Vercel API answers 401, turn off Deployment Protection for production</td></tr>
+                  <tr><td>No mouse pointer on a page</td><td>The body hides the system cursor, so that page's script must call <code>initCurserTrack()</code></td></tr>
+                  <tr><td>Project chips do not update</td><td>Check the <code>repo</code> name and that the repository is public. GitHub allows 60 requests per hour per visitor, and answers are cached for an hour (clear the <code>am-stack:</code> keys in Local Storage to retest)</td></tr>
+                  <tr><td><code>npm run build</code> fails on an unused variable or import</td><td>The compiler flags <code>noUnusedLocals</code> and <code>noUnusedParameters</code> are on. Remove the unused name</td></tr>
+                  <tr><td><code>npm run build</code> says it cannot resolve an HTML page</td><td>Every page listed in <code>build.rollupOptions.input</code> must exist in the project root</td></tr>
+                  <tr><td><code>npm publish</code> answers 403 or 404</td><td>Turn on two-factor authentication, then <code>npm logout</code> and <code>npm login</code>. A version number can only be published once</td></tr>
+                  <tr><td>The website still uses old library behavior</td><td>After publishing a new version, run <code>npm install andrewpanimdim@latest</code> in the project root</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <footer class="docs-foot">
+            <span>MIT © Andrew Panimdim</span>
+            <a href="%BASE_URL%">Back to the site</a>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/docs.ts"></script>
+  </body>
+</html>

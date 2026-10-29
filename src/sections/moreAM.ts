@@ -19,7 +19,7 @@ interface Card {
 const CARDS: Card[] = [
   { id: 'am-a', title: 'first year college practice', gif: 'a.gif', repo: 'practiceportfolio', stack: ['TypeScript', 'Vite', 'FastAPI'] },
   { id: 'am-b', title: 'grade 12 practice', gif: 'b.gif', repo: 'portfolio2',stack: ['Tech 1', 'Tech 2'] },
-  { id: 'am-c', title: 'Project C', gif: 'b.gif', stack: ['Tech 1', 'Tech 2'] },
+  { id: 'am-c', title: 'Data Structures and Algorithms Project', gif: 'nroutes.gif', repo: 'nroute' , stack: ['Tech 1', 'Tech 2'] },
   { id: 'am-d', title: 'Project D', gif: 'a.gif', stack: ['Tech 1', 'Tech 2'] },
   { id: 'am-e', title: 'Project E', gif: 'b.gif', stack: ['Tech 1', 'Tech 2'] },
 ]
