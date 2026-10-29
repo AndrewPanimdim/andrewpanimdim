@@ -5,6 +5,8 @@
     left: 14px;
     top: 50%;
     transform: translateY(-50%);
+    background-color: #4ffcbc;
+    
   
     display: inline-flex;
     align-items: center;
@@ -13,7 +15,7 @@
     padding: 7px 14px;
     border-radius: 999px;
   
-    color: #fff;
+    color: #000000;
     text-decoration: none;
     font-size: 1.05rem;
     font-weight: 600;
@@ -25,20 +27,13 @@
     transition: background 0.25s ease;
   }
   
-  #topnav .tn-docs svg {
-    width: 16px;
-    height: 16px;
-    flex-shrink: 0;
-    transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-  }
   
   #topnav .tn-docs:hover {
     background: rgba(255, 255, 255, 0.12);
+    color: white;
+    
   }
   
-  #topnav .tn-docs:hover svg {
-    transform: rotate(-8deg) scale(1.15);
-  }
   
   #topnav .tn-docs:focus-visible {
     outline: 2px solid #ffdf38;

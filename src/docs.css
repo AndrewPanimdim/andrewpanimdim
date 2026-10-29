@@ -8,7 +8,7 @@
     --doc-panel: rgba(255, 255, 255, 0.04);
     --doc-text: #d2d2d2;
     --doc-muted: #8f8f8f;
-    --doc-accent: #ffd92f;
+    --doc-accent: #16cbb0;
     --doc-code: #0e0e10;
     --doc-top: 58px; /* height of the sticky top bar */
     --doc-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
@@ -127,7 +127,7 @@
   .docs-toc a.active {
     color: #fff;
     border-left-color: var(--doc-accent);
-    background: linear-gradient(90deg, rgba(255, 217, 47, 0.1), transparent);
+    background: linear-gradient(90deg, rgba(22, 203, 176, 0.1), transparent);
   }
   
   /* ---------- content ---------- */
@@ -337,7 +337,7 @@
     display: inline-block;
     padding: 2px 8px;
     border-radius: 999px;
-    background: rgba(255, 217, 47, 0.14);
+    background: rgba(22, 203, 176, 0.14);
     color: var(--doc-accent);
     font-size: 0.8rem;
     font-weight: 700;
@@ -481,7 +481,7 @@
   
     .docs-toc a.active {
       border-color: var(--doc-accent);
-      background: rgba(255, 217, 47, 0.1);
+      background: rgba(22, 203, 176, 0.1);
     }
   
     .docs-content {
