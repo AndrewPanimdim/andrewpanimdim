@@ -178,7 +178,7 @@ main {
     visibility 0s linear 0.5s;
 }
 
-/* icon area: a little bigger than the icon so the star details have room */
+/* GitHub icon: stays the same on hover */
 .gh-icon-box {
   position: relative;
   display: inline-block;
@@ -187,51 +187,13 @@ main {
   height: 22px;
 }
 
-.gh-icon-box svg {
+.gh-github-icon {
   position: absolute;
   inset: 0;
   display: block;
   width: 100%;
   height: 100%;
-  overflow: visible;
-  transition:
-    opacity 0.25s ease,
-    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
-.gh-github-icon {
-  opacity: 1;
   transform: scale(0.8);
-}
-
-.gh-star-icon {
-  opacity: 0;
-  transform: scale(0.5) rotate(-20deg);
-}
-
-/* hover: the GitHub icon turns into the glossy star */
-.gh-badge:hover .gh-github-icon {
-  opacity: 0;
-  transform: scale(0.4) rotate(20deg);
-}
-
-.gh-badge:hover .gh-star-icon {
-  opacity: 1;
-  transform: scale(1.1) rotate(0deg);
-}
-
-.gh-badge:hover .gh-mini-star {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: tn-twinkle 1s ease-in-out infinite;
-}
-
-.gh-badge:hover .gh-mini-star.s2 {
-  animation-delay: 0.3s;
-}
-
-.gh-badge:hover .gh-mini-star.s3 {
-  animation-delay: 0.6s;
 }
 
 /* "AndrewPanimdim/practiceportfolio"
@@ -253,11 +215,11 @@ main {
   background-size: 100% 1px;
 }
 
-/* star glyph + live count, in grey */
+/* star + live count, in grey */
 .gh-stars {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 5px;
   color: #8b8b8b;
   font-size: 0.85rem;
   font-weight: 600;
@@ -265,28 +227,72 @@ main {
   transition: color 0.3s ease;
 }
 
-.gh-stars-glyph {
-  width: 12px;
-  height: 12px;
-  flex-shrink: 0;
-  transition:
-    color 0.3s ease,
-    transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-
 .gh-star-count {
   font-variant-numeric: tabular-nums;
   min-width: 1ch;
 }
 
-/* hover: the small star turns gold and gives a little spin, the count brightens */
+/* the star and the little stars that blink around it */
+.gh-star-wrap {
+  position: relative;
+  display: inline-block;
+  flex-shrink: 0;
+  width: 12px;
+  height: 12px;
+}
+
+.gh-stars-glyph {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* hover: the star turns two-tone yellow (light left, orange right) and the count brightens */
 .gh-badge:hover .gh-stars {
   color: #fff;
 }
 
 .gh-badge:hover .gh-stars-glyph {
-  color: #ffd92f;
-  transform: rotate(72deg) scale(1.2);
+  fill: url(#gh-star-split);
+  transform: scale(1.2);
+}
+
+/* little stars: invisible until hover, then they blink one after another */
+.gh-spark {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.gh-spark.s1 { top: -8px;    left: -5px;  fill: #ffee90; }
+.gh-spark.s2 { top: -9px;    right: -4px; fill: #ffa21f; width: 7px; height: 7px; }
+.gh-spark.s3 { bottom: -8px; right: -5px; fill: #ffd92f; width: 7px; height: 7px; }
+.gh-spark.s4 { bottom: -4px; left: -9px;  fill: #ffee90; width: 6px; height: 6px; }
+
+.gh-badge:hover .gh-spark {
+  animation: gh-blink 0.9s ease-in-out infinite;
+}
+
+.gh-badge:hover .gh-spark.s2 { animation-delay: 0.25s; }
+.gh-badge:hover .gh-spark.s3 { animation-delay: 0.5s; }
+.gh-badge:hover .gh-spark.s4 { animation-delay: 0.7s; }
+
+@keyframes gh-blink {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .gh-badge:focus-visible {
@@ -295,7 +301,7 @@ main {
   border-radius: 8px;
 }
 
-/* smaller screens: slightly smaller text, then drop the name */
+/* very small screens: slightly smaller text, then drop the name */
 @media (max-width: 480px) {
   .gh-name {
     font-size: 0.85rem;
@@ -313,6 +319,11 @@ main {
   .gh-badge.is-hidden {
     transition: opacity 0.2s ease, visibility 0s linear 0.2s;
     transform: none;
+  }
+
+  .gh-badge:hover .gh-spark {
+    animation: none;
+    opacity: 1;
   }
 }
 
