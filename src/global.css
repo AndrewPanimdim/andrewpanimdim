@@ -86,9 +86,9 @@ main {
   top: 15px;
   left: 50%;
   transform: translateX(-50%);
-  width: min(92vw, 900px);
+  width: min(92vw, 600px);
   height: 50px;
-  border-radius: 999px;
+  border-radius: 9px;
   background: rgba(20, 20, 20, 0.6);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);

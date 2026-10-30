@@ -1,43 +1,48 @@
+
 import './topnav-docs.css'
 
 export function initTopNav(): () => void {
-  // BASE_URL keeps the link working on GitHub Pages (/andrewpanimdim/) and Vercel (/)
-  const docsUrl = `${import.meta.env.BASE_URL}docs.html`
-  
-  // ---------- PROJECTS BUTTON ----------
+  const base = import.meta.env.BASE_URL
 
-  const projectsLink = document.createElement('a')
-  projectsLink.href = '/projects.html'
-  projectsLink.textContent = 'Projects'
-  projectsLink.className = 'tn-projects'
-
-
-  // Create the navbar
   const nav = document.createElement('nav')
   nav.id = 'topnav'
-  
-  nav.appendChild(projectsLink)
 
   nav.innerHTML = `
     <div class="tn-full">
-      <!-- Docs button, left most side -->
-      <a class="tn-docs" href="${docsUrl}" aria-label="Open the documentation">
-        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-          <path d="M1 2.75A.75.75 0 0 1 1.75 2h3.5c.97 0 1.85.37 2.5 1 .65-.63 1.53-1 2.5-1h3.5a.75.75 0 0 1 .75.75v9.5a.75.75 0 0 1-.75.75h-3.5c-.55 0-1.06.22-1.43.57a.75.75 0 0 1-1.04 0A2.02 2.02 0 0 0 5.25 13h-3.5a.75.75 0 0 1-.75-.75v-9.5ZM7.25 4.9A1.5 1.5 0 0 0 5.25 3.5h-2.75v8h2.75c.9 0 1.7.3 2 .78V4.9Zm1.5 7.38c.3-.48 1.1-.78 2-.78h2.75v-8h-2.75a1.5 1.5 0 0 0-2 1.4v7.38Z"/>
-        </svg>
-        <span>Docs</span>
+
+      <a class="tn-card tn-docs" href="${base}docs.html">
+        <span>DOCS</span>
       </a>
 
-      <!-- More nav content can go here -->
+      <a class="tn-card tn-projects" href="${base}projects.html">
+        <span>PROJECTS</span>
+      </a>
+
+      <a class="tn-card tn-about" href="#about">
+        <span>ABOUT</span>
+      </a>
+
+      <a class="tn-card tn-skills" href="#skills">
+        <span>SKILLS</span>
+      </a>
+
+      <a class="tn-card tn-experience" href="#experience">
+        <span>EXPERIENCE</span>
+      </a>
+  
+      <!--
+      <a class="tn-card tn-contact" href="#contact">
+        <span>CONTACT</span>
+      </a>
+       -->
     </div>
 
-    <!-- Compact navbar label -->
     <div class="tn-mini">AP</div>
   `
 
   document.body.prepend(nav)
 
-  // Compact navbar when scrolling down
+  // Compact navbar on scroll
   let lastY = window.scrollY
   let waiting = false
 
@@ -71,7 +76,6 @@ export function initTopNav(): () => void {
     passive: true,
   })
 
-  // Cleanup if the navbar is removed or reinitialized
   return () => {
     window.removeEventListener('scroll', onScroll)
     nav.remove()

@@ -1,57 +1,214 @@
-/* Docs button inside the top nav (left most side) */
 
-#topnav .tn-docs {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: #4ffcbc;
-    
-  
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-  
-    padding: 7px 14px;
-    border-radius: 999px;
-  
-    color: #000000;
-    text-decoration: none;
-    font-size: 1.05rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-    line-height: 1;
-    cursor: none;
-    -webkit-tap-highlight-color: transparent;
-  
-    transition: background 0.25s ease;
-  }
-  
-  
-  #topnav .tn-docs:hover {
-    background: rgba(255, 255, 255, 0.12);
-    color: white;
-    
-  }
-  
-  
-  #topnav .tn-docs:focus-visible {
-    outline: 2px solid #ffdf38;
-    outline-offset: 2px;
+/* =====================================
+   NAVBAR ENTRANCE
+===================================== */
+
+#topnav {
+  opacity: 0;
+  animation: navbarEnter 0.8s ease 4s forwards;
+}
+
+@keyframes navbarEnter {
+  from {
+      opacity: 0;
+      translate: 0 -15px;
   }
 
-  /* Projects button */
-.tn-projects {
+  to {
+      opacity: 1;
+      translate: 0 0;
+  }
+}
+
+
+/* =====================================
+ FLEX CONTAINER
+===================================== */
+#topnav .tn-full {
+  position: absolute;
+  inset: 0;
+
   display: flex;
   align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  height: auto;
+
+  gap: 10px;
+  padding: 0 14px;
+}
+
+
+/* =====================================
+ NAVIGATION CARDS
+===================================== */
+
+#topnav .tn-card {
+
+  height: 65%;
+  align-self: center;
+  flex: 1;
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  overflow: hidden;
+  position: relative;
+
+  padding: 2px 8px;
+  border-radius: 999px;
+
+  color: #000;
   text-decoration: none;
-  color: inherit;
-  cursor: pointer;
-  transition: opacity 0.25s ease;
+
+  font-family: Bungee, sans-serif;
+  cursor: none;
+
+  transition:
+      flex 0.6s ease-in-out,
+      background-color 0.2s ease,
+      color 0.3s ease,
+      border-radius 0.6s ease,
+      scale 0.6s ease;
 }
 
-.tn-projects:hover {
-  opacity: 0.6;
+
+/* =====================================
+ INDIVIDUAL COLORS
+===================================== */
+
+#topnav .tn-docs {
+  background-color: #4fd1fce8;
+  opacity: 0;
+  animation: cardEnter 0.5s ease 4.85s forwards;
 }
 
+#topnav .tn-projects {
+  background-color: #fdea3b;
+  opacity: 0;
+  animation: cardEnter 0.5s ease 5.05s forwards;
+}
+
+#topnav .tn-about {
+  background-color: #fdb2fb;
+  opacity: 0;
+  animation: cardEnter 0.5s ease 5.25s forwards;
+}
+
+#topnav .tn-skills {
+  background-color: #7f0b9f;
+  opacity: 0;
+  color: white;
+  animation: cardEnter 0.5s ease 5.45s forwards;
+}
+
+#topnav .tn-experience {
+  background-color: #ef6824;
+  opacity: 0;
+  color: white;
+  animation: cardEnter 0.5s ease 5.65s forwards;
+}
+
+#topnav .tn-contact {
+  background-color: #ff9100;
+  opacity: 0;
+  animation: cardEnter 0.5s ease 5.85s forwards;
+}
+
+
+/* =====================================
+ CARD ENTRANCE
+===================================== */
+
+@keyframes cardEnter {
+  from {
+      opacity: 0;
+      filter: blur(4px);
+  }
+
+  to {
+      opacity: 1;
+      filter: blur(0);
+  }
+}
+
+
+/* =====================================
+ CARD LABELS
+===================================== */
+
+#topnav .tn-card span {
+  font-family: Bungee, sans-serif;
+  font-size: 0.5rem;
+  white-space: nowrap;
+  line-height: 1.1;
+}
+
+#topnav .tn-card small {
+  opacity: 0;
+
+  font-family: Arial, sans-serif;
+  font-size: 0.4rem;
+
+  white-space: nowrap;
+
+  transition: opacity 0.4s ease;
+}
+
+/* =====================================
+ FLEX HOVER EXPANSION
+===================================== */
+
+#topnav .tn-full:hover .tn-card:hover {
+  flex: 1.7;
+
+  background-color: rgb(11, 20, 55);
+  color: white;
   
+  scale: 1.01;
+
+  z-index: 2;
+}
+
+#topnav .tn-full:hover .tn-card:hover small {
+  opacity: 1;
+}
+
+
+/* =====================================
+ KEYBOARD ACCESSIBILITY
+===================================== */
+
+#topnav .tn-card:focus-visible {
+  outline: 2px solid #ffdf38;
+  outline-offset: 2px;
+}
+
+
+/* =====================================
+ COMPACT NAVBAR
+===================================== */
+
+#topnav.compact .tn-full {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+
+/* =====================================
+ REDUCED MOTION
+===================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  #topnav,
+  #topnav .tn-card {
+      animation: none;
+      opacity: 1;
+      transition: none;
+  }
+}
