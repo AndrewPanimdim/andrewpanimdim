@@ -135,6 +135,22 @@ main {
   pointer-events: auto;
 }
 
+.tn-projects {
+  text-decoration: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  transition: opacity 0.25s ease;
+}
+
+.tn-projects:hover {
+  opacity: 0.6;
+}
+
+
+
+
 /* =========================
    GITHUB BADGE (top right corner)
    Slides in at the top of the page, slides away when you scroll down.

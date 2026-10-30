@@ -39,3 +39,19 @@
     outline: 2px solid #ffdf38;
     outline-offset: 2px;
   }
+
+  /* Projects button */
+.tn-projects {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: opacity 0.25s ease;
+}
+
+.tn-projects:hover {
+  opacity: 0.6;
+}
+
+  

@@ -3,10 +3,20 @@ import './topnav-docs.css'
 export function initTopNav(): () => void {
   // BASE_URL keeps the link working on GitHub Pages (/andrewpanimdim/) and Vercel (/)
   const docsUrl = `${import.meta.env.BASE_URL}docs.html`
+  
+  // ---------- PROJECTS BUTTON ----------
+
+  const projectsLink = document.createElement('a')
+  projectsLink.href = '/projects.html'
+  projectsLink.textContent = 'Projects'
+  projectsLink.className = 'tn-projects'
+
 
   // Create the navbar
   const nav = document.createElement('nav')
   nav.id = 'topnav'
+  
+  nav.appendChild(projectsLink)
 
   nav.innerHTML = `
     <div class="tn-full">
