@@ -37,7 +37,7 @@ export function initTopNav(): () => void {
        -->
     </div>
 
-    <div class="tn-mini">AP</div>
+    <div class="tn-mini"></div>
   `
 
   document.body.prepend(nav)
