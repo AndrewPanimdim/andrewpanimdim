@@ -81,6 +81,11 @@ main {
    TOP NAVIGATION
    ========================= */
 
+
+/* =====================================
+   TOP NAVIGATION - APPLE GLASS STYLE
+===================================== */
+
 #topnav {
   position: fixed;
   top: 15px;
@@ -88,43 +93,140 @@ main {
   transform: translateX(-50%);
   width: min(92vw, 600px);
   height: 50px;
-  border-radius: 30px;
-  background: rgba(20, 20, 20, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: #fff;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
+  color: #fff;
+  background: rgba(35, 35, 35, 0.55);
+
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 30px;
+
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.25),
+    inset 0 1px 1px rgba(255, 255, 255, 0.18),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.05);
+
   overflow: hidden;
+  isolation: isolate;
   z-index: 1000;
-  transition: width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  transition:
+    width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.3s ease,
+    box-shadow 0.3s ease;
+
   animation: slidedownnav 1s ease-in-out;
 }
 
+/* Glass reflection */
+#topnav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12),
+    transparent 45%,
+    rgba(255, 255, 255, 0.025)
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Compact state */
 #topnav.compact {
   width: 120px;
 }
 
-#topnav .tn-full,
-#topnav .tn-mini {
-  position: absolute;
-  white-space: nowrap;
-  transition: opacity 0.3s ease;
-}
-
+/* Full navigation */
 #topnav .tn-full {
   position: absolute;
   inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+
+  padding: 0 10px;
+  white-space: nowrap;
+
+  transition: opacity 0.3s ease;
 }
 
+/* Navigation links */
+#topnav .tn-card {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 72%;
+  padding: 0 10px;
+
+  color: rgba(255, 255, 255, 0.82);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 22px;
+
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+
+  text-decoration: none;
+  cursor: pointer;
+
+  transition:
+    background 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+
+/* Hover */
+#topnav .tn-card:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Active link */
+#topnav .tn-card.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+/* Hide old sublabels */
+#topnav .tn-card small {
+  display: none;
+}
+
+/* Compact navigation label */
 #topnav .tn-mini {
+  position: absolute;
+  white-space: nowrap;
+
   opacity: 0;
   pointer-events: none;
-  font-weight: 700;
-  letter-spacing: 0.1em;
+
+  color: #fff;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+
+  transition: opacity 0.3s ease;
 }
 
+/* Compact/full visibility */
 #topnav.compact .tn-full {
   opacity: 0;
   pointer-events: none;
@@ -135,21 +237,23 @@ main {
   pointer-events: auto;
 }
 
-.tn-projects {
-  text-decoration: none;
-  color: inherit;
-  font-family: inherit;
-  font-size: inherit;
-  cursor: pointer;
-  transition: opacity 0.25s ease;
+/* Keyboard accessibility */
+#topnav .tn-card:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+  outline-offset: -2px;
 }
 
-.tn-projects:hover {
-  opacity: 0.6;
+/* Entrance animation */
+@keyframes slidedownnav {
+  from {
+    opacity: 0;
+    translate: 0 -20px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
 }
-
-
-
 
 /* =========================
    GITHUB BADGE (top right corner)

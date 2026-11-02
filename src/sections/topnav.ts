@@ -1,5 +1,5 @@
 
-import './topnav-docs.css'
+
 
 export function initTopNav(): () => void {
   const base = import.meta.env.BASE_URL
