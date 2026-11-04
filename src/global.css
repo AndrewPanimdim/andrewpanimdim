@@ -92,8 +92,8 @@ main {
   top: 15px;
   left: 50%;
   transform: translateX(-50%);
-  width: min(92vw, 40%);
-  height: 50px;
+  width: min(92vw, 31%);
+  height: 6.3vh;
 
   display: flex;
   align-items: center;
@@ -118,8 +118,8 @@ main {
 
   transition:
     width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
-    background 0.3s ease,
-    box-shadow 0.3s ease;
+    background 0.3s ease-in-out,
+    box-shadow 0.3s ease-in-out;
 
   animation: slidedownnav 1s ease-in-out;
 }
@@ -164,36 +164,62 @@ main {
   padding: 0 10px;
   white-space: nowrap;
 
-  transition: opacity 0.2s ease;
+  transition: opacity 0.1s ease;
 }
 
 /* Navigation links */
+/* Navigation links */
 #topnav .tn-card {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-  height: 72%;
-  padding: 0 10px;
+    height: 72%;
+    padding: 0 10px;
 
-  color: rgba(255, 255, 255, 0.82);
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 22px;
+    color: rgba(255, 255, 255, 0.82);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 22px;
 
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.01em;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: clamp(9px, 1.2vw, 12px);
+    font-weight: 500;
+    letter-spacing: 0.01em;
 
-  text-decoration: none;
+    text-decoration: none;
 
-  transition:
-    background 0.25s ease,
-    border-color 0.25s ease,
-    color 0.25s ease;
+    opacity: 0;
+    animation: navButtonPop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+
+    transition:
+        background 0.25s ease-in-out,
+        border-color 0.25s ease-in-out,
+        color 0.25s ease-in-out;
 }
+
+/* Staggered entrance */
+#topnav .tn-card:nth-child(1) {
+    animation-delay: 0.7s;
+}
+
+#topnav .tn-card:nth-child(2) {
+    animation-delay: 0.9s;
+}
+
+#topnav .tn-card:nth-child(3) {
+    animation-delay: 1.1s;
+}
+
+#topnav .tn-card:nth-child(4) {
+    animation-delay: 1.3s;
+}
+
+#topnav .tn-card:nth-child(5) {
+    animation-delay: 1.5s;
+}
+
 
 /* Hover */
 #topnav .tn-card:hover {
@@ -260,6 +286,10 @@ main {
   }
 }
 
+
+
+
+
 /* =========================
    GITHUB BADGE (top right corner)
    Slides in at the top of the page, slides away when you scroll down.
@@ -325,7 +355,7 @@ main {
    hover: an underline draws itself from left to right */
 .gh-name {
   padding-bottom: 3px;
-  font-size: 0.95rem;
+  font-size: clamp(0.7rem, 1.2vw, 0.87rem);
   font-weight: 600;
   letter-spacing: 0.01em;
   line-height: 1;
@@ -733,6 +763,18 @@ main {
   50% {
     transform: scale(1.35);
   }
+}
+
+@keyframes navButtonPop {
+    from {
+        opacity: 0;
+        transform: scale(0.6) translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 

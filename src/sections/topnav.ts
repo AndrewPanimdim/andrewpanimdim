@@ -9,32 +9,23 @@ export function initTopNav(): () => void {
 
   nav.innerHTML = `
     <div class="tn-full">
-
-      <a class="tn-card tn-docs" href="${base}docs.html">
-        <span>DOCS</span>
+    
+      <a class="tn-card tn-about" href="${base}">
+        <span>ABOUT</span>
       </a>
 
       <a class="tn-card tn-projects" href="${base}projects.html">
         <span>PROJECTS</span>
       </a>
 
-      <a class="tn-card tn-about" href="#about">
-        <span>ABOUT</span>
-      </a>
-
-      <a class="tn-card tn-skills" href="#skills">
-        <span>SKILLS</span>
-      </a>
-
       <a class="tn-card tn-experience" href="#experience">
         <span>EXPERIENCE</span>
       </a>
-  
-      <!--
-      <a class="tn-card tn-contact" href="#contact">
-        <span>CONTACT</span>
+
+      <a class="tn-card tn-docs" href="${base}docs.html">
+        <span>DOCS</span>
       </a>
-       -->
+  
     </div>
 
     <div class="tn-mini"></div>
