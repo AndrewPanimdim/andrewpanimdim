@@ -1,5 +1,5 @@
 import './global.css'
-import './docs.css'
+import './css/docs.css'
 import { initCurserTrack } from './sections/cursortrack.ts'
 import { fetchJson } from './api.ts'
 

@@ -1,0 +1,30 @@
+
+/* =========================
+   PROJECTS PAGE
+========================= */
+
+.projects-page {
+    min-height: 100vh;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background: #080808;
+    color: #fff;
+
+    text-align: center;
+}
+
+.projects-page h1 {
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 600;
+}
+
+.projects-page p {
+    margin-top: 12px;
+    color: #888;
+    font-size: 1.2rem;
+}
