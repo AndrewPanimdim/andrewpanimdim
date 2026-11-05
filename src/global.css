@@ -1,863 +1,1123 @@
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Bungee&display=swap');
 
 * {
+
   margin: 0;
+
   padding: 0;
+
   box-sizing: border-box;
+
 }
 
 body {
+
   font-family: 'Barlow Condensed', sans-serif;
+
   background-color: #070707;
+
   color: #fff;
+
   cursor: none;
+
   overflow-x: hidden;
+
 }
 
-
 main {
+
   min-height: 100vh;
+
   display: grid;
+
   place-items: center;
+
   position: relative;
+
   z-index: 1;
+
 }
 
 #hello {
+
   position: absolute;
+
   top: 30%;
+
   font-size: clamp(5.2rem, calc(3.3rem + 0.5vw), 0.2rem);
+
 }
 
 #aboutme {
+
   position: absolute;
+
   top: 45%;
+
   font-size: clamp(1.2rem, calc(4.3rem + 1vw), 1.2rem);
+
   animation: slidetotop 3s ease-in-out;
+
   color: #767575;
+
 }
 
 #aboutme.slide-out {
+
   animation: fadefrombottom 0.6s ease-out reverse both;
+
 }
 
 #aboutme.slide-in {
+
   animation: fadefrombottom 0.8s ease-out both;
+
 }
 
 #float {
+
   width: 120px;
+
   height: 120px;
+
   display: grid;
+
   place-items: center;
+
   cursor: grab;
+
   user-select: none;
+
   position: absolute;
+
   top: 80%;
+
   left: 10%;
+
   display: none;
+
 }
 
 #float.grabbed {
+
   cursor: grabbing;
+
 }
 
 #cursertrack {
+
   position: fixed;
+
   top: 0;
+
   left: 0;
+
   width: 15px;
+
   height: 21px;
+
   background: transparent;
+
   pointer-events: none;
+
   z-index: 99999;
 
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 38'%3E%3Cpath d='M5 4 Q4 2 7 3 L27 22 Q30 26 25 27 L17 28 L13 35 Q11 38 9 34 L4 6 Q3 4 5 4 Z' fill='black' stroke='white' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E");
 
   background-repeat: no-repeat;
+
   background-size: contain;
+
 }
-
-/* =========================
-   TOP NAVIGATION
-   ========================= */
-
-
-/* =====================================
-   TOP NAVIGATION - APPLE GLASS STYLE
-===================================== */
-
-#topnav {
-  position: fixed;
-  top: 15px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: min(92vw, 31%);
-  height: 6.3vh;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #fff;
-  background: rgba(35, 35, 35, 0.72);
-
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 30px;
-
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  isolation: isolate;
-
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.25),
-    inset 0 1px 1px rgba(255, 255, 255, 0.18),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.05);
-
-  z-index: 1000;
-
-  transition:
-    width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
-    background 0.3s ease-in-out,
-    box-shadow 0.3s ease-in-out;
-
-  animation: slidedownnav 1s ease-in-out;
-}
-
-#topnav,
-#topnav * {
-  cursor: none !important;
-}
-
-
-/* Glass reflection */
-#topnav::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 255, 255, 0.16),
-    transparent 45%,
-    rgba(255, 255, 255, 0.025)
-  );
-  pointer-events: none;
-  z-index: -1;
-}
-
-/* Compact state */
-#topnav.compact {
-  width: 120px;
-}
-
-/* Full navigation */
-#topnav .tn-full {
-  position: absolute;
-  inset: 0;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 3px;
-
-  padding: 0 10px;
-  white-space: nowrap;
-
-  transition: opacity 0.1s ease;
-}
-
-/* Navigation links */
-/* Navigation links */
-#topnav .tn-card {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    height: 72%;
-    padding: 0 10px;
-
-    color: rgba(255, 255, 255, 0.82);
-    background: transparent;
-    border: 1px solid transparent;
-    border-radius: 22px;
-
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    font-size: clamp(9px, 1.2vw, 12px);
-    font-weight: 500;
-    letter-spacing: 0.01em;
-
-    text-decoration: none;
-
-    opacity: 0;
-    animation: navButtonPop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-
-    transition:
-        background 0.25s ease-in-out,
-        border-color 0.25s ease-in-out,
-        color 0.25s ease-in-out;
-}
-
-/* Staggered entrance */
-#topnav .tn-card:nth-child(1) {
-    animation-delay: 0.7s;
-}
-
-#topnav .tn-card:nth-child(2) {
-    animation-delay: 0.9s;
-}
-
-#topnav .tn-card:nth-child(3) {
-    animation-delay: 1.1s;
-}
-
-#topnav .tn-card:nth-child(4) {
-    animation-delay: 1.3s;
-}
-
-#topnav .tn-card:nth-child(5) {
-    animation-delay: 1.5s;
-}
-
-
-/* Hover */
-#topnav .tn-card:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.12);
-}
-
-/* Active link */
-#topnav .tn-card.active {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.12);
-}
-
-/* Hide old sublabels */
-#topnav .tn-card small {
-  display: none;
-}
-
-/* Compact navigation label */
-#topnav .tn-mini {
-  position: absolute;
-  white-space: nowrap;
-
-  opacity: 0;
-  pointer-events: none;
-
-  color: #fff;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-
-  transition: opacity 0.3s ease;
-}
-
-/* Compact/full visibility */
-#topnav.compact .tn-full {
-  opacity: 0;
-  pointer-events: none;
-}
-
-#topnav.compact .tn-mini {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Keyboard accessibility */
-#topnav .tn-card:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.8);
-  outline-offset: -2px;
-}
-
-/* Entrance animation */
-@keyframes slidedownnav {
-  from {
-    opacity: 0;
-    translate: 0 -20px;
-  }
-  to {
-    opacity: 1;
-    translate: 0 0;
-  }
-}
-
-
-
 
 
 /* =========================
+
    GITHUB BADGE (top right corner)
+
    Slides in at the top of the page, slides away when you scroll down.
+
    Built by githubbadge.ts
+
    ========================= */
 
 .gh-badge {
+
   position: fixed;
+
   top: 3%;
+
   right: 2%;
+
   z-index: 1001;
 
   display: inline-flex;
+
   align-items: center;
+
   gap: 8px;
 
   color: #fff;
+
   text-decoration: none;
+
   cursor: none;
+
   -webkit-tap-highlight-color: transparent;
 
   opacity: 1;
+
   transform: translateX(0);
+
   visibility: visible;
+
   transition:
+
     transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
+
     opacity 0.4s ease,
+
     visibility 0s linear 0s;
+
 }
 
 /* hidden state: pushed to the right and faded out */
+
 .gh-badge.is-hidden {
+
   opacity: 0;
+
   transform: translateX(48px);
+
   pointer-events: none;
+
   visibility: hidden;
+
   /* wait for the fade before switching visibility off */
+
   transition:
+
     transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+
     opacity 0.3s ease,
+
     visibility 0s linear 0.5s;
+
 }
 
 /* GitHub icon: stays the same on hover */
+
 .gh-icon-box {
+
   position: relative;
+
   display: inline-block;
+
   flex-shrink: 0;
+
   width: 22px;
+
   height: 22px;
+
 }
 
 .gh-github-icon {
+
   position: absolute;
+
   inset: 0;
+
   display: block;
+
   width: 100%;
+
   height: 100%;
+
   transform: scale(0.8);
+
 }
 
 /* "AndrewPanimdim/practiceportfolio"
+
    hover: an underline draws itself from left to right */
+
 .gh-name {
+
   padding-bottom: 3px;
+
   font-size: clamp(0.7rem, 1.2vw, 0.87rem);
+
   font-weight: 600;
+
   letter-spacing: 0.01em;
+
   line-height: 1;
+
   white-space: nowrap;
+
   color: #fff;
 
   background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 0 1px;
+
   transition: background-size 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+
 }
 
 .gh-badge:hover .gh-name {
+
   background-size: 100% 1px;
+
 }
 
 /* star + live count, in grey */
+
 .gh-stars {
+
   display: inline-flex;
+
   align-items: center;
+
   gap: 5px;
+
   color: #8b8b8b;
+
   font-size: 0.85rem;
+
   font-weight: 600;
+
   line-height: 1;
+
   transition: color 0.3s ease;
+
 }
 
 .gh-star-count {
+
   font-variant-numeric: tabular-nums;
+
   min-width: 1ch;
+
 }
 
 /* the star and the little stars that blink around it */
+
 .gh-star-wrap {
+
   position: relative;
+
   display: inline-block;
+
   flex-shrink: 0;
+
   width: 12px;
+
   height: 12px;
+
 }
 
 .gh-stars-glyph {
+
   position: absolute;
+
   inset: 0;
+
   display: block;
+
   width: 100%;
+
   height: 100%;
+
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+
 }
 
 /* hover: the star turns two-tone yellow (light left, orange right) and the count brightens */
+
 .gh-badge:hover .gh-stars {
+
   color: #fff;
+
 }
 
 .gh-badge:hover .gh-stars-glyph {
+
   fill: url(#gh-star-split);
+
   transform: scale(1.2);
+
 }
 
 /* little stars: invisible until hover, then they blink one after another */
+
 .gh-spark {
+
   position: absolute;
+
   width: 8px;
+
   height: 8px;
+
   opacity: 0;
+
   pointer-events: none;
+
 }
 
 .gh-spark.s1 { top: -8px;    left: -5px;  fill: #ffee90; }
+
 .gh-spark.s2 { top: -9px;    right: -4px; fill: #ffa21f; width: 7px; height: 7px; }
+
 .gh-spark.s3 { bottom: -8px; right: -5px; fill: #ffd92f; width: 7px; height: 7px; }
+
 .gh-spark.s4 { bottom: -4px; left: -9px;  fill: #ffee90; width: 6px; height: 6px; }
 
 .gh-badge:hover .gh-spark {
+
   animation: gh-blink 0.9s ease-in-out infinite;
+
 }
 
 .gh-badge:hover .gh-spark.s2 { animation-delay: 0.25s; }
+
 .gh-badge:hover .gh-spark.s3 { animation-delay: 0.5s; }
+
 .gh-badge:hover .gh-spark.s4 { animation-delay: 0.7s; }
 
 @keyframes gh-blink {
+
   0%,
+
   100% {
+
     opacity: 0;
+
     transform: scale(0.2);
+
   }
 
   50% {
+
     opacity: 1;
+
     transform: scale(1);
+
   }
+
 }
 
 .gh-badge:focus-visible {
+
   outline: 2px solid #ffdf38;
+
   outline-offset: 6px;
+
   border-radius: 8px;
+
 }
 
 /* very small screens: slightly smaller text, then drop the name */
+
 @media (max-width: 480px) {
+
   .gh-name {
+
     font-size: 0.85rem;
+
   }
+
 }
 
 @media (max-width: 360px) {
+
   .gh-name {
+
     display: none;
+
   }
+
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .gh-badge,
+
   .gh-badge.is-hidden {
+
     transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+
     transform: none;
+
   }
 
   .gh-badge:hover .gh-spark {
+
     animation: none;
+
     opacity: 1;
+
   }
+
 }
 
 /* =========================
+
    MORE ABOUT ME
+
    Desktop = collage, tablet = 2 columns, phone = 1 column.
+
    (the tablet and phone rules are at the very bottom of this file)
+
    ========================= */
 
 #moreAM {
+
   /* the old fixed 80px gap, now it shrinks on smaller screens */
+
   --am-offset: clamp(24px, 4vw, 80px);
 
   position: absolute;
+
   top: 100%;
+
   left: 0;
+
   right: 0;
+
   margin-inline: auto;
+
   width: 70%;
+
   /* height follows width, so the percentage tops below stay
+
      proportional at every desktop size (replaces height: 100%) */
+
   aspect-ratio: 5 / 4;
+
   display: grid;
+
   grid-template-columns: 1.25fr 1fr;
+
   gap: 24px;
+
   align-items: start;
+
 }
 
 .am-card {
+
   position: absolute;
+
   padding: clamp(8px, 1vw, 12px);
+
   border-radius: clamp(18px, 2vw, 28px);
+
   background: rgba(255, 255, 255, 0.06);
+
   border: 1px solid rgba(255, 255, 255, 0.15);
 
   opacity: 0;
+
   transform: translateY(40px);
+
   transition:
+
     opacity 1s ease-out,
+
     transform 2s cubic-bezier(0.2, 0.8, 0.2, 1);
+
   will-change: opacity, transform;
+
 }
 
 .am-card.visible {
+
   opacity: 1;
+
   transform: translateY(0);
+
 }
 
 /* A's animation: slide in from the left */
+
 #am-a {
+
   top: 0;
+
   left: 0%;
+
   width: 62%;
+
   transform: translateX(-120px);
+
   transition:
+
     opacity 0.8s ease-out,
+
     transform 3s cubic-bezier(0.2, 0.8, 0.2, 1);
+
 }
 
 #am-a.visible,
+
 #am-d.visible,
+
 #am-c.visible, 
+
 #am-b.visible {
+
   opacity: 1;
+
   transform: translateX(0);
+
 }
 
 /* B sits a bit lower than A for a staggered look; use 0 to line them up */
+
 #am-b {
+
   top: -5%;
+
   width: 35%;
+
   margin-top: var(--am-offset);
+
   right: 0%;
+
   transform: translateX(120px);
+
 }
 
 #am-c {
+
   top: 30%;
+
   width: 35%;
+
   margin-top: var(--am-offset);
+
   right: 0%;
+
   transform: translateX(120px);
 
   transition:
+
     opacity 1s ease-out,
+
     transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+
 }
 
 #am-d {
+
   top: 45%;
+
   left: 0%;
+
   width: 30%;
+
   margin-top: var(--am-offset);
 
   transform: translateX(-120px);
+
   transition:
+
     opacity 0.8s ease-out,
+
     transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+
 }
 
 #am-e {
+
   top: 45%;
+
   left: 32%;
+
   width: 30%;
+
   margin-top: var(--am-offset);
+
 }
 
 /* Title + tech stack under each GIF: kept small so the GIF stays the star */
+
 .am-info {
+
   display: flex;
+
   flex-wrap: wrap;
+
   align-items: center;
+
   gap: 6px 10px;
+
   padding: 0 4px 2px;
+
 }
 
 .am-card .am-info h2 {
+
   margin: 0;
+
   font-size: clamp(0.95rem, 1.05vw, 1.1rem);
+
   font-weight: 600;
+
   letter-spacing: 0.02em;
+
   color: rgba(255, 255, 255, 0.9);
+
 }
 
 .am-stack {
+
   display: flex;
+
   flex-wrap: wrap;
+
   gap: 4px 6px;
+
   list-style: none;
+
 }
 
 .am-stack li {
+
   padding: 3px 8px;
+
   border: 1px solid rgba(255, 255, 255, 0.14);
+
   border-radius: 999px;
+
   color: #8f8f8f;
+
   font-size: clamp(0.68rem, 0.75vw, 0.8rem);
+
   line-height: 1;
+
   white-space: nowrap;
+
 }
 
 .am-media {
+
   margin-bottom: clamp(8px, 0.8vw, 12px);
+
   border-radius: 18px;
+
   overflow: hidden;
+
   line-height: 0;
+
 }
 
 .am-media img {
+
   display: block;
+
   width: 100%;
+
   height: auto;
+
   user-select: none;
+
 }
 
 /* "See more" button under the cards */
+
 .am-more {
+
   grid-column: 1 / -1;
+
   justify-self: center;
+
   display: inline-flex;
+
   align-items: center;
+
   gap: 12px;
+
   padding: 6px 26px;
+
   border-radius: 999px;
+
   color: #fff;
+
   text-decoration: none;
+
   font-size: clamp(1.2rem, 1.6vw, 1.6rem);
+
   cursor: none;
+
   position: absolute;
+
   top: 110%;
+
 }
 
 .am-more:hover {
+
   background: rgba(255, 255, 255, 0.14);
+
 }
 
 .am-more-arrow {
+
   display: inline-block;
+
   transition: transform 0.3s ease;
+
 }
 
 .am-more:hover .am-more-arrow {
+
   transform: translateX(6px);
+
 }
 
 /* =========================
+
    OTHER ELEMENTS
+
    ========================= */
 
 #weight {
+
   position: absolute;
+
   top: 400%;
+
 }
 
 .liquid-glass {
+
   position: relative;
+
   border-radius: 28px;
+
   overflow: hidden;
 
   filter: drop-shadow(-8px -10px 46px rgba(0, 0, 0, 0.35));
 
   background: rgba(255, 255, 255, 0.06);
+
   border: 1px solid rgba(255, 255, 255, 0.15);
 
   -webkit-backdrop-filter: blur(12px);
+
   backdrop-filter: blur(12px);
+
 }
 
 .particles {
+
   position: fixed;
+
   inset: 0;
+
   z-index: 0;
+
   overflow: hidden;
+
   pointer-events: none;
+
 }
 
 .particle {
+
   position: absolute;
+
   top: 50%;
+
   left: 50%;
+
   width: 6px;
+
   height: 6px;
+
   margin: -3px 0 0 -3px;
+
   border-radius: 50%;
+
   background: #9963b7;
+
   opacity: 0.35;
+
   transform: scale(0);
+
 }
 
 /* =========================
+
    ANIMATIONS
+
    ========================= */
 
 @keyframes slidefromleft {
+
   from {
+
     transform: translateX(-500%);
+
   }
 
   to {
+
     transform: translateX(0);
+
   }
+
 }
 
 @keyframes fadefrombottom {
+
   from {
+
     transform: translateY(0);
+
     opacity: 0;
+
   }
 
   to {
+
     transform: translateY(50%);
+
     opacity: 1;
+
   }
+
 }
 
 @keyframes fadein {
+
   from {
+
     opacity: 0;
+
   }
 
   to {
+
     opacity: 1;
+
   }
+
 }
 
 @keyframes slidedownnav {
+
   from {
+
     top: -50px;
+
   }
 
   to {
+
     top: 15px;
+
   }
+
 }
 
 @keyframes tn-twinkle {
+
   0%,
+
   100% {
+
     transform: scale(1);
+
   }
 
   50% {
+
     transform: scale(1.35);
+
   }
+
 }
 
 @keyframes navButtonPop {
+
     from {
+
         opacity: 0;
+
         transform: scale(0.6) translateY(-10px);
+
     }
 
     to {
+
         opacity: 1;
+
         transform: scale(1) translateY(0);
+
     }
+
 }
 
-
 /* =========================
+
    MOBILE
+
    ========================= */
 
 @media (max-width: 768px) {
+
   #hello {
+
     font-size: clamp(3.2rem, calc(3.3rem + 0.5vw), 0.2rem);
+
   }
 
   #aboutme {
+
     font-size: clamp(1.2rem, calc(1.3rem + 0.5vw), 0.2rem);
+
     top: 37%;
+
   }
 
   #cursertrack,
+
   #topnav {
+
     display: none;
+
   }
-
-
-
-
 
 }
 
-
 /* =========================
+
    MORE ABOUT ME: TABLET AND PHONE
+
    Keep this at the END of the file so it overrides the desktop rules.
+
    ========================= */
 
 /* ---- Tablet and small laptops: 2 columns, cards stack in normal flow ---- */
+
 @media (max-width: 1024px) {
+
   #moreAM {
+
     width: min(92%, 760px);
+
     aspect-ratio: auto; /* height now comes from the cards */
+
     grid-template-columns: 1fr 1fr;
+
     gap: 16px;
+
     align-items: stretch;
+
     padding-bottom: 72px; /* breathing room at the bottom of the page */
+
   }
 
   /* every card (and the See more button) goes back into normal flow */
+
   #moreAM .am-card {
+
     position: relative;
+
     inset: auto;
+
     width: auto;
+
     margin-top: 0;
+
   }
 
   /* on narrow screens every card fades up (a 120px sideways start
+
      would poke past the screen edge) */
+
   #moreAM .am-card:not(.visible) {
+
     transform: translateY(40px);
+
   }
 
   #moreAM #am-a {
+
     grid-column: 1 / -1; /* A gets a full-width row */
+
   }
+
 }
 
 /* ---- Phone: 1 column ---- */
+
 @media (max-width: 640px) {
+
   #moreAM {
+
     width: calc(100% - 32px); /* 16px gutter each side */
+
     grid-template-columns: 1fr;
+
     gap: 14px;
+
     padding-bottom: 56px;
+
   }
 
   #moreAM #am-a {
+
     grid-column: auto;
+
   }
 
   .am-media {
+
     margin-bottom: 8px;
+
   }
 
   /* WANT GIFs ONLY on phones (no text at all)? Take the comment marks off these two rules:
+
   .am-info { display: none; }
+
   .am-media { margin-bottom: 0; }
+
   */
+
+}
+
+
+/* =====================================================
+   TOP NAVIGATION: PLAY INTRO ONLY ON THE FIRST HOME VISIT
+   Requires the topnav-intro / topnav-no-intro classes
+   added by topnav.ts.
+   ===================================================== */
+
+/* First homepage visit: animate the navbar and its links. */
+.topnav-intro #topnav {
+  animation: slidedownnav 1s ease-in-out both;
+}
+
+.topnav-intro #topnav .tn-card {
+  opacity: 0;
+  animation-name: navButtonPop;
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  animation-fill-mode: forwards;
+}
+
+/* Every later page visit in the same tab: show everything immediately. */
+.topnav-no-intro #topnav {
+  animation: none !important;
+  opacity: 1;
+  top: 15px;
+}
+
+.topnav-no-intro #topnav .tn-card {
+  animation: none !important;
+  opacity: 1;
+  transform: none;
 }
