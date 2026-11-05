@@ -11,6 +11,7 @@ import { setmoreaboutme} from "./sections/moreAM.ts"
 
 
 
+
 const app = document.querySelector<HTMLDivElement>('#app')
 if (!app) throw new Error('Missing #app element in index.html')
 
@@ -22,8 +23,8 @@ app.innerHTML = `
   
   <div id='float' class='liquid-glass'>float</div>
 
-
   <div id="moreAM"></div>
+
 
   <div id="weight">weight</div>
 </main>

@@ -30,3 +30,185 @@
     color: #888;
     font-size: 1.2rem;
 }
+
+
+
+
+
+#projectShowcase {
+  width: min(90%, 1100px);
+  margin: 0 auto;
+  padding: 100px 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 120px;
+}
+
+/* Individual project card */
+
+.project-card {
+  width: 100%;
+  min-height: 380px;
+
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  align-items: center;
+  gap: 65px;
+
+  opacity: 0;
+  transform: translateY(50px);
+
+  transition:
+    opacity 0.8s ease,
+    transform 0.8s ease;
+}
+
+.project-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Alternate project layout */
+
+.project-card:nth-child(even) {
+  grid-template-columns: 0.9fr 1.1fr;
+}
+
+.project-card:nth-child(even) .project-media {
+  order: 2;
+}
+
+.project-card:nth-child(even) .project-info {
+  order: 1;
+}
+
+/* GIF preview */
+
+.project-media {
+  position: relative;
+  display: block;
+
+  width: 100%;
+  height: 380px;
+
+  overflow: hidden;
+  border-radius: 18px;
+
+  background: #151515;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.project-media img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+  object-fit: cover;
+
+  transition: transform 0.5s ease;
+}
+
+.project-clickable {
+  cursor: pointer;
+}
+
+.project-clickable:hover img {
+  transform: scale(1.05);
+}
+
+.project-open {
+  position: absolute;
+  right: 18px;
+  bottom: 18px;
+
+  padding: 9px 15px;
+  border-radius: 20px;
+
+  background: rgba(20, 20, 20, 0.75);
+  backdrop-filter: blur(12px);
+
+  color: white;
+  font-size: 14px;
+
+  opacity: 0;
+  transform: translateY(8px);
+
+  transition: 0.3s ease;
+}
+
+.project-clickable:hover .project-open {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Project information */
+
+.project-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.project-info h2 {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.1;
+}
+
+.project-description {
+  max-width: 500px;
+
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 1.15rem;
+  line-height: 1.6;
+}
+
+/* Technology chips */
+
+.project-stack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+
+  list-style: none;
+  padding: 0;
+}
+
+.project-stack li {
+  padding: 7px 13px;
+
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+
+  background: rgba(255, 255, 255, 0.06);
+
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Responsive layout */
+
+@media (max-width: 768px) {
+  #projectShowcase {
+    width: 90%;
+    gap: 85px;
+    padding: 60px 0;
+  }
+
+  .project-card,
+  .project-card:nth-child(even) {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+
+  .project-card:nth-child(even) .project-media,
+  .project-card:nth-child(even) .project-info {
+    order: initial;
+  }
+
+  .project-media {
+    height: 280px;
+  }
+}
+
