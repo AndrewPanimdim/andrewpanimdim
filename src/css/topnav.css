@@ -1,15 +1,20 @@
-/* =========================
+
+/* =====================================================
    TOP NAVIGATION
-   ========================= */
+   ===================================================== */
 
 #topnav {
-  position: fixed;
-  top: 15px;
-  left: 50%;
-  transform: translateX(-50%);
+  --nav-height: 52px;
+  --nav-radius: 999px;
 
-  width: min(92vw, 31%);
-  height: 6.3vh;
+  position: fixed;
+  z-index: 1000;
+
+  top: 16px;
+  left: 50%;
+
+  width: min(92vw, 390px);
+  height: var(--nav-height);
 
   display: flex;
   align-items: center;
@@ -17,28 +22,26 @@
 
   color: #fff;
 
-  background: rgba(35, 35, 35, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 30px;
+  background: rgba(28, 28, 30, 0.72);
 
-  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--nav-radius);
+
+  box-shadow:
+    0 8px 30px rgba(0, 0, 0, 0.24),
+    inset 0 1px 1px rgba(255, 255, 255, 0.16);
+
   -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
 
   isolation: isolate;
 
-  box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.25),
-    inset 0 1px 1px rgba(255, 255, 255, 0.18),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.05);
-
-  z-index: 1000;
+  transform: translateX(-50%);
 
   transition:
-    width 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
-    background 0.3s ease-in-out,
-    box-shadow 0.3s ease-in-out;
-
-  animation: slidedownnav 1s ease-in-out;
+    width 380ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    background-color 250ms ease,
+    box-shadow 250ms ease;
 }
 
 #topnav,
@@ -52,25 +55,20 @@
   content: "";
 
   position: absolute;
+  z-index: -1;
+
   inset: 0;
 
   border-radius: inherit;
 
   background: linear-gradient(
     135deg,
-    rgba(255, 255, 255, 0.16),
-    transparent 45%,
+    rgba(255, 255, 255, 0.13),
+    transparent 48%,
     rgba(255, 255, 255, 0.025)
   );
 
   pointer-events: none;
-  z-index: -1;
-}
-
-/* Compact state */
-
-#topnav.compact {
-  width: 120px;
 }
 
 /* Full navigation */
@@ -83,37 +81,37 @@
   align-items: center;
   justify-content: center;
 
-  gap: 3px;
-  padding: 0 10px;
+  gap: 4px;
+  padding: 5px;
 
   white-space: nowrap;
 
-  transition: opacity 0.25s ease;
+  transition:
+    opacity 180ms ease,
+    visibility 180ms ease;
 }
 
-/* Moving active highlight */
+/* Active indicator */
 
 #topnav .tn-indicator {
   position: absolute;
-  top: 14%;
+
+  top: 5px;
   left: 0;
 
   width: 0;
-  height: 72%;
+  height: calc(100% - 10px);
 
-  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 999px;
 
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.14);
 
   pointer-events: none;
-  z-index: 0;
-
-  will-change: transform, width;
 
   transition:
-    transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-    width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    width 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Navigation links */
@@ -122,158 +120,160 @@
   position: relative;
   z-index: 1;
 
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
 
-  display: flex;
+  height: 100%;
+
+  display: inline-flex;
   align-items: center;
   justify-content: center;
 
-  height: 72%;
-  padding: 0 10px;
+  padding: 0 12px;
 
-  color: rgba(255, 255, 255, 0.82);
-
-  background: transparent;
   border: 1px solid transparent;
-  border-radius: 22px;
+  border-radius: 999px;
 
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: clamp(9px, 1.2vw, 12px);
-  font-weight: 500;
-  letter-spacing: 0.01em;
+  color: rgba(255, 255, 255, 0.72);
+  background: transparent;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.045em;
+  line-height: 1;
 
   text-decoration: none;
 
-  opacity: 0;
+  opacity: 1;
 
-  animation: navButtonPop 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-
-  transition:
-    color 0.3s ease-in-out;
+  transition: color 180ms ease;
 }
 
-/* Staggered entrance */
-
-#topnav .tn-card:nth-child(2) {
-  animation-delay: 0.7s;
-}
-
-#topnav .tn-card:nth-child(3) {
-  animation-delay: 0.9s;
-}
-
-#topnav .tn-card:nth-child(4) {
-  animation-delay: 1.1s;
-}
-
-#topnav .tn-card:nth-child(5) {
-  animation-delay: 1.3s;
-}
-
-/* Active link */
-
+#topnav .tn-card:hover,
 #topnav .tn-card.active {
   color: #fff;
-}
-
-/* Hover */
-
-#topnav .tn-card:hover {
-  color: #fff;
-}
-
-/* Hide old sublabels */
-
-#topnav .tn-card small {
-  display: none;
-}
-
-/* Compact navigation label */
-
-#topnav .tn-mini {
-  position: absolute;
-  white-space: nowrap;
-
-  opacity: 0;
-  pointer-events: none;
-
-  color: #fff;
-
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-
-  transition: opacity 0.3s ease;
-}
-
-/* Closing: hide buttons quickly */
-
-#topnav.compact .tn-full {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.15s ease;
-}
-
-/* Opening: delay buttons slightly */
-
-#topnav:not(.compact) .tn-full {
-  opacity: 1;
-  pointer-events: auto;
-  transition: opacity 0.25s ease 0.2s;
-}
-
-/* Compact visibility */
-
-#topnav.compact .tn-mini {
-  opacity: 1;
-  pointer-events: auto;
 }
 
 /* Keyboard accessibility */
 
 #topnav .tn-card:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.8);
-  outline-offset: -2px;
+  outline: 2px solid rgba(255, 255, 255, 0.9);
+  outline-offset: -3px;
 }
 
-/* First homepage visit */
+/* Compact label */
+
+#topnav .tn-mini {
+  position: absolute;
+
+  max-width: calc(100% - 24px);
+
+  overflow: hidden;
+
+  color: #fff;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+
+  transition:
+    opacity 160ms ease,
+    visibility 160ms ease;
+}
+
+/* Compact navbar */
+
+#topnav.compact {
+  width: 132px;
+
+  background: rgba(28, 28, 30, 0.82);
+
+  box-shadow:
+    0 8px 28px rgba(0, 0, 0, 0.28),
+    inset 0 1px 1px rgba(255, 255, 255, 0.18);
+}
+
+#topnav.compact .tn-full {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+#topnav.compact .tn-mini {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Entrance animation */
 
 .topnav-intro #topnav {
-  animation: slidedownnav 1s ease-in-out both;
+  animation: topnav-enter 650ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
-
-.topnav-intro #topnav .tn-card {
-  animation-name: navButtonPop;
-  animation-duration: 0.5s;
-  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
-  animation-fill-mode: forwards;
-}
-
-/* Later page visits */
 
 .topnav-no-intro #topnav {
-  animation: none !important;
+  animation: none;
   opacity: 1;
-  top: 15px;
 }
 
-.topnav-no-intro #topnav .tn-card {
-  animation: none !important;
-  opacity: 1;
-  transform: none;
-}
-
-/* Navbar entrance */
-
-@keyframes slidedownnav {
+@keyframes topnav-enter {
   from {
     opacity: 0;
-    translate: 0 -20px;
+    translate: 0 -14px;
   }
 
   to {
     opacity: 1;
     translate: 0 0;
+  }
+}
+
+/* Responsive */
+
+@media (max-width: 640px) {
+  #topnav {
+    top: 12px;
+
+    width: min(94vw, 360px);
+    height: 48px;
+  }
+
+  #topnav .tn-card {
+    padding-inline: 7px;
+    font-size: 10px;
+  }
+
+  #topnav.compact {
+    width: 120px;
+  }
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  #topnav,
+  #topnav *,
+  #topnav::before {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

@@ -1,3 +1,4 @@
+import '../css/projectssection.css'
 
 const GITHUB_USER = 'AndrewPanimdim'
 

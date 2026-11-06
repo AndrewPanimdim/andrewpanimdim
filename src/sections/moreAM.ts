@@ -12,6 +12,7 @@ const GITHUB_USER = 'AndrewPanimdim'
 
 interface Card {
   id: string
+  projectId: string
   title: string
   gif: string
   repo?: string
@@ -19,26 +20,50 @@ interface Card {
 }
 
 const CARDS: Card[] = [
-  { id: 'am-a', title: 'first year college practice', gif: 'a.gif', repo: 'practiceportfolio', stack: ['TypeScript', 'Vite', 'FastAPI'] },
-  { id: 'am-b', title: 'grade 12 practice', gif: 'b.gif', repo: 'portfolio2', stack: ['Tech 1', 'Tech 2'] },
-  { id: 'am-c', title: 'Data Structures and Algorithms Project', gif: 'nroutes.gif', repo: 'nroute', stack: ['Tech 1', 'Tech 2'] },
-  { id: 'am-d', title: 'Project D', gif: 'a.gif', stack: ['Tech 1', 'Tech 2'] },
-  { id: 'am-e', title: 'Project E', gif: 'b.gif', stack: ['Tech 1', 'Tech 2'] },
+  {
+    id: 'am-a',
+    projectId: 'project-a',
+    title: 'first year college practice',
+    gif: 'a.gif',
+    repo: 'practiceportfolio',
+    stack: ['TypeScript', 'Vite', 'FastAPI'],
+  },
+  {
+    id: 'am-b',
+    projectId: 'project-b',
+    title: 'grade 12 practice',
+    gif: 'b.gif',
+    repo: 'portfolio2',
+    stack: ['Tech 1', 'Tech 2'],
+  },
+  {
+    id: 'am-c',
+    projectId: 'project-c',
+    title: 'Data Structures and Algorithms Project',
+    gif: 'nroutes.gif',
+    repo: 'nroute',
+    stack: ['Tech 1', 'Tech 2'],
+  },
+  {
+    id: 'am-d',
+    projectId: 'project-d',
+    title: 'Project D',
+    gif: 'a.gif',
+    stack: ['Tech 1', 'Tech 2'],
+  },
+  {
+    id: 'am-e',
+    projectId: 'project-e',
+    title: 'Project E',
+    gif: 'b.gif',
+    stack: ['Tech 1', 'Tech 2'],
+  },
 ]
 
-// Most chips shown per card
 const MAX_CHIPS = 4
-
-// GitHub cache duration: 1 hour
 const CACHE_MS = 60 * 60 * 1000
-
-// How much of a card must be on screen before it appears
 const SHOW_WHEN_VISIBLE = 0.2
-
-// Ignore the bottom part of the screen
 const BOTTOM_MARGIN = '12%'
-
-// Time before animations reset when the user returns above the section
 const RESET_DELAY = 8000
 
 
@@ -133,41 +158,52 @@ export function setmoreaboutme(): () => void {
     throw new Error('Missing #moreAM element')
   }
 
-  // Guaranteed non-null HTMLElement reference for TypeScript
   const root: HTMLElement = rootElement
-
-  // BASE_URL keeps paths working on GitHub Pages and Vercel
   const base = import.meta.env.BASE_URL
+
+  // =========================
+  // CARD MARKUP
+  // =========================
 
   const cardsHtml = CARDS.map(
     (card) => `
-    <div class="am-card" id="${card.id}">
-      <div class="am-media">
-        <img
-          src="${base}gif/${card.gif}"
-          alt="${card.title}"
-          draggable="false"
-        />
-      </div>
+      <a
+        class="am-card am-project-link"
+        id="${card.id}"
+        href="${base}projects.html#${card.projectId}"
+        aria-label="View ${card.title} project"
+      >
+        <div class="am-media">
+          <img src="${base}gif/${card.gif}" alt="${card.title}" />
 
-      <div class="am-info">
-        <h2>${card.title}</h2>
-        <ul class="am-stack"></ul>
-      </div>
-    </div>`,
+          <span class="am-view-project">
+            View project
+            <span class="am-view-arrow" aria-hidden="true">↗</span>
+          </span>
+        </div>
+
+        <div class="am-info">
+          <h2>${card.title}</h2>
+          <ul class="am-stack"></ul>
+        </div>
+      </a>
+    `,
   ).join('')
 
-  // The "see more" block goes after the cards
   const seeMoreHtml = `
     <a class="am-card am-more" id="am-more" href="${base}projects.html">
       <span>See more</span>
       <span class="am-more-arrow" aria-hidden="true">→</span>
-    </a>`
+    </a>
+  `
 
   root.innerHTML = cardsHtml + seeMoreHtml
 
 
-  // Fill the chips: fallback first, then GitHub's answer replaces it
+  // =========================
+  // GITHUB TECH STACK
+  // =========================
+
   let stopped = false
 
   for (const card of CARDS) {
@@ -201,12 +237,8 @@ export function setmoreaboutme(): () => void {
 
   let resetTimer: ReturnType<typeof setTimeout> | null = null
   let observer: IntersectionObserver
-
-  // Tracks whether the cards have already animated
   let hasPlayed = false
 
-
-  // Observe cards individually
   function observeCards(): void {
     observer = new IntersectionObserver(
       (entries) => {
@@ -225,25 +257,16 @@ export function setmoreaboutme(): () => void {
       },
     )
 
-    cards.forEach((card) => {
-      observer.observe(card)
-    })
+    cards.forEach((card) => observer.observe(card))
   }
 
-
-  // Initial animation
   observeCards()
 
 
-  // Detect when the user scrolls far back up
   function handleScroll(): void {
     const sectionTop = root.getBoundingClientRect().top
-
-    // Only start the countdown when the user is ABOVE the section
-    // This prevents scrolling below the section from triggering a reset
     const scrolledWayBackUp = sectionTop > window.innerHeight
 
-    // Cancel the countdown if the user scrolls down again
     if (!scrolledWayBackUp) {
       if (resetTimer !== null) {
         clearTimeout(resetTimer)
@@ -253,28 +276,17 @@ export function setmoreaboutme(): () => void {
       return
     }
 
-    // Don't reset before the initial animation has played
-    if (!hasPlayed) return
+    if (!hasPlayed || resetTimer !== null) return
 
-    // Prevent multiple countdowns
-    if (resetTimer !== null) return
-
-
-    // Start the 15-second countdown
     resetTimer = setTimeout(() => {
       const stillAboveSection =
         root.getBoundingClientRect().top > window.innerHeight
 
       if (stillAboveSection) {
-        // Remove visible classes to reset all animations
-        cards.forEach((card) => {
-          card.classList.remove('visible')
-        })
+        cards.forEach((card) => card.classList.remove('visible'))
 
-        // Allow the animations to play again
         hasPlayed = false
 
-        // Recreate the observer
         observer.disconnect()
         observeCards()
       }
@@ -283,8 +295,6 @@ export function setmoreaboutme(): () => void {
     }, RESET_DELAY)
   }
 
-
-  // Listen for scrolling
   window.addEventListener('scroll', handleScroll, {
     passive: true,
   })
@@ -298,7 +308,6 @@ export function setmoreaboutme(): () => void {
     stopped = true
 
     observer.disconnect()
-
     window.removeEventListener('scroll', handleScroll)
 
     if (resetTimer !== null) {

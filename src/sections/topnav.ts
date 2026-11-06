@@ -31,18 +31,32 @@ const NAV_SECTIONS: NavSection[] = [
 ]
 
 export function initTopNav(): () => void {
+  // Prevent duplicate navigation instances.
+  document.getElementById('topnav')?.remove()
+
   const nav = document.createElement('nav')
   nav.id = 'topnav'
 
   // Intro animation
-  const hasVisited = sessionStorage.getItem('topnav-visited')
+  let shouldPlayIntro = false
 
-  if (!hasVisited) {
-    document.documentElement.classList.add('topnav-intro')
+  try {
+    shouldPlayIntro =
+      sessionStorage.getItem('topnav-visited') !== 'true'
+
     sessionStorage.setItem('topnav-visited', 'true')
-  } else {
-    document.documentElement.classList.add('topnav-no-intro')
+  } catch {
+    // Storage may be unavailable.
   }
+
+  document.documentElement.classList.remove(
+    'topnav-intro',
+    'topnav-no-intro',
+  )
+
+  document.documentElement.classList.add(
+    shouldPlayIntro ? 'topnav-intro' : 'topnav-no-intro',
+  )
 
   // Generate navigation
   nav.innerHTML = `
@@ -58,7 +72,7 @@ export function initTopNav(): () => void {
           >
             <span>${label}</span>
           </a>
-        `
+        `,
       ).join('')}
     </div>
 
@@ -69,17 +83,21 @@ export function initTopNav(): () => void {
 
   const full = nav.querySelector<HTMLElement>('.tn-full')
   const indicator = nav.querySelector<HTMLElement>('.tn-indicator')
+  const mini = nav.querySelector<HTMLElement>('.tn-mini')
 
   const cards = Array.from(
-    nav.querySelectorAll<HTMLAnchorElement>('.tn-card')
+    nav.querySelectorAll<HTMLAnchorElement>('.tn-card'),
   )
 
   let activeCard: HTMLAnchorElement | null = null
 
   let lastY = window.scrollY
+  let directionTravel = 0
   let waiting = false
+  let destroyed = false
+  let miniTimer: number | undefined
 
-  // Find sections dynamically
+  // Find sections dynamically.
   const getSections = () => {
     return NAV_SECTIONS
       .map((item) => {
@@ -99,33 +117,28 @@ export function initTopNav(): () => void {
         (item): item is NavSection & {
           element: HTMLElement
           top: number
-        } => item !== null
+        } => item !== null,
       )
       .sort((a, b) => a.top - b.top)
   }
 
-  // Position active indicator
+  // Position active indicator.
   const moveIndicator = (card: HTMLAnchorElement) => {
-    if (!indicator) return
+    if (!indicator || nav.classList.contains('compact')) return
+
+    indicator.style.width = `${card.offsetWidth}px`
 
     indicator.style.transform =
       `translateX(${card.offsetLeft}px)`
-
-    indicator.style.width =
-      `${card.offsetWidth}px`
   }
 
-  // Set active navigation
+  // Update active navigation.
   const setActive = (target: string) => {
     const card = cards.find(
-      (item) => item.dataset.section === target
+      (item) => item.dataset.section === target,
     )
 
-    if (!card) return
-
-    if (activeCard === card) {
-      return
-    }
+    if (!card || activeCard === card) return
 
     cards.forEach((item) => {
       item.classList.remove('active')
@@ -137,19 +150,44 @@ export function initTopNav(): () => void {
 
     activeCard = card
 
+    // Smoothly update mini label.
+    if (mini) {
+      window.clearTimeout(miniTimer)
+
+      mini.classList.add('is-changing')
+
+      miniTimer = window.setTimeout(() => {
+        if (destroyed) return
+
+        mini.textContent =
+          card.querySelector('span')?.textContent?.trim() ?? ''
+
+        requestAnimationFrame(() => {
+          if (!destroyed) {
+            mini.classList.remove('is-changing')
+          }
+        })
+      }, 120)
+    }
+
+    // Update indicator.
     requestAnimationFrame(() => {
-      moveIndicator(card)
+      if (!destroyed) {
+        moveIndicator(card)
+      }
     })
   }
 
-  // Detect currently visible section
+  // Detect currently visible section.
   const updateActiveSection = () => {
     const sections = getSections()
 
     if (!sections.length) return
 
     const activationPoint = window.innerHeight * 0.35
-    const currentPosition = window.scrollY + activationPoint
+
+    const currentPosition =
+      window.scrollY + activationPoint
 
     let currentSection = sections[0]
 
@@ -161,7 +199,7 @@ export function initTopNav(): () => void {
       }
     }
 
-    // Activate the last section at page bottom
+    // Activate the last section at page bottom.
     const atBottom =
       window.innerHeight + window.scrollY >=
       document.documentElement.scrollHeight - 2
@@ -173,26 +211,33 @@ export function initTopNav(): () => void {
     setActive(currentSection.target)
   }
 
-  // Scroll to target
+  // Scroll to target.
   const scrollToSection = (target: string) => {
     const section = document.getElementById(target)
 
     if (!section) {
       console.warn(
-        `[TopNav] Target #${target} does not exist.`
+        `[TopNav] Target #${target} does not exist.`,
       )
       return
     }
 
     section.scrollIntoView({
-      behavior: 'smooth',
+      behavior: window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches
+        ? 'auto'
+        : 'smooth',
       block: 'start',
     })
   }
 
-  // Navigation click
+  // Navigation click.
   const onNavClick = (event: MouseEvent) => {
-    const target = event.target as HTMLElement
+    const target = event.target
+
+    if (!(target instanceof Element)) return
+
     const card = target.closest<HTMLAnchorElement>('.tn-card')
 
     if (!card) return
@@ -208,7 +253,27 @@ export function initTopNav(): () => void {
 
   full?.addEventListener('click', onNavClick)
 
-  // Scroll and resize
+  // Reposition indicator after navbar width transition.
+  const onNavTransitionEnd = (event: TransitionEvent) => {
+    if (event.target !== nav) return
+    if (event.propertyName !== 'width') return
+    if (!activeCard) return
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        if (activeCard && !destroyed) {
+          moveIndicator(activeCard)
+        }
+      })
+    })
+  }
+
+  nav.addEventListener(
+    'transitionend',
+    onNavTransitionEnd,
+  )
+
+  // Scroll and resize.
   const onResize = () => {
     updateActiveSection()
 
@@ -217,24 +282,32 @@ export function initTopNav(): () => void {
     }
   }
 
+  // Handle navbar direction and active section.
   const update = () => {
     const y = window.scrollY
     const delta = y - lastY
 
-    // Compact navbar
     if (y < 10) {
       nav.classList.remove('compact')
-    } else if (delta > 4) {
-      nav.classList.add('compact')
-    } else if (delta < -4) {
-      nav.classList.remove('compact')
+      directionTravel = 0
+    } else {
+      directionTravel += delta
+
+      // Collapse after consistent downward movement.
+      if (directionTravel > 14) {
+        nav.classList.add('compact')
+        directionTravel = 0
+      }
+
+      // Expand after consistent upward movement.
+      else if (directionTravel < -18) {
+        nav.classList.remove('compact')
+        directionTravel = 0
+      }
     }
 
-    if (Math.abs(delta) > 4) {
-      lastY = y
-    }
+    lastY = y
 
-    // Update active navigation
     updateActiveSection()
 
     waiting = false
@@ -244,6 +317,7 @@ export function initTopNav(): () => void {
     if (waiting) return
 
     waiting = true
+
     requestAnimationFrame(update)
   }
 
@@ -253,8 +327,10 @@ export function initTopNav(): () => void {
 
   window.addEventListener('resize', onResize)
 
-  // Initial state
+  // Initial state.
   requestAnimationFrame(() => {
+    if (destroyed) return
+
     updateActiveSection()
 
     if (activeCard) {
@@ -262,18 +338,27 @@ export function initTopNav(): () => void {
     }
   })
 
-  // Cleanup
+  // Cleanup.
   return () => {
+    destroyed = true
+
+    window.clearTimeout(miniTimer)
+
     window.removeEventListener('scroll', onScroll)
     window.removeEventListener('resize', onResize)
 
     full?.removeEventListener('click', onNavClick)
 
+    nav.removeEventListener(
+      'transitionend',
+      onNavTransitionEnd,
+    )
+
     nav.remove()
 
     document.documentElement.classList.remove(
       'topnav-intro',
-      'topnav-no-intro'
+      'topnav-no-intro',
     )
   }
 }

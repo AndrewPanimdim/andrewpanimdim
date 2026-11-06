@@ -1,0 +1,224 @@
+
+/* =====================================================
+   ABOUT ME SECTION
+   ===================================================== */
+
+
+   /*
+============================
+about me section
+
+============================
+
+*/
+
+
+#aboutMeSection {
+  position: absolute;
+  top: 110%; 
+  left: 0;
+  right: 0;
+  width: min(100%, 1100px);
+  margin-inline: auto;
+  padding-bottom: 120px;
+}
+
+
+#aboutMeSection h1 {
+  font-size: clamp(2rem, 4vw, 4rem);
+  line-height: 1.1;
+}
+
+
+/* Section heading */
+
+.aboutme-heading {
+  margin-bottom: 42px;
+  max-width: 600px;
+}
+
+.aboutme-eyebrow {
+  display: block;
+
+  margin-bottom: 12px;
+
+  color: #888;
+
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+}
+
+.aboutme-heading h2 {
+  margin: 0;
+
+  color: #fff;
+
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 600;
+  line-height: 1.05;
+}
+
+.aboutme-heading p {
+  margin-top: 16px;
+
+  color: rgba(255, 255, 255, 0.55);
+
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+/* Card layout */
+
+.aboutme-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+/* Individual cards */
+
+.aboutme-card {
+  position: relative;
+
+  min-height: 230px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  padding: clamp(22px, 3vw, 36px);
+
+  overflow: hidden;
+
+  border-radius: 24px;
+
+  background: rgba(255, 255, 255, 0.045);
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  opacity: 0;
+
+  transform: translateY(45px);
+
+  transition:
+    opacity 0.8s ease-out,
+    transform 1s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.3s ease,
+    border-color 0.3s ease;
+
+  will-change: opacity, transform;
+}
+
+/* Reveal animation */
+
+.aboutme-card.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Hover */
+
+.aboutme-card:hover {
+  background: rgba(255, 255, 255, 0.075);
+
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* Card content */
+
+.aboutme-card-eyebrow {
+  margin-bottom: 16px;
+
+  color: #858585;
+
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
+.aboutme-card h3 {
+  margin: 0 0 12px;
+
+  color: #fff;
+
+  font-size: clamp(1.4rem, 2vw, 2rem);
+  font-weight: 600;
+}
+
+.aboutme-card p {
+  max-width: 440px;
+
+  margin: 0;
+
+  color: rgba(255, 255, 255, 0.58);
+
+  font-size: 1rem;
+  line-height: 1.7;
+}
+
+/* Decorative arrow */
+
+.aboutme-card-decoration {
+  position: absolute;
+
+  top: 24px;
+  right: 28px;
+
+  color: rgba(255, 255, 255, 0.3);
+
+  font-size: 1.4rem;
+
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
+}
+
+.aboutme-card:hover .aboutme-card-decoration {
+  transform: translate(4px, -4px);
+  color: #fff;
+}
+
+/* Tablet */
+
+@media (max-width: 1024px) {
+  #aboutMeSection {
+    width: min(92%, 760px);
+  }
+
+  .aboutme-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 640px) {
+  #aboutMeSection {
+    width: calc(100% - 32px);
+  }
+
+  .aboutme-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .aboutme-card {
+    min-height: 200px;
+  }
+
+  .aboutme-heading {
+    margin-bottom: 28px;
+  }
+}
+
+/* Reduced motion */
+
+@media (prefers-reduced-motion: reduce) {
+  .aboutme-card {
+    transition: none;
+    transform: none;
+  }
+}

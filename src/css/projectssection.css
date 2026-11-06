@@ -14,6 +14,7 @@
   grid-template-columns: 1.1fr 0.9fr;
   align-items: center;
   gap: 65px;
+  scroll-margin-top: 150px;
 
   opacity: 0;
   transform: translateY(40px);
