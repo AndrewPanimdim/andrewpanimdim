@@ -53,7 +53,7 @@ main {
 
   top: 28%;
 
-  font-size: clamp(6.2rem, calc(3.3rem + 0.5vw), 0.2rem);
+  font-size: clamp(5.7rem, calc(3.3rem + 0.5vw), 0.2rem);
 
 
 
