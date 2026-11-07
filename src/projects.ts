@@ -4,8 +4,11 @@ import './css/moream.css'
 import './css/projects.css'
 import './css/projectssection.css'
 
+import { initScrollDelay } from "./sections/scrolldelay.ts";
 import { initCurserTrack } from './sections/cursortrack'
 import { setProjectsSection } from './sections/projectssection'
+import { initReturnNav } from './sections/returnnav'
+
 
 const projects = document.querySelector<HTMLElement>('#projects')
 
@@ -17,12 +20,15 @@ projects.innerHTML = `
   <section class="projects-page">
     <h1>PROJECTS</h1>
 
+    <nav id="returnnav"></nav>
+
     <section id="projectShowcase"></section>
   </section>
 `
 
 initCurserTrack()
 setProjectsSection()
+initScrollDelay();
 
 // Navigate to the requested project after rendering.
 function navigateToProject(): void {
@@ -53,3 +59,4 @@ function navigateToProject(): void {
 }
 
 navigateToProject()
+initReturnNav()

@@ -71,7 +71,7 @@ main {
 
   font-size: clamp(1.2rem, calc(4.3rem + 1vw), 1.2rem);
 
-  animation: slidetotop 3s ease-in-out;
+  animation: slidetotop 1s ease-in-out;
 
   color: #767575;
 
@@ -665,36 +665,48 @@ main {
 
 }
 
+
+
 /* =========================
-
    MOBILE
-
-   ========================= */
+========================= */
 
 @media (max-width: 768px) {
 
+  main {
+    min-height: 100svh;
+  }
+
   #hello {
+    position: absolute;
 
-    font-size: clamp(3.2rem, calc(3.3rem + 0.5vw), 0.2rem);
+    top: 25svh;
+    left: 0;
+    right: 0;
 
+    width: 100%;
+    text-align: center;
+
+    font-size: clamp(3.8rem, 10vw, 4.5rem);
   }
 
   #aboutme {
+    position: absolute;
 
-    font-size: clamp(1.2rem, calc(1.3rem + 0.5vw), 0.2rem);
+    top: 34svh;
+    left: 5%;
 
-    top: 37%;
+    width: 90%;
+    text-align: center;
 
+    font-size: clamp(1rem, 3.8vw, 1.4rem);
   }
 
   #cursertrack,
-
-  #topnav {
-
+  #topnav,
+  .gh-badge {
     display: none;
-
   }
-
 }
 
 /* =========================
@@ -796,34 +808,3 @@ main {
 }
 
 
-/* =====================================================
-   TOP NAVIGATION: PLAY INTRO ONLY ON THE FIRST HOME VISIT
-   Requires the topnav-intro / topnav-no-intro classes
-   added by topnav.ts.
-   ===================================================== */
-
-/* First homepage visit: animate the navbar and its links. */
-.topnav-intro #topnav {
-  animation: slidedownnav 1s ease-in-out both;
-}
-
-.topnav-intro #topnav .tn-card {
-  opacity: 0;
-  animation-name: navButtonPop;
-  animation-duration: 0.5s;
-  animation-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
-  animation-fill-mode: forwards;
-}
-
-/* Every later page visit in the same tab: show everything immediately. */
-.topnav-no-intro #topnav {
-  animation: none !important;
-  opacity: 1;
-  top: 15px;
-}
-
-.topnav-no-intro #topnav .tn-card {
-  animation: none !important;
-  opacity: 1;
-  transform: none;
-}

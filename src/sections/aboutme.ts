@@ -18,6 +18,7 @@ const FALLBACK_LINES = [
   'I love building Softwares',
 ]
 
+const SHOW_AT_MS = 3000 // when the about me line first slides in (it was 5000). Lower = earlier
 const SLIDE_IN_MS = 800
 const SLIDE_OUT_MS = 600
 const HOLD_MS = 4000
@@ -61,7 +62,7 @@ export async function setupAboutMe(): Promise<void> {
   if (!about) throw new Error('Missing #aboutme element')
 
   about.style.visibility = 'hidden'
-  const [infoaboutme] = await Promise.all([loadAboutLines(), sleep(5000)])
+  const [infoaboutme] = await Promise.all([loadAboutLines(), sleep(SHOW_AT_MS)])
 
   let i = 0
   while (true) {

@@ -6,6 +6,11 @@ const sleep = (ms: number): Promise<void> =>
 // Placeholder: change this to whatever text you want the heading to scramble into
 const SCRAMBLE_TO = "Hello, I'm Andrew"
 
+// WHEN THINGS HAPPEN (milliseconds after the page loads)
+const SHOW_AT_MS = 300 // when "Hello," starts to fade in (it was 1500). Lower = earlier
+const WORD_GAP_MS = 600 // gap between "Hello," and "World"
+const SCRAMBLE_AT_MS = 2300 // when it scrambles into SCRAMBLE_TO (same moment as before)
+
 export async function setupHello(): Promise<void> {
   const title = document.querySelector<HTMLElement>('#hello')
   if (!title) throw new Error('Missing #hello element')
@@ -18,15 +23,15 @@ export async function setupHello(): Promise<void> {
       { opacity: [0, 1] },
       {
         duration: 1500,
-        delay: 1500 + i * 600, // each word starts 600ms after the previous one
+        delay: SHOW_AT_MS + i * WORD_GAP_MS,
         easing: 'ease-out',
         fill: 'backwards', // stay invisible until this word's turn
       },
     )
   })
 
-  // Step 2: wait
-  await sleep(4000)
+  // Step 2: wait until the scramble time
+  await sleep(SCRAMBLE_AT_MS)
 
   // Step 3: undo the word split, then scramble into the new text
   revert()

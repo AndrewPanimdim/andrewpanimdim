@@ -487,3 +487,241 @@
     transition: none;
   }
 }
+
+
+
+
+/* =========================================
+   MORE ABOUT ME - RESPONSIVE LAYOUT
+========================================= */
+
+/* TABLET */
+@media (max-width: 768px) {
+
+  #moreAM {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+
+    width: min(90%, 650px);
+    height: auto;
+    aspect-ratio: auto;
+
+    margin: 60px auto 0;
+    padding-bottom: 100px;
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+
+    align-items: stretch;
+  }
+
+  /* Remove desktop collage positioning */
+  .am-card,
+  #am-a,
+  #am-b,
+  #am-c,
+  #am-d,
+  #am-e {
+    position: relative;
+
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+
+    width: 100%;
+    height: auto;
+
+    margin: 0;
+    padding: 10px;
+
+    transform: none;
+  }
+
+  /* Keep the entrance animation */
+  .am-card {
+    opacity: 0;
+    transform: translateY(25px);
+
+    transition:
+      opacity 0.8s ease-out,
+      transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  .am-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Make GIFs consistent */
+  .am-media {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    margin-bottom: 10px;
+  }
+
+  .am-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Card information */
+  .am-info {
+    gap: 8px;
+    padding: 0 2px 4px;
+  }
+
+  .am-card .am-info h2 {
+    font-size: 1rem;
+  }
+
+  .am-stack {
+    gap: 5px;
+    padding: 0;
+    margin: 0;
+  }
+
+  .am-stack li {
+    font-size: 0.7rem;
+    padding: 4px 8px;
+  }
+
+  /* See more button */
+  .am-more {
+    position: relative;
+    top: auto;
+
+    grid-column: 1 / -1;
+    justify-self: center;
+
+    margin-top: 20px;
+    font-size: 1.2rem;
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+
+  #moreAM {
+    width: min(88%, 400px);
+
+    grid-template-columns: 1fr;
+    gap: 22px;
+
+    margin-top: 40px;
+    padding-bottom: 70px;
+  }
+
+  /* One card per row */
+  .am-card,
+  #am-a,
+  #am-b,
+  #am-c,
+  #am-d,
+  #am-e {
+    width: 100%;
+    padding: 12px;
+    border-radius: 20px;
+  }
+
+  /* Larger GIF area */
+  .am-media {
+    aspect-ratio: 16 / 9;
+    border-radius: 14px;
+    margin-bottom: 12px;
+  }
+
+  .am-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Text */
+  .am-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 9px;
+  }
+
+  .am-card .am-info h2 {
+    font-size: 1.05rem;
+  }
+
+  /* Tech stack chips */
+  .am-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .am-stack li {
+    font-size: 0.7rem;
+    padding: 5px 9px;
+  }
+
+  /* View project label */
+  .am-view-project {
+    right: 10px;
+    bottom: 10px;
+
+    font-size: 10px;
+    padding: 6px 9px;
+  }
+
+  /* See more */
+  .am-more {
+    margin-top: 12px;
+    padding: 8px 20px;
+    font-size: 1.1rem;
+  }
+}
+
+
+/* =========================================
+   SMALL PHONE ADJUSTMENTS
+========================================= */
+
+@media (max-width: 360px) {
+
+  #moreAM {
+    width: 92%;
+    gap: 16px;
+  }
+
+  .am-card {
+    padding: 9px;
+  }
+
+  .am-card .am-info h2 {
+    font-size: 0.95rem;
+  }
+
+  .am-stack li {
+    font-size: 0.65rem;
+    padding: 4px 7px;
+  }
+}
+
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .am-card {
+    transition: none !important;
+    transform: none !important;
+  }
+
+}
