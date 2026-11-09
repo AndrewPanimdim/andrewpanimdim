@@ -63,7 +63,7 @@ export function setAboutMeSection(): () => void {
   root.innerHTML = `
     <header class="aboutme-heading">
       <span class="aboutme-eyebrow">GET TO KNOW ME</span>
-      <h1>ABOUT ME</h1>
+      <h1 id="aboutmeheading">ABOUT ME</h1>
       <p>A little background about who I am and what I do.</p>
     </header>
 
@@ -82,6 +82,14 @@ export function setAboutMeSection(): () => void {
   `
 
   const cards = root.querySelectorAll<HTMLElement>('.aboutme-card')
+
+  const heading = root.querySelector<HTMLElement>('.aboutme-heading')
+
+  const animatedElements = [
+    ...(heading ? [heading] : []),
+    ...Array.from(cards),
+  ]
+
 
   // MoreAM follows About Me. CSS controls About Me's own position.
   function updateMoreAMPosition(): void {
@@ -109,25 +117,24 @@ export function setAboutMeSection(): () => void {
   let observer: IntersectionObserver
 
   function observeCards(): void {
-    observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue
+  observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue
 
-          entry.target.classList.add('visible')
-          observer.unobserve(entry.target)
+        entry.target.classList.add('visible')
+        observer.unobserve(entry.target)
+        hasPlayed = true
+      }
+    },
+    {
+      threshold: SHOW_WHEN_VISIBLE,
+      rootMargin: `0px 0px -${BOTTOM_MARGIN} 0px`,
+    },
+  )
 
-          hasPlayed = true
-        }
-      },
-      {
-        threshold: SHOW_WHEN_VISIBLE,
-        rootMargin: `0px 0px -${BOTTOM_MARGIN} 0px`,
-      },
-    )
-
-    cards.forEach((card) => observer.observe(card))
-  }
+  animatedElements.forEach((element) => observer.observe(element))
+}
 
   observeCards()
 
@@ -151,7 +158,8 @@ export function setAboutMeSection(): () => void {
         root.getBoundingClientRect().top > window.innerHeight
 
       if (stillAboveSection) {
-        cards.forEach((card) => card.classList.remove('visible'))
+        
+        animatedElements.forEach((element) => {element.classList.remove('visible') })
 
         hasPlayed = false
 

@@ -24,9 +24,22 @@ about me section
 }
 
 
-#aboutMeSection h1 {
-  font-size: clamp(2rem, 4vw, 4rem);
-  line-height: 1.1;
+/* About Me heading animation */
+
+.aboutme-heading {
+  opacity: 0;
+  transform: translateY(45px);
+
+  transition:
+    opacity 0.8s ease-out,
+    transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  will-change: opacity, transform;
+}
+
+.aboutme-heading.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 
@@ -114,7 +127,7 @@ about me section
 
 /* Reveal animation */
 
-.aboutme-card.visible {
+.aboutme-card.visible{
   opacity: 1;
   transform: translateY(0);
 }

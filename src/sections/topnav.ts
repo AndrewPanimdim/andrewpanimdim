@@ -1,4 +1,3 @@
-
 import '../css/topnav.css'
 
 interface NavSection {
@@ -37,26 +36,9 @@ export function initTopNav(): () => void {
   const nav = document.createElement('nav')
   nav.id = 'topnav'
 
-  // Intro animation
-  let shouldPlayIntro = false
-
-  try {
-    shouldPlayIntro =
-      sessionStorage.getItem('topnav-visited') !== 'true'
-
-    sessionStorage.setItem('topnav-visited', 'true')
-  } catch {
-    // Storage may be unavailable.
-  }
-
-  document.documentElement.classList.remove(
-    'topnav-intro',
-    'topnav-no-intro',
-  )
-
-  document.documentElement.classList.add(
-    shouldPlayIntro ? 'topnav-intro' : 'topnav-no-intro',
-  )
+  // Intro animation: plays on every page load
+  document.documentElement.classList.remove('topnav-no-intro')
+  document.documentElement.classList.add('topnav-intro')
 
   // Generate navigation
   nav.innerHTML = `
@@ -76,7 +58,7 @@ export function initTopNav(): () => void {
       ).join('')}
     </div>
 
-    <div class="tn-mini"></div>
+    <div class="tn-mini" role="button" tabindex="0" aria-label="Show navigation"></div>
   `
 
   document.body.prepend(nav)
@@ -253,6 +235,29 @@ export function initTopNav(): () => void {
 
   full?.addEventListener('click', onNavClick)
 
+  // Clicking anywhere on the compact nav makes it tn-full again.
+  const expandNav = () => {
+    nav.classList.remove('compact')
+    directionTravel = 0
+  }
+
+  const onCompactClick = (event: MouseEvent) => {
+    if (!nav.classList.contains('compact')) return
+
+    event.stopPropagation() // expand only, do not also trigger a link
+    expandNav()
+  }
+
+  const onMiniKey = (event: KeyboardEvent) => {
+    if (event.key !== 'Enter' && event.key !== ' ') return
+
+    event.preventDefault()
+    expandNav()
+  }
+
+  nav.addEventListener('click', onCompactClick, true)
+  mini?.addEventListener('keydown', onMiniKey)
+
   // Reposition indicator after navbar width transition.
   const onNavTransitionEnd = (event: TransitionEvent) => {
     if (event.target !== nav) return
@@ -348,6 +353,8 @@ export function initTopNav(): () => void {
     window.removeEventListener('resize', onResize)
 
     full?.removeEventListener('click', onNavClick)
+    nav.removeEventListener('click', onCompactClick, true)
+    mini?.removeEventListener('keydown', onMiniKey)
 
     nav.removeEventListener(
       'transitionend',

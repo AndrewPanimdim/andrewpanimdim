@@ -67,7 +67,7 @@ main {
 
   position: absolute;
 
-  top: 45%;
+  top: 42%;
 
   font-size: clamp(1.2rem, calc(4.3rem + 1vw), 1.2rem);
 
@@ -563,7 +563,7 @@ main {
 
   from {
 
-    transform: translateX(-500%);
+    transform: translateX(-50%);
 
   }
 

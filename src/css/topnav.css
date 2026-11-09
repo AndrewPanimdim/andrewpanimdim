@@ -420,3 +420,8 @@
   opacity: 1;
   transform: none;
 }
+
+   #topnav.compact .tn-mini {
+     pointer-events: auto;
+     cursor: none;
+   }

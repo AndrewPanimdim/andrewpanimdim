@@ -25,9 +25,11 @@ app.innerHTML = `
 
   <div id="aboutMeSection"></div>
   
-  <div id='float' class='liquid-glass'>float</div>
 
   <div id="moreAM"></div>
+
+
+  <div id='float' class='liquid-glass'>float</div>
 
 
   <div id="weight">weight</div>
