@@ -411,7 +411,6 @@
 .topnav-no-intro #topnav {
   animation: none !important;
   opacity: 1;
-  top: 15px;
 }
 
 .topnav-no-intro #topnav .tn-card {
