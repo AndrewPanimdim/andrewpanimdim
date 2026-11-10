@@ -671,7 +671,7 @@ main {
    MOBILE
 ========================= */
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
 
   main {
     min-height: 100svh;
