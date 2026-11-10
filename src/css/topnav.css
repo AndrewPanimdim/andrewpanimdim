@@ -327,7 +327,7 @@
 
   /* First-visit entrance animation */
 
-  .topnav-intro #topnav {
+  /*.topnav-intro #topnav {
     animation: mobile-nav-enter 650ms
       cubic-bezier(0.2, 0.8, 0.2, 1) both;
   }
@@ -343,6 +343,27 @@
       translate: -50% 0;
     }
   }
+
+  */
+
+  .topnav-no-intro #topnav {
+    animation: none !important;
+    opacity: 1;
+  }
+
+  @keyframes mobile-nav-enter {
+    from {
+      opacity: 0;
+      transform: translateX(-50%) translateY(24px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+}
+
 
   /* Prevent desktop intro positioning from overriding mobile */
 
@@ -411,6 +432,10 @@
 .topnav-no-intro #topnav {
   animation: none !important;
   opacity: 1;
+<<<<<<< HEAD
+=======
+  top: auto !important;
+>>>>>>> d577f98 (topnav position mobile fix check)
 }
 
 .topnav-no-intro #topnav .tn-card {
