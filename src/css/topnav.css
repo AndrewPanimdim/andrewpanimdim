@@ -170,7 +170,6 @@
 /* Compact label */
 
 #topnav .tn-mini {
-  position: absolute;
 
   max-width: calc(100% - 24px);
 
