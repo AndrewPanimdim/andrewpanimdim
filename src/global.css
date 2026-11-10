@@ -612,19 +612,15 @@ main {
 }
 
 @keyframes slidedownnav {
-
   from {
-
-    top: -50px;
-
+    opacity: 0;
+    translate: 0 -50px;
   }
 
   to {
-
-    top: 15px;
-
+    opacity: 1;
+    translate: 0 0;
   }
-
 }
 
 @keyframes tn-twinkle {
