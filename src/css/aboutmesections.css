@@ -15,13 +15,17 @@ about me section
 
 #aboutMeSection {
   position: absolute;
-  top: 110%; 
+  top: 110%;
   left: 0;
   right: 0;
+
   width: min(100%, 1100px);
   margin-inline: auto;
+
   padding-bottom: 120px;
 }
+
+
 
 
 /* About Me heading animation */
@@ -210,7 +214,11 @@ about me section
 
 @media (max-width: 640px) {
   #aboutMeSection {
+    top: 105svh;
+
     width: calc(100% - 32px);
+
+    padding-bottom: 32px;
   }
 
   .aboutme-grid {
@@ -226,6 +234,8 @@ about me section
     margin-bottom: 28px;
   }
 }
+
+
 
 /* Reduced motion */
 

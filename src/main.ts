@@ -11,6 +11,7 @@ import { initGithubBadge } from './sections/githubbadge.ts'
 import { initScrollDelay } from "./sections/scrolldelay.ts";
 import { setmoreaboutme} from "./sections/moreAM.ts"
 import { setAboutMeSection } from './sections/aboutmesection.ts'
+import { setExperienceSection } from './sections/experiencesection.ts'
 
 
 
@@ -25,6 +26,7 @@ app.innerHTML = `
 
   <div id="aboutMeSection"></div>
   
+  <div id="experiencesection"></div> 
 
   <div id="moreAM"></div>
 
@@ -47,3 +49,4 @@ initScrollDelay();
 setAboutMeSection()
 setmoreaboutme();
 initGithubBadge()
+setExperienceSection()

@@ -36,7 +36,8 @@ const ABOUT_CARDS: AboutCard[] = [
 const SHOW_WHEN_VISIBLE = 0.2
 const BOTTOM_MARGIN = '12%'
 const RESET_DELAY = 8000
-const SECTION_GAP = '14vh'
+const DESKTOP_SECTION_GAP = '14vh'
+const MOBILE_SECTION_GAP = '6svh'
 
 export function setAboutMeSection(): () => void {
   // Find MoreAM and explicitly establish a non-null reference.
@@ -93,12 +94,19 @@ export function setAboutMeSection(): () => void {
 
   // MoreAM follows About Me. CSS controls About Me's own position.
   function updateMoreAMPosition(): void {
-    if (!moreAM.isConnected || !root.isConnected) return
+  if (!moreAM.isConnected || !root.isConnected) return
 
-    const aboutBottom = root.offsetTop + root.offsetHeight
+  const aboutBottom = root.offsetTop + root.offsetHeight
 
-    moreAM.style.top = `calc(${aboutBottom}px + ${SECTION_GAP})`
-  }
+  const isMobile = window.matchMedia('(max-width: 640px)').matches
+
+  const sectionGap = isMobile
+    ? MOBILE_SECTION_GAP
+    : DESKTOP_SECTION_GAP
+
+  moreAM.style.top = `calc(${aboutBottom}px + ${sectionGap})`
+}
+
 
   const resizeObserver = new ResizeObserver(updateMoreAMPosition)
 
