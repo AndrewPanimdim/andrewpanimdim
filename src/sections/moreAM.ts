@@ -1,12 +1,9 @@
-
-// Each card shows a GIF, a small title and a row of tech-stack chips.
+// Each card shows a GIF, a title, and a row of tech-stack chips.
 //
-// - title: the name shown under the GIF
-// - gif:   file name inside "public/gif"
-// - repo:  the GitHub repository name under GITHUB_USER. When set, the chips
-//          are filled from GitHub (languages + topics). Leave it out to use
-//          only the "stack" list below.
-// - stack: chips shown first, and kept if GitHub can't be reached
+// title: Name displayed under the GIF.
+// gif: File name inside public/gif.
+// repo: GitHub repository name under GITHUB_USER.
+// stack: Fallback technology chips.
 
 const GITHUB_USER = 'AndrewPanimdim'
 
@@ -62,23 +59,33 @@ const CARDS: Card[] = [
 
 const MAX_CHIPS = 4
 const CACHE_MS = 60 * 60 * 1000
+
 const SHOW_WHEN_VISIBLE = 0.2
 const BOTTOM_MARGIN = '12%'
 const RESET_DELAY = 8000
 
+// =========================
+// GITHUB API
+// =========================
 
 async function getJson<T>(url: string): Promise<T> {
   const res = await fetch(url, {
-    headers: { Accept: 'application/vnd.github+json' },
+    headers: {
+      Accept: 'application/vnd.github+json',
+    },
   })
 
-  if (!res.ok) throw new Error(`GitHub answered ${res.status}`)
+  if (!res.ok) {
+    throw new Error(`GitHub answered ${res.status}`)
+  }
 
   return (await res.json()) as T
 }
 
+// =========================
+// FETCH TECH STACK
+// =========================
 
-// Languages (biggest first) plus repository topics, without duplicates
 async function fetchStack(repo: string): Promise<string[]> {
   const key = `am-stack:${GITHUB_USER}/${repo}`
 
@@ -96,7 +103,7 @@ async function fetchStack(repo: string): Promise<string[]> {
       }
     }
   } catch {
-    // Storage blocked or unreadable: just fetch
+    // Storage blocked or unreadable.
   }
 
   const api = `https://api.github.com/repos/${GITHUB_USER}/${repo}`
@@ -114,10 +121,10 @@ async function fetchStack(repo: string): Promise<string[]> {
   const unique = new Map<string, string>()
 
   for (const name of [...languages, ...(info.topics ?? [])]) {
-    const k = name.toLowerCase()
+    const key = name.toLowerCase()
 
-    if (!unique.has(k)) {
-      unique.set(k, name)
+    if (!unique.has(key)) {
+      unique.set(key, name)
     }
   }
 
@@ -132,24 +139,31 @@ async function fetchStack(repo: string): Promise<string[]> {
       }),
     )
   } catch {
-    // Storage blocked: fine, it just won't be remembered
+    // Storage blocked. Continue without caching.
   }
 
   return stack
 }
 
+// =========================
+// RENDER TECH STACK
+// =========================
 
-// textContent (not innerHTML) so nothing coming from GitHub is treated as HTML
 function renderStack(list: HTMLElement, items: string[]): void {
   list.replaceChildren(
     ...items.slice(0, MAX_CHIPS).map((name) => {
       const li = document.createElement('li')
+
       li.textContent = name
+
       return li
     }),
   )
 }
 
+// =========================
+// MORE ABOUT ME SECTION
+// =========================
 
 export function setmoreaboutme(): () => void {
   const rootElement = document.querySelector<HTMLElement>('#moreAM')
@@ -158,7 +172,7 @@ export function setmoreaboutme(): () => void {
     throw new Error('Missing #moreAM element')
   }
 
-  const root: HTMLElement = rootElement
+  const root = rootElement
   const base = import.meta.env.BASE_URL
 
   // =========================
@@ -174,16 +188,24 @@ export function setmoreaboutme(): () => void {
         aria-label="View ${card.title} project"
       >
         <div class="am-media">
-          <img src="${base}gif/${card.gif}" alt="${card.title}" />
+          <img
+            src="${base}gif/${card.gif}"
+            alt="${card.title}"
+            loading="lazy"
+          />
 
           <span class="am-view-project">
             View project
-            <span class="am-view-arrow" aria-hidden="true">↗</span>
+
+            <span class="am-view-arrow" aria-hidden="true">
+              ↗
+            </span>
           </span>
         </div>
 
         <div class="am-info">
           <h2>${card.title}</h2>
+
           <ul class="am-stack"></ul>
         </div>
       </a>
@@ -191,14 +213,20 @@ export function setmoreaboutme(): () => void {
   ).join('')
 
   const seeMoreHtml = `
-    <a class="am-card am-more" id="am-more" href="${base}projects.html">
+    <a
+      class="am-card am-more"
+      id="am-more"
+      href="${base}projects.html"
+    >
       <span>See more</span>
-      <span class="am-more-arrow" aria-hidden="true">→</span>
+
+      <span class="am-more-arrow" aria-hidden="true">
+        →
+      </span>
     </a>
   `
 
   root.innerHTML = cardsHtml + seeMoreHtml
-
 
   // =========================
   // GITHUB TECH STACK
@@ -213,6 +241,7 @@ export function setmoreaboutme(): () => void {
 
     if (!list) continue
 
+    // Display fallback chips immediately.
     renderStack(list, card.stack)
 
     if (!card.repo) continue
@@ -224,10 +253,10 @@ export function setmoreaboutme(): () => void {
         }
       })
       .catch(() => {
-        // Offline or rate-limited: keep the fallback chips
+        // Offline or rate-limited.
+        // Keep the fallback chips.
       })
   }
-
 
   // =========================
   // ANIMATION AND SCROLL LOGIC
@@ -236,7 +265,9 @@ export function setmoreaboutme(): () => void {
   const cards = root.querySelectorAll<HTMLElement>('.am-card')
 
   let resetTimer: ReturnType<typeof setTimeout> | null = null
+
   let observer: IntersectionObserver
+
   let hasPlayed = false
 
   function observeCards(): void {
@@ -246,6 +277,7 @@ export function setmoreaboutme(): () => void {
           if (!entry.isIntersecting) continue
 
           entry.target.classList.add('visible')
+
           observer.unobserve(entry.target)
 
           hasPlayed = true
@@ -257,14 +289,20 @@ export function setmoreaboutme(): () => void {
       },
     )
 
-    cards.forEach((card) => observer.observe(card))
+    cards.forEach((card) => {
+      observer.observe(card)
+    })
   }
 
   observeCards()
 
+  // =========================
+  // SCROLL RESET
+  // =========================
 
   function handleScroll(): void {
     const sectionTop = root.getBoundingClientRect().top
+
     const scrolledWayBackUp = sectionTop > window.innerHeight
 
     if (!scrolledWayBackUp) {
@@ -283,11 +321,14 @@ export function setmoreaboutme(): () => void {
         root.getBoundingClientRect().top > window.innerHeight
 
       if (stillAboveSection) {
-        cards.forEach((card) => card.classList.remove('visible'))
+        cards.forEach((card) => {
+          card.classList.remove('visible')
+        })
 
         hasPlayed = false
 
         observer.disconnect()
+
         observeCards()
       }
 
@@ -299,7 +340,6 @@ export function setmoreaboutme(): () => void {
     passive: true,
   })
 
-
   // =========================
   // CLEANUP
   // =========================
@@ -308,6 +348,7 @@ export function setmoreaboutme(): () => void {
     stopped = true
 
     observer.disconnect()
+
     window.removeEventListener('scroll', handleScroll)
 
     if (resetTimer !== null) {
@@ -315,6 +356,6 @@ export function setmoreaboutme(): () => void {
       resetTimer = null
     }
 
-    root.innerHTML = ''
+    root.replaceChildren()
   }
 }

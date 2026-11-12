@@ -9,19 +9,22 @@ interface NavSection {
 const NAV_SECTIONS: NavSection[] = [
   {
     label: 'ABOUT',
-    target: 'hello',
+    target: 'aboutMeSection',
     className: 'tn-about',
   },
+
+   {
+    label: 'EXPERIENCE',
+    target: 'experiencesection',
+    className: 'tn-experience',
+  },
+
   {
     label: 'PROJECTS',
     target: 'moreAM',
     className: 'tn-projects',
   },
-  {
-    label: 'EXPERIENCE',
-    target: 'experience',
-    className: 'tn-experience',
-  },
+ 
   {
     label: 'DOCS',
     target: 'docs',

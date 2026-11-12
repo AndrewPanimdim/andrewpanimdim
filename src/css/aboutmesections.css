@@ -1,36 +1,30 @@
-
 /* =====================================================
    ABOUT ME SECTION
    ===================================================== */
 
-
-   /*
-============================
-about me section
-
-============================
-
-*/
-
-
 #aboutMeSection {
-  position: absolute;
-  top: 110%;
-  left: 0;
-  right: 0;
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
 
   width: min(100%, 1100px);
-  margin-inline: auto;
 
-  padding-bottom: 120px;
+  margin: 110vh auto 0;
+
+  padding: 0 0 0;
+
+  box-sizing: border-box;
 }
 
-
-
-
-/* About Me heading animation */
+/* =====================================================
+   ABOUT ME HEADING
+   ===================================================== */
 
 .aboutme-heading {
+  max-width: 600px;
+  margin-bottom: 42px;
+
   opacity: 0;
   transform: translateY(45px);
 
@@ -46,14 +40,6 @@ about me section
   transform: translateY(0);
 }
 
-
-/* Section heading */
-
-.aboutme-heading {
-  margin-bottom: 42px;
-  max-width: 600px;
-}
-
 .aboutme-eyebrow {
   display: block;
 
@@ -66,14 +52,19 @@ about me section
   letter-spacing: 0.16em;
 }
 
-.aboutme-heading h2 {
+.aboutme-heading h1 {
   margin: 0;
 
   color: #fff;
 
-  font-size: clamp(2.5rem, 5vw, 4.5rem);
-  font-weight: 600;
-  line-height: 1.05;
+
+  font-family: 'Barlow Condensed', sans-serif;
+
+  font-size: clamp(48px, 8vw, 90px);
+  font-weight: 800;
+
+  line-height: 0.95;
+  letter-spacing: -2px;
 }
 
 .aboutme-heading p {
@@ -85,7 +76,9 @@ about me section
   line-height: 1.7;
 }
 
-/* Card layout */
+/* =====================================================
+   ABOUT ME GRID
+   ===================================================== */
 
 .aboutme-grid {
   display: grid;
@@ -95,7 +88,9 @@ about me section
   gap: 18px;
 }
 
-/* Individual cards */
+/* =====================================================
+   ABOUT ME CARDS
+   ===================================================== */
 
 .aboutme-card {
   position: relative;
@@ -117,7 +112,6 @@ about me section
   border: 1px solid rgba(255, 255, 255, 0.12);
 
   opacity: 0;
-
   transform: translateY(45px);
 
   transition:
@@ -127,11 +121,15 @@ about me section
     border-color 0.3s ease;
 
   will-change: opacity, transform;
+
+  color: #fff;
+
+  box-sizing: border-box;
 }
 
 /* Reveal animation */
 
-.aboutme-card.visible{
+.aboutme-card.visible {
   opacity: 1;
   transform: translateY(0);
 }
@@ -144,9 +142,11 @@ about me section
   border-color: rgba(255, 255, 255, 0.22);
 }
 
-/* Card content */
+/* =====================================================
+   CARD CONTENT
+   ===================================================== */
 
-.aboutme-card-eyebrow {
+.aboutme-card-number {
   margin-bottom: 16px;
 
   color: #858585;
@@ -156,7 +156,7 @@ about me section
   letter-spacing: 0.12em;
 }
 
-.aboutme-card h3 {
+.aboutme-card h2 {
   margin: 0 0 12px;
 
   color: #fff;
@@ -176,49 +176,47 @@ about me section
   line-height: 1.7;
 }
 
-/* Decorative arrow */
-
-.aboutme-card-decoration {
-  position: absolute;
-
-  top: 24px;
-  right: 28px;
-
-  color: rgba(255, 255, 255, 0.3);
-
-  font-size: 1.4rem;
-
-  transition:
-    transform 0.3s ease,
-    color 0.3s ease;
+.aboutme-description {
+  margin-bottom: 12px !important;
 }
 
-.aboutme-card:hover .aboutme-card-decoration {
-  transform: translate(4px, -4px);
-  color: #fff;
+.aboutme-detail {
+  color: rgba(255, 255, 255, 0.4) !important;
 }
 
-/* Tablet */
+
+@media (hover: hover) {
+  .aboutme-card:hover {
+    background: rgba(255, 255, 255, 0.055);
+
+    border-color: rgba(255, 255, 255, 0.22);
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+
+    transform: translateY(-4px);
+  }
+}
+
+
+/* =====================================================
+   RESPONSIVE
+   ===================================================== */
 
 @media (max-width: 1024px) {
   #aboutMeSection {
     width: min(92%, 760px);
   }
-
-  .aboutme-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
 }
-
-/* Mobile */
 
 @media (max-width: 640px) {
   #aboutMeSection {
-    top: 105svh;
+    top: auto;
 
     width: calc(100% - 32px);
 
-    padding-bottom: 32px;
+    margin: 105svh auto 0;
+
+    padding-bottom: 0;
   }
 
   .aboutme-grid {
@@ -233,15 +231,25 @@ about me section
   .aboutme-heading {
     margin-bottom: 28px;
   }
+
+  .aboutme-heading h1 {
+    font-size: clamp(2.5rem, 12vw, 4rem);
+  }
+
+  .aboutme-heading p {
+    font-size: 1rem;
+  }
 }
 
-
-
-/* Reduced motion */
+/* =====================================================
+   REDUCED MOTION
+   ===================================================== */
 
 @media (prefers-reduced-motion: reduce) {
+  .aboutme-heading,
   .aboutme-card {
-    transition: none;
+    opacity: 1;
     transform: none;
+    transition: none;
   }
 }

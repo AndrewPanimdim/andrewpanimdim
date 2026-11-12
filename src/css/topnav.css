@@ -10,7 +10,7 @@
   position: fixed;
   z-index: 1000;
 
-  top: 16px;
+  bottom: 16px;
   left: 50%;
 
   width: min(92vw, 390px);

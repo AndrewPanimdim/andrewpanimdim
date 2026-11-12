@@ -1,36 +1,22 @@
-/* =========================
-
+/* =====================================================
    MORE ABOUT ME
-
-   Desktop = collage, tablet = 2 columns, phone = 1 column.
-
-   (the tablet and phone rules are at the very bottom of this file)
-
-   ========================= */
+   Desktop = collage
+   Tablet = 2 columns
+   Phone = 1 column
+   ===================================================== */
 
 #moreAM {
-
-  /* the old fixed 80px gap, now it shrinks on smaller screens */
-
   --am-offset: clamp(24px, 4vw, 80px);
 
-  position: absolute;
+  position: relative;
 
-  top: calc(
-        var(--aboutme-bottom, 0px) + 14vh
-    );
+  top: auto;
+  left: auto;
+  right: auto;
 
-  left: 0;
+  width: 74%;
 
-  right: 0;
-
-  margin-inline: auto;
-
-  width: 70%;
-
-  /* height follows width, so the percentage tops below stay
-
-     proportional at every desktop size (replaces height: 100%) */
+  margin: clamp(60px, 14vh, 140px) auto 0;
 
   aspect-ratio: 5 / 4;
 
@@ -42,10 +28,14 @@
 
   align-items: start;
 
+  box-sizing: border-box;
 }
 
-.am-card {
+/* =====================================================
+   PROJECT CARDS
+   ===================================================== */
 
+.am-card {
   position: absolute;
 
   padding: clamp(8px, 1vw, 12px);
@@ -61,98 +51,88 @@
   transform: translateY(40px);
 
   transition:
-
     opacity 1s ease-out,
-
     transform 2s cubic-bezier(0.2, 0.8, 0.2, 1);
 
   will-change: opacity, transform;
 
+  box-sizing: border-box;
 }
 
 .am-card.visible {
-
   opacity: 1;
 
   transform: translateY(0);
-
 }
 
-/* A's animation: slide in from the left */
+/* =====================================================
+   DESKTOP COLLAGE POSITIONING
+   ===================================================== */
+
+/* Card A */
 
 #am-a {
-
   top: 0;
-
-  left: 0%;
+  left: 0;
 
   width: 62%;
 
   transform: translateX(-120px);
 
   transition:
-
     opacity 0.8s ease-out,
-
     transform 3s cubic-bezier(0.2, 0.8, 0.2, 1);
-
 }
 
+/* Reveal cards entering from the sides */
+
 #am-a.visible,
-
 #am-d.visible,
-
-#am-c.visible, 
-
+#am-c.visible,
 #am-b.visible {
-
   opacity: 1;
 
   transform: translateX(0);
-
 }
 
-/* B sits a bit lower than A for a staggered look; use 0 to line them up */
+/* Card B */
 
 #am-b {
-
   top: -5%;
 
   width: 35%;
 
   margin-top: var(--am-offset);
 
-  right: 0%;
+  right: 0;
 
   transform: translateX(120px);
-
 }
 
-#am-c {
+/* Card C */
 
+#am-c {
   top: 30%;
 
   width: 35%;
 
   margin-top: var(--am-offset);
 
-  right: 0%;
+  right: 0;
 
   transform: translateX(120px);
 
   transition:
-
     opacity 1s ease-out,
-
     transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-
 }
 
-#am-d {
+/* Card D */
 
+#am-d {
   top: 45%;
 
-  left: 0%;
+  left: 0;
 
   width: 30%;
 
@@ -161,15 +141,13 @@
   transform: translateX(-120px);
 
   transition:
-
     opacity 0.8s ease-out,
-
     transform 1s cubic-bezier(0.2, 0.8, 0.2, 1);
-
 }
 
-#am-e {
+/* Card E */
 
+#am-e {
   top: 45%;
 
   left: 32%;
@@ -177,13 +155,13 @@
   width: 30%;
 
   margin-top: var(--am-offset);
-
 }
 
-/* Title + tech stack under each GIF: kept small so the GIF stays the star */
+/* =====================================================
+   CARD INFORMATION
+   ===================================================== */
 
 .am-info {
-
   display: flex;
 
   flex-wrap: wrap;
@@ -193,11 +171,9 @@
   gap: 6px 10px;
 
   padding: 0 4px 2px;
-
 }
 
 .am-card .am-info h2 {
-
   margin: 0;
 
   font-size: clamp(0.95rem, 1.05vw, 1.1rem);
@@ -207,11 +183,13 @@
   letter-spacing: 0.02em;
 
   color: rgba(255, 255, 255, 0.9);
-
 }
 
-.am-stack {
+/* =====================================================
+   TECH STACK CHIPS
+   ===================================================== */
 
+.am-stack {
   display: flex;
 
   flex-wrap: wrap;
@@ -220,10 +198,11 @@
 
   list-style: none;
 
+  padding: 0;
+  margin: 0;
 }
 
 .am-stack li {
-
   padding: 3px 8px;
 
   border: 1px solid rgba(255, 255, 255, 0.14);
@@ -237,10 +216,14 @@
   line-height: 1;
 
   white-space: nowrap;
-
 }
 
+/* =====================================================
+   GIF MEDIA
+   ===================================================== */
+
 .am-media {
+  position: relative;
 
   margin-bottom: clamp(8px, 0.8vw, 12px);
 
@@ -249,24 +232,136 @@
   overflow: hidden;
 
   line-height: 0;
-
 }
 
 .am-media img {
+  display: block;
 
+  width: 100%;
+  height: auto;
+
+  user-select: none;
+}
+
+/* =====================================================
+   CLICKABLE PROJECT CARDS
+   ===================================================== */
+
+.am-project-link {
+  display: block;
+
+  color: inherit;
+
+  text-decoration: none;
+
+  cursor: none;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+.am-project-link:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.8);
+
+  outline-offset: 5px;
+
+  border-radius: 20px;
+}
+
+/* =====================================================
+   GIF HOVER EFFECT
+   ===================================================== */
+
+.am-project-link .am-media {
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: inherit;
+}
+
+.am-project-link .am-media img {
   display: block;
 
   width: 100%;
 
-  height: auto;
+  transition: transform 400ms cubic-bezier(0.2, 0.7, 0.3, 1);
 
-  user-select: none;
-
+  will-change: transform;
 }
 
-/* "See more" button under the cards */
+.am-project-link:hover .am-media img {
+  transform: scale(1.05);
+}
+
+/* =====================================================
+   VIEW PROJECT LABEL
+   ===================================================== */
+
+.am-view-project {
+  position: absolute;
+
+  right: 14px;
+  bottom: 14px;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  padding: 7px 11px;
+
+  border-radius: 30px;
+
+  color: white;
+
+  background: rgba(20, 20, 20, 0.65);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  font-size: 11px;
+  font-weight: 500;
+
+  opacity: 0;
+
+  transform: translateY(7px);
+
+  transition:
+    opacity 250ms ease,
+    transform 250ms ease;
+
+  pointer-events: none;
+}
+
+.am-project-link:hover .am-view-project,
+.am-project-link:focus-visible .am-view-project {
+  opacity: 1;
+
+  transform: translateY(0);
+}
+
+/* Arrow movement */
+
+.am-view-arrow {
+  display: inline-block;
+
+  transition: transform 250ms ease;
+}
+
+.am-project-link:hover .am-view-arrow,
+.am-project-link:focus-visible .am-view-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* =====================================================
+   SEE MORE
+   ===================================================== */
 
 .am-more {
+  position: absolute;
+
+  top: 85%;
 
   grid-column: 1 / -1;
 
@@ -289,236 +384,55 @@
   font-size: clamp(1.2rem, 1.6vw, 1.6rem);
 
   cursor: none;
-
-  position: absolute;
-
-  top: 85%;
-
 }
-
-/* Clickable More About Me project cards */
-
-.am-project-link {
-  display: block;
-  color: inherit;
-  text-decoration: none;
-  cursor: none;
-  -webkit-tap-highlight-color: transparent;
-}
-
-.am-project-link:focus-visible {
-  outline: 2px solid rgba(255, 255, 255, 0.8);
-  outline-offset: 5px;
-  border-radius: 20px;
-}
-
 
 .am-more:hover {
-
   background: rgba(255, 255, 255, 0.14);
-
 }
 
 .am-more-arrow {
-  
   display: inline-block;
 
   transition: transform 0.3s ease;
-
 }
 
 .am-more:hover .am-more-arrow {
-
   transform: translateX(6px);
-
 }
 
+/* =====================================================
+   TABLET
+   ===================================================== */
 
-
-
-/* MoreAM hover effect */
-.am-project-link .am-media {
-  position: relative;
-  overflow: hidden;
-}
-
-/* GIF zoom */
-.am-project-link .am-media img {
-  transition: transform 350ms ease;
-  will-change: transform;
-}
-
-.am-project-link:hover .am-media img {
-  transform: scale(1.05);
-}
-
-/* View project label */
-.am-view-project {
-  position: absolute;
-  right: 14px;
-  bottom: 14px;
-
-  display: flex;
-  align-items: center;
-  gap: 6px;
-
-  padding: 7px 11px;
-  border-radius: 20px;
-
-  background: rgba(20, 20, 20, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  color: white;
-  font-size: 11px;
-  font-weight: 500;
-
-  opacity: 0;
-  transform: translateY(6px);
-
-  transition:
-    opacity 250ms ease,
-    transform 250ms ease;
-
-  pointer-events: none;
-}
-
-.am-project-link:hover .am-view-project {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Arrow movement */
-.am-view-arrow {
-  display: inline-block;
-  transition: transform 250ms ease;
-}
-
-.am-project-link:hover .am-view-arrow {
-  transform: translate(2px, -2px);
-}
-
-
-
-/* =========================
-   MOREAM CARD HOVER EFFECT
-========================= */
-
-.am-project-link .am-media {
-  position: relative;
-  overflow: hidden;
-  border-radius: inherit;
-}
-
-/* GIF zoom */
-.am-project-link .am-media img {
-  display: block;
-  width: 100%;
-  transition: transform 400ms cubic-bezier(0.2, 0.7, 0.3, 1);
-  will-change: transform;
-}
-
-.am-project-link:hover .am-media img {
-  transform: scale(1.05);
-}
-
-/* View project label */
-.am-view-project {
-  position: absolute;
-  right: 14px;
-  bottom: 14px;
-
-  display: flex;
-  align-items: center;
-  gap: 6px;
-
-  padding: 7px 11px;
-  border-radius: 30px;
-
-  color: white;
-  background: rgba(20, 20, 20, 0.65);
-
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-
-  font-size: 11px;
-  font-weight: 500;
-
-  opacity: 0;
-  transform: translateY(7px);
-
-  transition:
-    opacity 250ms ease,
-    transform 250ms ease;
-
-  pointer-events: none;
-}
-
-.am-project-link:hover .am-view-project,
-.am-project-link:focus-visible .am-view-project {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Arrow movement */
-.am-view-arrow {
-  display: inline-block;
-  transition: transform 250ms ease;
-}
-
-.am-project-link:hover .am-view-arrow,
-.am-project-link:focus-visible .am-view-arrow {
-  transform: translate(2px, -2px);
-}
-
-/* Touch devices: no hover-only hidden label */
-@media (hover: none) {
-  .am-view-project {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .am-project-link .am-media img,
-  .am-view-project,
-  .am-view-arrow {
-    transition: none;
-  }
-}
-
-
-
-
-/* =========================================
-   MORE ABOUT ME - RESPONSIVE LAYOUT
-========================================= */
-
-/* TABLET */
 @media (max-width: 768px) {
-
   #moreAM {
     position: relative;
+
     top: auto;
     left: auto;
     right: auto;
 
     width: min(90%, 650px);
+
     height: auto;
+
     aspect-ratio: auto;
 
-    margin: 60px auto 0;
+    margin: 6svh auto 0;
+
     padding-bottom: 100px;
 
     display: grid;
+
     grid-template-columns: repeat(2, minmax(0, 1fr));
+
     gap: 20px;
 
     align-items: stretch;
   }
 
   /* Remove desktop collage positioning */
+
   .am-card,
   #am-a,
   #am-b,
@@ -536,14 +450,17 @@
     height: auto;
 
     margin: 0;
+
     padding: 10px;
 
-    transform: none;
+    box-sizing: border-box;
   }
 
-  /* Keep the entrance animation */
+  /* Tablet entrance animation */
+
   .am-card {
     opacity: 0;
+
     transform: translateY(25px);
 
     transition:
@@ -551,27 +468,39 @@
       transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
   }
 
-  .am-card.visible {
+  .am-card.visible,
+  #am-a.visible,
+  #am-b.visible,
+  #am-c.visible,
+  #am-d.visible,
+  #am-e.visible {
     opacity: 1;
+
     transform: translateY(0);
   }
 
-  /* Make GIFs consistent */
+  /* Consistent GIF dimensions */
+
   .am-media {
     width: 100%;
+
     aspect-ratio: 16 / 10;
+
     margin-bottom: 10px;
   }
 
   .am-media img {
     width: 100%;
     height: 100%;
+
     object-fit: cover;
   }
 
   /* Card information */
+
   .am-info {
     gap: 8px;
+
     padding: 0 2px 4px;
   }
 
@@ -581,46 +510,53 @@
 
   .am-stack {
     gap: 5px;
+
     padding: 0;
     margin: 0;
   }
 
   .am-stack li {
     font-size: 0.7rem;
+
     padding: 4px 8px;
   }
 
-  /* See more button */
+  /* See more */
+
   .am-more {
     position: relative;
+
     top: auto;
 
     grid-column: 1 / -1;
+
     justify-self: center;
 
     margin-top: 20px;
+
     font-size: 1.2rem;
   }
 }
 
-
-/* =========================================
+/* =====================================================
    MOBILE
-========================================= */
+   ===================================================== */
 
 @media (max-width: 480px) {
-
   #moreAM {
     width: min(88%, 400px);
 
     grid-template-columns: 1fr;
+
     gap: 22px;
 
-    margin-top: 40px;
+    margin-top: 6svh;
+
     padding-bottom: 70px;
   }
 
   /* One card per row */
+
   .am-card,
   #am-a,
   #am-b,
@@ -628,28 +564,38 @@
   #am-d,
   #am-e {
     width: 100%;
+
     padding: 12px;
+
     border-radius: 20px;
   }
 
   /* Larger GIF area */
+
   .am-media {
     aspect-ratio: 16 / 9;
+
     border-radius: 14px;
+
     margin-bottom: 12px;
   }
 
   .am-media img {
     width: 100%;
     height: 100%;
+
     object-fit: cover;
   }
 
   /* Text */
+
   .am-info {
     display: flex;
+
     flex-direction: column;
+
     align-items: flex-start;
+
     gap: 9px;
   }
 
@@ -658,43 +604,51 @@
   }
 
   /* Tech stack chips */
+
   .am-stack {
     display: flex;
+
     flex-wrap: wrap;
+
     gap: 6px;
   }
 
   .am-stack li {
     font-size: 0.7rem;
+
     padding: 5px 9px;
   }
 
   /* View project label */
+
   .am-view-project {
     right: 10px;
     bottom: 10px;
 
     font-size: 10px;
+
     padding: 6px 9px;
   }
 
   /* See more */
+
   .am-more {
     margin-top: 12px;
+
     padding: 8px 20px;
+
     font-size: 1.1rem;
   }
 }
 
-
-/* =========================================
+/* =====================================================
    SMALL PHONE ADJUSTMENTS
-========================================= */
+   ===================================================== */
 
 @media (max-width: 360px) {
-
   #moreAM {
     width: 92%;
+
     gap: 16px;
   }
 
@@ -708,20 +662,33 @@
 
   .am-stack li {
     font-size: 0.65rem;
+
     padding: 4px 7px;
   }
 }
 
+/* =====================================================
+   TOUCH DEVICES
+   ===================================================== */
 
-/* =========================================
+@media (hover: none) {
+  .am-view-project {
+    opacity: 1;
+
+    transform: none;
+  }
+}
+
+/* =====================================================
    ACCESSIBILITY
-========================================= */
+   ===================================================== */
 
 @media (prefers-reduced-motion: reduce) {
-
-  .am-card {
+  .am-card,
+  .am-project-link .am-media img,
+  .am-view-project,
+  .am-view-arrow {
     transition: none !important;
     transform: none !important;
   }
-
 }
