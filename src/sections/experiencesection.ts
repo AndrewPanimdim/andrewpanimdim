@@ -1,4 +1,3 @@
-
 interface ExperienceCard {
   id: string
   category: string
@@ -6,18 +5,20 @@ interface ExperienceCard {
   description: string
   detail: string
   period: string
+  InTransition: string
 }
 
 const MY_EXPERIENCES: ExperienceCard[] = [
   {
     id: 'exp-01',
     category: 'DEVELOPMENT',
-    title: 'Personal Web Development',
+    title: 'ASIA PACIFIC COLLEGE - NAMFRELL BARMM FIRST PARLIAMENTARY ELECTION 2026',
     description:
-      'Building interactive web applications using modern web technologies.',
+      'Web Development & UI/UX Team ',
     detail:
-      'Exploring frontend development, responsive layouts, JavaScript, TypeScript, React, and backend integration through personal projects.',
-    period: 'ONGOING',
+      'I was responsible for creating the header and footer of the official website, and designing the whole UI of the App apk used in the election. ',
+    period: 'FINISHED',
+    InTransition: 'opacity: 0; transform: translateX(150px);',
   },
   {
     id: 'exp-02',
@@ -27,6 +28,7 @@ const MY_EXPERIENCES: ExperienceCard[] = [
     detail:
       'Developing problem-solving skills through programming exercises, experimenting with different technologies, and learning software development practices.',
     period: 'ONGOING',
+    InTransition: 'opacity: 0; transform: translateY(150px);',
   },
 ]
 
@@ -52,7 +54,6 @@ export function setExperienceSection(): () => void {
     return () => {}
   }
 
-  // Explicitly typed as HTMLElement for nested functions.
   const root: HTMLElement = rootElement
   const moreAM: HTMLElement = moreAMElement
 
@@ -79,7 +80,7 @@ export function setExperienceSection(): () => void {
     <div class="experience-grid">
       ${MY_EXPERIENCES.map(
         (card) => `
-          <article class="experience-card" id="${card.id}">
+          <article class="experience-card" id="${card.id}" style="${card.InTransition}">
             <div class="experience-card-top">
               <span class="experience-category">
                 ${card.category}
@@ -195,9 +196,9 @@ export function setExperienceSection(): () => void {
     }, EXPERIENCE_RESET_DELAY)
   }
 
-  window.addEventListener('scroll', handleScroll, {
-    passive: true,
-  })
+    window.addEventListener('scroll', handleScroll, {
+      passive: true,
+    })
 
   // =========================
   // CLEANUP
@@ -205,7 +206,6 @@ export function setExperienceSection(): () => void {
 
   return () => {
     observer.disconnect()
-
     window.removeEventListener('scroll', handleScroll)
 
     if (resetTimer !== null) {

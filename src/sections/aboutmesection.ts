@@ -4,29 +4,43 @@ interface AboutCard {
   title: string
   description: string
   detail: string
+  InTransition: string
+  transition: string
 }
 
 const ABOUT_CARDS: AboutCard[] = [
   {
     id: 'about-background',
     title: 'BACKGROUND',
-    description: 'A Computer Science student exploring the world of technology.',
+    description: 'a second year BSCS Cyber Forensics student at NU-APC',
     detail:
-      'Currently learning software development, programming fundamentals, and how different technologies work together.',
+      'Currently learning software development, cybersecurity, and a little hardware.',
+    InTransition: 'opacity: 0; transform: translateX(140px);',
+    
+    transition: 'transition: transform 1.9s cubic-bezier(0.2, 0.8, 0.2, 1),'
+
   },
   {
     id: 'about-development',
     title: 'DEVELOPMENT',
-    description: 'Building projects to turn ideas into working applications.',
+    description: 'Building projects through curiosity and experimentation.',
     detail:
-      'Interested in web development, APIs, backend systems, and creating practical software solutions.',
+      'Interested in web development, machine learning, and creating softwares.',
+      
+    InTransition: 'opacity: 0; transform: translateY(150px);',
+    
+    transition: 'transition: transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1),'
   },
   {
     id: 'about-interests',
     title: 'INTERESTS',
     description: 'Technology, problem-solving, basketball, and music.',
     detail:
-      'Outside programming, I enjoy playing basketball, practicing bass, and exploring new things in technology.',
+      'Outside software development and cybersecurity, I enjoy playing basketball, coffee, music, and spending time with friends .',
+      
+    InTransition: 'opacity: 0; transform: translateX(-150px);',
+
+    transition: 'transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1),'
   },
   {
     id: 'about-goals',
@@ -34,6 +48,11 @@ const ABOUT_CARDS: AboutCard[] = [
     description: 'Continuously improving as a developer.',
     detail:
       'Working toward becoming a software engineer, with particular interest in artificial intelligence and cybersecurity.',
+
+    InTransition: 'opacity: 0; transform: translate(100px);',
+    
+    transition: 'transition: transform 2s cubic-bezier(0.2, 0.8, 0.2, 1),'
+
   },
 ]
 
@@ -84,7 +103,7 @@ export function setAboutMeSection(): () => void {
     <div class="aboutme-grid">
       ${ABOUT_CARDS.map(
         (card) => `
-          <article class="aboutme-card" id="${card.id}">
+          <article class="aboutme-card" id="${card.id}" style="${card.InTransition}">
             <span class="aboutme-card-number">
               ${card.id.replace('about-', '').toUpperCase()}
             </span>

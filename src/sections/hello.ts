@@ -3,19 +3,21 @@ import { scrambleText, splitText } from 'andrewpanimdim'
 const sleep = (ms: number): Promise<void> =>
   new Promise((resolve) => setTimeout(resolve, ms))
 
-// Placeholder: change this to whatever text you want the heading to scramble into
+// Configurable constants
 const SCRAMBLE_TO = "Hello, I'm Andrew"
-
-// WHEN THINGS HAPPEN (milliseconds after the page loads)
-const SHOW_AT_MS = 300 // when "Hello," starts to fade in (it was 1500). Lower = earlier
-const WORD_GAP_MS = 600 // gap between "Hello," and "World"
-const SCRAMBLE_AT_MS = 2300 // when it scrambles into SCRAMBLE_TO (same moment as before)
+const SHOW_AT_MS = 300
+const WORD_GAP_MS = 600
+const SCRAMBLE_AT_MS = 2300
+const BOTTOM_MARGIN = '30%'
 
 export async function setupHello(): Promise<void> {
   const title = document.querySelector<HTMLElement>('#hello')
   if (!title) throw new Error('Missing #hello element')
 
-  // Step 1: fade in word by word (the browser's built-in element.animate)
+  // Apply bottom margin directly to the element
+  title.style.marginBottom = BOTTOM_MARGIN
+
+  // Step 1: Fade in word by word
   const { elements, revert } = splitText(title, { by: 'words' })
 
   elements.forEach((word, i) => {
@@ -25,15 +27,15 @@ export async function setupHello(): Promise<void> {
         duration: 1500,
         delay: SHOW_AT_MS + i * WORD_GAP_MS,
         easing: 'ease-out',
-        fill: 'backwards', // stay invisible until this word's turn
+        fill: 'backwards',
       },
     )
   })
 
-  // Step 2: wait until the scramble time
+  // Step 2: Wait until the scramble trigger time
   await sleep(SCRAMBLE_AT_MS)
 
-  // Step 3: undo the word split, then scramble into the new text
+  // Step 3: Revert split text and trigger title scramble
   revert()
   await scrambleText(title, { text: SCRAMBLE_TO, duration: 1500 }).finished
 }

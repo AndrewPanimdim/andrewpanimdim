@@ -676,6 +676,7 @@ main {
 ========================= */
 
 @media (max-width: 900px) {
+  
 
   main {
     min-height: 100svh;
@@ -697,7 +698,7 @@ main {
   #aboutme {
     position: absolute;
 
-    top: 35svh;
+    top: 32svh;
     left: 5%;
 
     width: 90%;
@@ -706,7 +707,6 @@ main {
     font-size: clamp(1rem, 3.8vw, 1.4rem);
   }
 
-  #cursertrack,
   .gh-badge {
     display: none;
   }

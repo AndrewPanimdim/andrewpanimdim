@@ -111,9 +111,6 @@
 
   border: 1px solid rgba(255, 255, 255, 0.12);
 
-  opacity: 0;
-  transform: translateY(45px);
-
   transition:
     opacity 0.8s ease-out,
     transform 1s cubic-bezier(0.2, 0.8, 0.2, 1),
@@ -130,8 +127,8 @@
 /* Reveal animation */
 
 .aboutme-card.visible {
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 1 !important;
+  transform: translateY(0) translateX(0) !important;
 }
 
 /* Hover */

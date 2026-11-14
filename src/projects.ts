@@ -7,7 +7,7 @@ import './css/projectssection.css'
 import { initScrollDelay } from "./sections/scrolldelay.ts";
 import { initCurserTrack } from './sections/cursortrack'
 import { setProjectsSection } from './sections/projectssection'
-import { initReturnNav } from './sections/returnnav'
+import { initNonMainNAV } from './sections/NonMainNav.ts'
 
 
 const projects = document.querySelector<HTMLElement>('#projects')
@@ -59,4 +59,4 @@ function navigateToProject(): void {
 }
 
 navigateToProject()
-initReturnNav()
+initNonMainNAV()

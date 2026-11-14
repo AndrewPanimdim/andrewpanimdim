@@ -21,7 +21,7 @@ const FALLBACK_LINES = [
 const SHOW_AT_MS = 3000 // when the about me line first slides in (it was 5000). Lower = earlier
 const SLIDE_IN_MS = 800
 const SLIDE_OUT_MS = 600
-const HOLD_MS = 4000
+const HOLD_MS = 1500
 
 async function play(
   el: HTMLElement,
@@ -42,10 +42,10 @@ async function loadAboutLines(): Promise<string[]> {
     ])
 
     const lines = [
-      ...facts.map((item) => item.fact),
       profile.name && profile.location
         ? `${profile.name} · ${profile.location}`
         : profile.name,
+      ...facts.map((item) => item.fact),
         profile.bio,
     ].filter((line): line is string => Boolean(line?.trim()))
 
