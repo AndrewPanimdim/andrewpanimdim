@@ -8,30 +8,40 @@ interface NavSection {
 }
 
 const NAV_SECTIONS: NavSection[] = [
-  { label: 'ABOUT', target: 'aboutMeSection', className: 'tn-about' },
-  { label: 'EXPERIENCE', target: 'experiencesection', className: 'tn-experience' },
-  { label: 'PROJECTS', target: 'moreAM', className: 'tn-projects' },
-  { label: 'DOCS', target: 'docs', className: 'tn-docs' },
+  {
+    label: 'ABOUT',
+    target: 'aboutMeSection',
+    className: 'tn-about',
+  },
+  {
+    label: 'EXPERIENCE',
+    target: 'experiencesection',
+    className: 'tn-experience',
+  },
+  {
+    label: 'PROJECTS',
+    target: 'moreAM',
+    className: 'tn-projects',
+  },
+  {
+    label: 'DOCS',
+    target: 'docs',
+    className: 'tn-docs',
+  },
 ]
 
-// Keep track of the active instance so repeated initialization
-// cannot leave old scroll and resize listeners running.
-let activeTopNavCleanup: (() => void) | null = null
-
 export function initTopNav(): () => void {
-  activeTopNavCleanup?.()
-  activeTopNavCleanup = null
-
-  // Remove any leftover navbar element.
+  // Prevent duplicate navigation instances.
   document.getElementById('topnav')?.remove()
 
   const nav = document.createElement('nav')
   nav.id = 'topnav'
-  nav.setAttribute('aria-label', 'Main navigation')
 
+  // Intro animation.
   document.documentElement.classList.remove('topnav-no-intro')
   document.documentElement.classList.add('topnav-intro')
 
+  // Generate navigation.
   nav.innerHTML = `
     <div class="tn-full">
       <div class="tn-indicator" aria-hidden="true"></div>
@@ -54,7 +64,6 @@ export function initTopNav(): () => void {
       role="button"
       tabindex="0"
       aria-label="Show navigation"
-      aria-expanded="false"
     ></div>
   `
 
@@ -69,12 +78,17 @@ export function initTopNav(): () => void {
   )
 
   let activeCard: HTMLAnchorElement | null = null
-  let lastY = window.scrollY
+
+  // Scroll tracking.
+  let lastY = Math.max(0, window.scrollY)
+  let lastDirection: 'up' | 'down' | null = null
   let directionTravel = 0
-  let waiting = false
+  let scrollFrame = 0
+
   let destroyed = false
   let miniTimer: number | undefined
 
+  // Find sections dynamically.
   const getSections = () => {
     return NAV_SECTIONS
       .map((item) => {
@@ -99,6 +113,7 @@ export function initTopNav(): () => void {
       .sort((a, b) => a.top - b.top)
   }
 
+  // Position active indicator.
   const moveIndicator = (card: HTMLAnchorElement) => {
     if (!indicator || nav.classList.contains('compact')) return
 
@@ -106,6 +121,7 @@ export function initTopNav(): () => void {
     indicator.style.transform = `translateX(${card.offsetLeft}px)`
   }
 
+  // Clear all highlights.
   const clearActive = () => {
     cards.forEach((item) => {
       item.classList.remove('active')
@@ -123,6 +139,7 @@ export function initTopNav(): () => void {
     }
   }
 
+  // Update active navigation.
   const setActive = (target: string) => {
     const card = cards.find(
       (item) => item.dataset.section === target,
@@ -137,13 +154,13 @@ export function initTopNav(): () => void {
 
     card.classList.add('active')
     card.setAttribute('aria-current', 'location')
-
     activeCard = card
 
     if (indicator) {
       indicator.style.opacity = '1'
     }
 
+    // Update mini navigation label.
     if (mini) {
       window.clearTimeout(miniTimer)
 
@@ -170,6 +187,7 @@ export function initTopNav(): () => void {
     })
   }
 
+  // Detect currently visible section.
   const updateActiveSection = () => {
     const sections = getSections()
 
@@ -178,7 +196,7 @@ export function initTopNav(): () => void {
     const activationPoint = window.innerHeight * 0.35
     const currentPosition = window.scrollY + activationPoint
 
-    let currentSection: (typeof sections)[0] | null = null
+    let currentSection: (typeof sections)[number] | null = null
 
     for (const section of sections) {
       if (section.top <= currentPosition) {
@@ -188,6 +206,7 @@ export function initTopNav(): () => void {
       }
     }
 
+    // Activate the last section at page bottom.
     const atBottom =
       window.innerHeight + window.scrollY >=
       document.documentElement.scrollHeight - 2
@@ -203,26 +222,40 @@ export function initTopNav(): () => void {
     }
   }
 
-  
-const scrollToSection = (target: string) => {
-  const section = document.getElementById(target)
+  // Navigate to target using the shared scroll controller.
+  const scrollToSection = (target: string) => {
+    const section = document.getElementById(target)
 
-  if (!section) {
-    console.warn(`[TopNav] Target #${target} does not exist.`)
-    return
+    if (!section) {
+      console.warn(
+        `[TopNav] Target #${target} does not exist.`,
+      )
+      return
+    }
+
+    const destination =
+      section.getBoundingClientRect().top + window.scrollY
+
+    if (
+      window.matchMedia(
+        '(prefers-reduced-motion: reduce)',
+      ).matches
+    ) {
+      window.scrollTo({
+        top: destination,
+        behavior: 'auto',
+      })
+      return
+    }
+
+    window.dispatchEvent(
+      new CustomEvent<number>('portfolio:scroll-to', {
+        detail: destination,
+      }),
+    )
   }
 
-  const destination =
-    section.getBoundingClientRect().top + window.scrollY
-
-  window.dispatchEvent(
-    new CustomEvent<number>('portfolio:scroll-to', {
-      detail: destination,
-    }),
-  )
-}
-
-
+  // Navigation click.
   const onNavClick = (event: MouseEvent) => {
     const target = event.target
 
@@ -230,44 +263,33 @@ const scrollToSection = (target: string) => {
 
     const card = target.closest<HTMLAnchorElement>('.tn-card')
 
-    if (!card || !full?.contains(card)) return
+    if (!card) return
+
+    event.preventDefault()
 
     const sectionId = card.dataset.section
 
     if (!sectionId) return
 
-    const section = document.getElementById(sectionId)
-
-    if (!section) {
-      console.warn(`[TopNav] Target #${sectionId} does not exist.`)
-      return
-    }
-
-    event.preventDefault()
     scrollToSection(sectionId)
   }
 
   full?.addEventListener('click', onNavClick)
 
-  const onCardMouseEnter = (event: Event) => {
-    if (destroyed || nav.classList.contains('compact')) return
-
-    const card = event.currentTarget
-
-    if (!(card instanceof HTMLAnchorElement)) return
-
-    moveIndicator(card)
-
-    if (indicator) {
-      indicator.style.opacity = '1'
-    }
-  }
-
+  // Indicator hover effects.
   cards.forEach((card) => {
-    card.addEventListener('mouseenter', onCardMouseEnter)
+    card.addEventListener('mouseenter', () => {
+      if (destroyed || nav.classList.contains('compact')) return
+
+      moveIndicator(card)
+
+      if (indicator) {
+        indicator.style.opacity = '1'
+      }
+    })
   })
 
-  const onFullMouseLeave = () => {
+  full?.addEventListener('mouseleave', () => {
     if (destroyed || nav.classList.contains('compact')) return
 
     if (activeCard) {
@@ -279,35 +301,20 @@ const scrollToSection = (target: string) => {
     } else if (indicator) {
       indicator.style.opacity = '0'
     }
-  }
+  })
 
-  full?.addEventListener('mouseleave', onFullMouseLeave)
-
+  // Expand compact navigation.
   const expandNav = () => {
     nav.classList.remove('compact')
-
-    mini?.setAttribute('aria-expanded', 'true')
-
     directionTravel = 0
-
-    requestAnimationFrame(() => {
-      if (activeCard && !destroyed) {
-        moveIndicator(activeCard)
-      }
-    })
+    lastDirection = null
   }
 
   const onCompactClick = (event: MouseEvent) => {
     if (!nav.classList.contains('compact')) return
 
-    const target = event.target
-
-    if (!(target instanceof Element)) return
-
-    if (target.closest('.tn-mini')) {
-      event.stopPropagation()
-      expandNav()
-    }
+    event.stopPropagation()
+    expandNav()
   }
 
   const onMiniKey = (event: KeyboardEvent) => {
@@ -320,6 +327,7 @@ const scrollToSection = (target: string) => {
   nav.addEventListener('click', onCompactClick, true)
   mini?.addEventListener('keydown', onMiniKey)
 
+  // Reposition indicator after navbar width transition.
   const onNavTransitionEnd = (event: TransitionEvent) => {
     if (event.target !== nav) return
     if (event.propertyName !== 'width') return
@@ -336,8 +344,11 @@ const scrollToSection = (target: string) => {
 
   nav.addEventListener('transitionend', onNavTransitionEnd)
 
+  // Resize handling.
   const onResize = () => {
-    if (destroyed) return
+    lastY = Math.max(0, window.scrollY)
+    directionTravel = 0
+    lastDirection = null
 
     updateActiveSection()
 
@@ -346,46 +357,75 @@ const scrollToSection = (target: string) => {
     }
   }
 
+  // Detect scroll direction and update navbar state.
   const update = () => {
+    scrollFrame = 0
+
     if (destroyed) return
 
-    const y = window.scrollY
+    const y = Math.max(0, window.scrollY)
     const delta = y - lastY
-    const isMobile = window.innerWidth <= 900
 
-    if (y < 10 || isMobile) {
+    // Always show full navigation near the top.
+    if (y <= 10) {
       nav.classList.remove('compact')
-      mini?.setAttribute('aria-expanded', 'true')
       directionTravel = 0
-    } else {
-      directionTravel += delta
+      lastDirection = null
+    } else if (Math.abs(delta) > 0.5) {
+      const newDirection: 'up' | 'down' =
+        delta > 0 ? 'down' : 'up'
 
-      if (directionTravel > 35) {
-        nav.classList.add('compact')
-        mini?.setAttribute('aria-expanded', 'false')
+      // Reset accumulated distance when direction changes.
+      if (newDirection !== lastDirection) {
+        lastDirection = newDirection
         directionTravel = 0
-      } else if (directionTravel < -35) {
+      }
+
+      directionTravel += Math.abs(delta)
+
+      // Smaller threshold for touch devices.
+      const threshold = window.matchMedia('(pointer: coarse)').matches
+        ? 12
+        : 14
+
+      // Scrolling down: collapse navbar.
+      if (
+        newDirection === 'down' &&
+        directionTravel >= threshold
+      ) {
+        nav.classList.add('compact')
+        directionTravel = 0
+      }
+
+      // Scrolling up: expand navbar.
+      if (
+        newDirection === 'up' &&
+        directionTravel >= threshold
+      ) {
         nav.classList.remove('compact')
-        mini?.setAttribute('aria-expanded', 'true')
         directionTravel = 0
       }
     }
 
     lastY = y
+
     updateActiveSection()
-    waiting = false
   }
 
+  // Schedule one update per animation frame.
   const onScroll = () => {
-    if (waiting || destroyed) return
+    if (scrollFrame) return
 
-    waiting = true
-    requestAnimationFrame(update)
+    scrollFrame = requestAnimationFrame(update)
   }
 
-  window.addEventListener('scroll', onScroll, { passive: true })
+  window.addEventListener('scroll', onScroll, {
+    passive: true,
+  })
+
   window.addEventListener('resize', onResize)
 
+  // Initial state.
   requestAnimationFrame(() => {
     if (destroyed) return
 
@@ -398,26 +438,24 @@ const scrollToSection = (target: string) => {
     }
   })
 
-  const cleanup = () => {
-    if (destroyed) return
-
+  // Cleanup.
+  return () => {
     destroyed = true
 
     window.clearTimeout(miniTimer)
+    cancelAnimationFrame(scrollFrame)
 
     window.removeEventListener('scroll', onScroll)
     window.removeEventListener('resize', onResize)
 
     full?.removeEventListener('click', onNavClick)
-    full?.removeEventListener('mouseleave', onFullMouseLeave)
-
-    cards.forEach((card) => {
-      card.removeEventListener('mouseenter', onCardMouseEnter)
-    })
-
     nav.removeEventListener('click', onCompactClick, true)
     mini?.removeEventListener('keydown', onMiniKey)
-    nav.removeEventListener('transitionend', onNavTransitionEnd)
+
+    nav.removeEventListener(
+      'transitionend',
+      onNavTransitionEnd,
+    )
 
     nav.remove()
 
@@ -425,13 +463,5 @@ const scrollToSection = (target: string) => {
       'topnav-intro',
       'topnav-no-intro',
     )
-
-    if (activeTopNavCleanup === cleanup) {
-      activeTopNavCleanup = null
-    }
   }
-
-  activeTopNavCleanup = cleanup
-
-  return cleanup
 }
