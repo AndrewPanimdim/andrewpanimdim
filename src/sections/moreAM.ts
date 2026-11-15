@@ -37,17 +37,17 @@ const CARDS: Card[] = [
   {
     id: 'am-d',
     projectId: 'project-d',
-    title: 'Appliance-Control',
-    gif: 'a.gif',
-    repo: 'appliance-control',
-    stack: ['Tech 1', 'Tech 2'],
+    title: 'American Sign Language Reader',
+    gif: 'asl.gif',
+    repo: 'mini-ASL-reader-ML-',
+    stack: ['Tech 1', 'Tech 2']
   },
   {
     id: 'am-e',
     projectId: 'project-e',
-    title: 'American Sign Language Reader',
-    gif: 'asl.gif',
-    repo: 'mini-ASL-reader-ML-',
+    title: 'Appliance-Control',
+    gif: 'a.gif',
+    repo: 'appliance-control',
     stack: ['Tech 1', 'Tech 2'],
   },
 ]

@@ -16,7 +16,7 @@ const MY_EXPERIENCES: ExperienceCard[] = [
     description:
       'Web Development & UI/UX Team ',
     detail:
-      'I was responsible for creating the header and footer of the official website, and designing the whole UI of the App apk used in the election. ',
+      'I was responsible for designing the whole UI of the App apk used in the election, and creating the header and footer of the official NAMFRELL-APC website. ',
     period: 'FINISHED',
     InTransition: 'opacity: 0; transform: translateX(150px);',
   },
@@ -24,9 +24,9 @@ const MY_EXPERIENCES: ExperienceCard[] = [
     id: 'exp-02',
     category: '',
     title: 'Google Developer',
-    description: 'ang aking pangarap HAHAHHA',
+    description: '',
     detail:
-      'google developer ako kunware ehey',
+      'kunware hahaha',
     period: 'ONGOING',
     InTransition: 'opacity: 0; transform: translateY(50px);',
   },
@@ -68,7 +68,7 @@ export function setExperienceSection(): () => void {
       <h1 id="experienceheading">EXPERIENCE</h1>
 
       <p>
-        A look into my development journey and the projects I've worked on.
+        my journey and projects I've worked on.
       </p>
     </header>
 

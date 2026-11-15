@@ -50,19 +50,20 @@ const PROJECTS: Project[] = [
   },
   {
     id: 'project-d',
-    title: 'Appliance-Control',
-    description: 'a little experimenting project',
-    gif: 'a.gif',
-    repo: 'appliance-control',
-    stack: ['Tech 1', 'Tech 2'],
-  },
-  {
-    id: 'project-e',
     title: 'American Sign Language Reader',
     description: 'me trying to learn machine learning',
     gif: 'asl.gif',
     repo:'mini-ASL-reader-ML-',
     stack: ['Tech 1', 'Tech 2'],
+  },
+  {
+    id: 'project-e',
+    title: 'Appliance-Control',
+    description: 'a little experimenting project',
+    gif: 'a.gif',
+    repo: 'appliance-control',
+    stack: ['Tech 1', 'Tech 2'],
+    
   },
 ]
 
