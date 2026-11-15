@@ -70,7 +70,6 @@ const MAX_CHIPS = 4
 const CACHE_MS = 60 * 60 * 1000
 const SHOW_WHEN_VISIBLE = 0.2
 const BOTTOM_MARGIN = '12%'
-const RESET_DELAY = 8000
 
 async function getJson<T>(url: string): Promise<T> {
   const response = await fetch(url, {
@@ -225,7 +224,6 @@ function createProjectCard(
           `Could not fetch GitHub data for ${project.repo}:`,
           error,
         )
-        // Keep the fallback description and chips
       })
   }
 
@@ -253,20 +251,18 @@ export function setProjectsSection(): () => void {
     '.project-card',
   )
 
-  let resetTimer: ReturnType<typeof setTimeout> | null = null
   let observer: IntersectionObserver
-  let hasPlayed = false
 
-  function observeCards(): void {
+  function initObserver(): void {
     observer = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue
-
-          entry.target.classList.add('visible')
-          observer.unobserve(entry.target)
-          hasPlayed = true
-        }
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+          } else {
+            entry.target.classList.remove('visible')
+          }
+        })
       },
       {
         threshold: SHOW_WHEN_VISIBLE,
@@ -279,55 +275,12 @@ export function setProjectsSection(): () => void {
     })
   }
 
-  observeCards()
-
-  function handleScroll(): void {
-    const sectionTop = root.getBoundingClientRect().top
-    const scrolledAbove = sectionTop > window.innerHeight
-
-    if (!scrolledAbove) {
-      if (resetTimer !== null) {
-        clearTimeout(resetTimer)
-        resetTimer = null
-      }
-
-      return
-    }
-
-    if (!hasPlayed || resetTimer !== null) return
-
-    resetTimer = setTimeout(() => {
-      const stillAbove =
-        root.getBoundingClientRect().top > window.innerHeight
-
-      if (stillAbove) {
-        observedCards.forEach((card) => {
-          card.classList.remove('visible')
-        })
-
-        hasPlayed = false
-
-        observer.disconnect()
-        observeCards()
-      }
-
-      resetTimer = null
-    }, RESET_DELAY)
-  }
-
-  window.addEventListener('scroll', handleScroll, {
-    passive: true,
-  })
+  initObserver()
 
   return () => {
-    observer.disconnect()
-    window.removeEventListener('scroll', handleScroll)
-
-    if (resetTimer !== null) {
-      clearTimeout(resetTimer)
-      resetTimer = null
+    if (observer) {
+      observer.disconnect()
     }
-
     root.replaceChildren()
   }
 }

@@ -11,7 +11,7 @@ interface ExperienceCard {
 const MY_EXPERIENCES: ExperienceCard[] = [
   {
     id: 'exp-01',
-    category: 'DEVELOPMENT',
+    category: 'DEVELOPMENT & DESIGNING',
     title: 'ASIA PACIFIC COLLEGE - NAMFRELL BARMM FIRST PARLIAMENTARY ELECTION 2026',
     description:
       'Web Development & UI/UX Team ',
@@ -22,19 +22,18 @@ const MY_EXPERIENCES: ExperienceCard[] = [
   },
   {
     id: 'exp-02',
-    category: 'PROGRAMMING',
-    title: 'Programming Projects',
-    description: 'Applying programming concepts to practical projects.',
+    category: '',
+    title: 'Google Developer',
+    description: 'ang aking pangarap HAHAHHA',
     detail:
-      'Developing problem-solving skills through programming exercises, experimenting with different technologies, and learning software development practices.',
+      'google developer ako kunware ehey',
     period: 'ONGOING',
-    InTransition: 'opacity: 0; transform: translateY(150px);',
+    InTransition: 'opacity: 0; transform: translateY(50px);',
   },
 ]
 
 const EXPERIENCE_THRESHOLD = 0.2
 const EXPERIENCE_BOTTOM_MARGIN = '12%'
-const EXPERIENCE_RESET_DELAY = 8000
 
 export function setExperienceSection(): () => void {
   // =========================
@@ -66,10 +65,6 @@ export function setExperienceSection(): () => void {
 
   root.innerHTML = `
     <header class="experience-heading">
-      <span class="experience-eyebrow">
-        WHAT I'VE BEEN WORKING ON
-      </span>
-
       <h1 id="experienceheading">EXPERIENCE</h1>
 
       <p>
@@ -128,22 +123,17 @@ export function setExperienceSection(): () => void {
   // =========================
 
   let observer: IntersectionObserver
-  let hasPlayed = false
 
-  let resetTimer: ReturnType<typeof setTimeout> | null = null
-
-  function observeElements(): void {
+  function initObserver(): void {
     observer = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue
-
-          entry.target.classList.add('visible')
-
-          observer.unobserve(entry.target)
-
-          hasPlayed = true
-        }
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+          } else {
+            entry.target.classList.remove('visible')
+          }
+        })
       },
       {
         threshold: EXPERIENCE_THRESHOLD,
@@ -156,63 +146,16 @@ export function setExperienceSection(): () => void {
     })
   }
 
-  observeElements()
-
-  // =========================
-  // SCROLL RESET LOGIC
-  // =========================
-
-  function handleScroll(): void {
-    const sectionTop = root.getBoundingClientRect().top
-    const scrolledWayBackUp = sectionTop > window.innerHeight
-
-    if (!scrolledWayBackUp) {
-      if (resetTimer !== null) {
-        clearTimeout(resetTimer)
-        resetTimer = null
-      }
-
-      return
-    }
-
-    if (!hasPlayed || resetTimer !== null) return
-
-    resetTimer = setTimeout(() => {
-      const stillAboveSection =
-        root.getBoundingClientRect().top > window.innerHeight
-
-      if (stillAboveSection) {
-        animatedElements.forEach((element) => {
-          element.classList.remove('visible')
-        })
-
-        hasPlayed = false
-
-        observer.disconnect()
-        observeElements()
-      }
-
-      resetTimer = null
-    }, EXPERIENCE_RESET_DELAY)
-  }
-
-    window.addEventListener('scroll', handleScroll, {
-      passive: true,
-    })
+  initObserver()
 
   // =========================
   // CLEANUP
   // =========================
 
   return () => {
-    observer.disconnect()
-    window.removeEventListener('scroll', handleScroll)
-
-    if (resetTimer !== null) {
-      clearTimeout(resetTimer)
-      resetTimer = null
+    if (observer) {
+      observer.disconnect()
     }
-
     root.replaceChildren()
   }
 }

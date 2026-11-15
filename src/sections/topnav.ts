@@ -12,19 +12,16 @@ const NAV_SECTIONS: NavSection[] = [
     target: 'aboutMeSection',
     className: 'tn-about',
   },
-
-   {
+  {
     label: 'EXPERIENCE',
     target: 'experiencesection',
     className: 'tn-experience',
   },
-
   {
     label: 'PROJECTS',
     target: 'moreAM',
     className: 'tn-projects',
   },
- 
   {
     label: 'DOCS',
     target: 'docs',
@@ -112,9 +109,25 @@ export function initTopNav(): () => void {
     if (!indicator || nav.classList.contains('compact')) return
 
     indicator.style.width = `${card.offsetWidth}px`
+    indicator.style.transform = `translateX(${card.offsetLeft}px)`
+  }
 
-    indicator.style.transform =
-      `translateX(${card.offsetLeft}px)`
+  // Clear all highlights and hide indicator when no section is reached.
+  const clearActive = () => {
+    cards.forEach((item) => {
+      item.classList.remove('active')
+      item.removeAttribute('aria-current')
+    })
+
+    activeCard = null
+
+    if (indicator) {
+      indicator.style.opacity = '0'
+    }
+
+    if (mini && !nav.classList.contains('compact')) {
+      mini.textContent = ''
+    }
   }
 
   // Update active navigation.
@@ -134,6 +147,10 @@ export function initTopNav(): () => void {
     card.setAttribute('aria-current', 'location')
 
     activeCard = card
+
+    if (indicator) {
+      indicator.style.opacity = '1'
+    }
 
     // Smoothly update mini label.
     if (mini) {
@@ -170,11 +187,9 @@ export function initTopNav(): () => void {
     if (!sections.length) return
 
     const activationPoint = window.innerHeight * 0.35
+    const currentPosition = window.scrollY + activationPoint
 
-    const currentPosition =
-      window.scrollY + activationPoint
-
-    let currentSection = sections[0]
+    let currentSection: (typeof sections)[0] | null = null
 
     for (const section of sections) {
       if (section.top <= currentPosition) {
@@ -193,7 +208,11 @@ export function initTopNav(): () => void {
       currentSection = sections[sections.length - 1]
     }
 
-    setActive(currentSection.target)
+    if (currentSection) {
+      setActive(currentSection.target)
+    } else {
+      clearActive()
+    }
   }
 
   // Scroll to target.
@@ -238,6 +257,27 @@ export function initTopNav(): () => void {
 
   full?.addEventListener('click', onNavClick)
 
+  // Hover effects for indicator opacity & movement
+  cards.forEach((card) => {
+    card.addEventListener('mouseenter', () => {
+      if (destroyed || nav.classList.contains('compact')) return
+      moveIndicator(card)
+      if (indicator) {
+        indicator.style.opacity = '1'
+      }
+    })
+  })
+
+  full?.addEventListener('mouseleave', () => {
+    if (destroyed || nav.classList.contains('compact')) return
+    if (activeCard) {
+      moveIndicator(activeCard)
+      if (indicator) indicator.style.opacity = '1'
+    } else {
+      if (indicator) indicator.style.opacity = '0'
+    }
+  })
+
   // Clicking anywhere on the compact nav makes it tn-full again.
   const expandNav = () => {
     nav.classList.remove('compact')
@@ -247,7 +287,7 @@ export function initTopNav(): () => void {
   const onCompactClick = (event: MouseEvent) => {
     if (!nav.classList.contains('compact')) return
 
-    event.stopPropagation() // expand only, do not also trigger a link
+    event.stopPropagation()
     expandNav()
   }
 
@@ -343,6 +383,8 @@ export function initTopNav(): () => void {
 
     if (activeCard) {
       moveIndicator(activeCard)
+    } else if (indicator) {
+      indicator.style.opacity = '0'
     }
   })
 

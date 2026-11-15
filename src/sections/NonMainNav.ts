@@ -19,21 +19,6 @@ const NONMAINNAV_SECTIONS: NavSection[] = [
     target: 'aboutMeSection',
     className: 'tn-about',
   },
-  {
-    label: 'EXPERIENCE',
-    target: 'experiencesection',
-    className: 'tn-experience',
-  },
-  {
-    label: 'PROJECTS',
-    target: 'moreAM',
-    className: 'tn-projects',
-  },
-  {
-    label: 'DOCS',
-    target: 'docs',
-    className: 'tn-docs',
-  },
 ]
 
 export function initNonMainNAV(): () => void {
@@ -120,6 +105,24 @@ export function initNonMainNAV(): () => void {
     indicator.style.transform = `translateX(${card.offsetLeft}px)`
   }
 
+  // Clear active highlights and hide indicator when not in any tracked section.
+  const clearActive = () => {
+    cards.forEach((item) => {
+      item.classList.remove('active')
+      item.removeAttribute('aria-current')
+    })
+
+    activeCard = null
+
+    if (indicator) {
+      indicator.style.opacity = '0'
+    }
+
+    if (mini && !nav.classList.contains('compact')) {
+      mini.textContent = ''
+    }
+  }
+
   // Update active navigation.
   const setActive = (target: string) => {
     const card = cards.find(
@@ -137,6 +140,10 @@ export function initNonMainNAV(): () => void {
     card.setAttribute('aria-current', 'location')
 
     activeCard = card
+
+    if (indicator) {
+      indicator.style.opacity = '1'
+    }
 
     // Smoothly update mini label.
     if (mini) {
@@ -170,12 +177,15 @@ export function initNonMainNAV(): () => void {
   const updateActiveSection = () => {
     const sections = getSections()
 
-    if (!sections.length) return
+    if (!sections.length) {
+      clearActive()
+      return
+    }
 
     const activationPoint = window.innerHeight * 0.35
     const currentPosition = window.scrollY + activationPoint
 
-    let currentSection = sections[0]
+    let currentSection: (typeof sections)[0] | null = null
 
     for (const section of sections) {
       if (section.top <= currentPosition) {
@@ -194,7 +204,11 @@ export function initNonMainNAV(): () => void {
       currentSection = sections[sections.length - 1]
     }
 
-    setActive(currentSection.target)
+    if (currentSection) {
+      setActive(currentSection.target)
+    } else {
+      clearActive()
+    }
   }
 
   // Scroll to target or navigate home.
@@ -239,6 +253,27 @@ export function initNonMainNAV(): () => void {
   }
 
   full?.addEventListener('click', onNavClick)
+
+  // Hover effects for indicator opacity & movement
+  cards.forEach((card) => {
+    card.addEventListener('mouseenter', () => {
+      if (destroyed || nav.classList.contains('compact')) return
+      moveIndicator(card)
+      if (indicator) {
+        indicator.style.opacity = '1'
+      }
+    })
+  })
+
+  full?.addEventListener('mouseleave', () => {
+    if (destroyed || nav.classList.contains('compact')) return
+    if (activeCard) {
+      moveIndicator(activeCard)
+      if (indicator) indicator.style.opacity = '1'
+    } else {
+      if (indicator) indicator.style.opacity = '0'
+    }
+  })
 
   // Clicking anywhere on the compact nav makes it tn-full again.
   const expandNav = () => {
@@ -337,6 +372,8 @@ export function initNonMainNAV(): () => void {
 
     if (activeCard) {
       moveIndicator(activeCard)
+    } else if (indicator) {
+      indicator.style.opacity = '0'
     }
   })
 

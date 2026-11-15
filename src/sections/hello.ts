@@ -1,41 +1,73 @@
-import { scrambleText, splitText } from 'andrewpanimdim'
+import { scrambleText } from 'andrewpanimdim'
 
-const sleep = (ms: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, ms))
-
-// Configurable constants
 const SCRAMBLE_TO = "Hello, I'm Andrew"
-const SHOW_AT_MS = 300
-const WORD_GAP_MS = 600
-const SCRAMBLE_AT_MS = 2300
-const BOTTOM_MARGIN = '30%'
+const SCRAMBLE_DELAY = 2300 // Time to wait after entering view before scrambling
+const SHOW_WHEN_VISIBLE = 0.2
+const BOTTOM_MARGIN = '30%' // Increase this (e.g. 40% or 50%) to make it start disappearing sooner
 
-export async function setupHello(): Promise<void> {
+export function setupHello(): () => void {
   const title = document.querySelector<HTMLElement>('#hello')
-  if (!title) throw new Error('Missing #hello element')
+  if (!title) {
+    console.error('Missing #hello element')
+    return () => {}
+  }
+
+  // Ensure TypeScript knows this element is strictly non-null inside closures
+  const el: HTMLElement = title
 
   // Apply bottom margin directly to the element
-  title.style.marginBottom = BOTTOM_MARGIN
+  el.style.marginBottom = BOTTOM_MARGIN
+  const originalText = el.textContent || "Hello, I'm Andrew"
 
-  // Step 1: Fade in word by word
-  const { elements, revert } = splitText(title, { by: 'words' })
+  let observer: IntersectionObserver
+  let scrambleTimer: ReturnType<typeof setTimeout> | null = null
 
-  elements.forEach((word, i) => {
-    word.animate(
-      { opacity: [0, 1] },
+  function initObserver(): void {
+    observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Add visible class -> triggers CSS slide-down & fade-in
+            entry.target.classList.add('visible')
+
+            // Trigger text scramble after delay
+            if (scrambleTimer === null) {
+              scrambleTimer = setTimeout(() => {
+                scrambleText(el, { text: SCRAMBLE_TO, duration: 1500 })
+              }, SCRAMBLE_DELAY)
+            }
+          } else {
+            // Remove visible class -> CSS instantly transitions it back out smoothly
+            entry.target.classList.remove('visible')
+
+            // Clear timer and reset text back to original when out of view
+            if (scrambleTimer !== null) {
+              clearTimeout(scrambleTimer)
+              scrambleTimer = null
+            }
+            el.textContent = originalText
+          }
+        })
+      },
       {
-        duration: 1500,
-        delay: SHOW_AT_MS + i * WORD_GAP_MS,
-        easing: 'ease-out',
-        fill: 'backwards',
+        threshold: SHOW_WHEN_VISIBLE,
+        rootMargin: `0px 0px -${BOTTOM_MARGIN} 0px`,
       },
     )
-  })
 
-  // Step 2: Wait until the scramble trigger time
-  await sleep(SCRAMBLE_AT_MS)
+    observer.observe(el)
+  }
 
-  // Step 3: Revert split text and trigger title scramble
-  revert()
-  await scrambleText(title, { text: SCRAMBLE_TO, duration: 1500 }).finished
+  initObserver()
+
+  // Cleanup function
+  return () => {
+    if (observer) {
+      observer.disconnect()
+    }
+    if (scrambleTimer !== null) {
+      clearTimeout(scrambleTimer)
+    }
+    el.textContent = originalText
+  }
 }

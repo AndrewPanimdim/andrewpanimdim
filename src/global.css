@@ -55,17 +55,22 @@ main {
 }
 
 #hello {
-
   position: absolute;
-
   top: 8%;
-
   font-size: clamp(5.7rem, calc(3.3rem + 0.5vw), 0.2rem);
-
   
-  /*font-family: "Alfa Slab One", sans-serif;
-*/
+  /* Initial hidden state */
+  opacity: 0;
+  transform: translateY(-25px);
+  
+  /* Smooth transition for both appearing and resetting */
+  transition: opacity 1.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
 
+#hello.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 
@@ -496,7 +501,7 @@ main {
 
   position: absolute;
 
-  top: 400%;
+  top: 150%;
 
 }
 
@@ -698,7 +703,7 @@ main {
   #aboutme {
     position: absolute;
 
-    top: 32svh;
+    top: 34svh;
     left: 5%;
 
     width: 90%;
@@ -706,7 +711,7 @@ main {
 
     font-size: clamp(1rem, 3.8vw, 1.4rem);
   }
-
+  #cursertrack,
   .gh-badge {
     display: none;
   }

@@ -12,7 +12,7 @@
   bottom: 16px;
   left: 50%;
 
-  width: min(94vw, 480px); /* Increased width to easily fit all 5 navigation cards */
+  width: min(94vw, 330px); /* Increased width to easily fit all 5 navigation cards */
   height: var(--nav-height);
 
   display: flex;

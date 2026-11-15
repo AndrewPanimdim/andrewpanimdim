@@ -38,14 +38,7 @@
   transform: translateY(0);
 }
 
-.experience-eyebrow {
-  font-family: 'Barlow Condensed', sans-serif;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: 4px;
-  color: #888;
-  margin-bottom: 12px;
-}
+
 
 .experience-heading h1 {
   font-family: 'Barlow Condensed', sans-serif;
@@ -219,10 +212,6 @@
     max-width: 300px;
   }
 
-  .experience-eyebrow {
-    font-size: 11px;
-    letter-spacing: 3px;
-  }
 
   .experience-grid {
     grid-template-columns: 1fr;

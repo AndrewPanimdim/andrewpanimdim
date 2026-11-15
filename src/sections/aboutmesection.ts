@@ -1,4 +1,3 @@
-
 interface AboutCard {
   id: string
   title: string
@@ -11,25 +10,12 @@ interface AboutCard {
 const ABOUT_CARDS: AboutCard[] = [
   {
     id: 'about-background',
-    title: 'BACKGROUND',
+    title: 'EDUCATION',
     description: 'a second year BSCS Cyber Forensics student at NU-APC',
     detail:
       'Currently learning software development, cybersecurity, and a little hardware.',
     InTransition: 'opacity: 0; transform: translateX(140px);',
-    
-    transition: 'transition: transform 1.9s cubic-bezier(0.2, 0.8, 0.2, 1),'
-
-  },
-  {
-    id: 'about-development',
-    title: 'DEVELOPMENT',
-    description: 'Building projects through curiosity and experimentation.',
-    detail:
-      'Interested in web development, machine learning, and creating softwares.',
-      
-    InTransition: 'opacity: 0; transform: translateY(150px);',
-    
-    transition: 'transition: transform 1.4s cubic-bezier(0.2, 0.8, 0.2, 1),'
+    transition: 'transition: transform 1.9s cubic-bezier(0.2, 0.8, 0.2, 1),',
   },
   {
     id: 'about-interests',
@@ -37,10 +23,8 @@ const ABOUT_CARDS: AboutCard[] = [
     description: 'Technology, problem-solving, basketball, and music.',
     detail:
       'Outside software development and cybersecurity, I enjoy playing basketball, coffee, music, and spending time with friends .',
-      
     InTransition: 'opacity: 0; transform: translateX(-150px);',
-
-    transition: 'transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1),'
+    transition: 'transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1),',
   },
   {
     id: 'about-goals',
@@ -48,17 +32,13 @@ const ABOUT_CARDS: AboutCard[] = [
     description: 'Continuously improving as a developer.',
     detail:
       'Working toward becoming a software engineer, with particular interest in artificial intelligence and cybersecurity.',
-
     InTransition: 'opacity: 0; transform: translate(100px);',
-    
-    transition: 'transition: transform 2s cubic-bezier(0.2, 0.8, 0.2, 1),'
-
+    transition: 'transition: transform 2s cubic-bezier(0.2, 0.8, 0.2, 1),',
   },
 ]
 
 const SHOW_WHEN_VISIBLE = 0.2
 const BOTTOM_MARGIN = '12%'
-const RESET_DELAY = 8000
 
 export function setAboutMeSection(): () => void {
   // =========================
@@ -78,7 +58,6 @@ export function setAboutMeSection(): () => void {
     return () => {}
   }
 
-  // Explicitly typed as HTMLElement for nested functions.
   const root: HTMLElement = rootElement
   const moreAM: HTMLElement = moreAMElement
 
@@ -91,12 +70,11 @@ export function setAboutMeSection(): () => void {
 
   root.innerHTML = `
     <header class="aboutme-heading">
-      <span class="aboutme-eyebrow">GET TO KNOW ME</span>
-
+      
       <h1 id="aboutmeheading">ABOUT ME</h1>
 
       <p>
-        A little background about who I am and what I do.
+        A little background about who I am
       </p>
     </header>
 
@@ -139,21 +117,20 @@ export function setAboutMeSection(): () => void {
   // INTERSECTION OBSERVER
   // =========================
 
-  let resetTimer: ReturnType<typeof setTimeout> | null = null
-  let hasPlayed = false
   let observer: IntersectionObserver
 
-  function observeCards(): void {
+  function initObserver(): void {
     observer = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue
-
-          entry.target.classList.add('visible')
-          observer.unobserve(entry.target)
-
-          hasPlayed = true
-        }
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Add visible when entering the viewport
+            entry.target.classList.add('visible')
+          } else {
+            // Remove visible immediately when leaving the viewport (above or below)
+            entry.target.classList.remove('visible')
+          }
+        })
       },
       {
         threshold: SHOW_WHEN_VISIBLE,
@@ -166,65 +143,17 @@ export function setAboutMeSection(): () => void {
     })
   }
 
-  observeCards()
-
-  // =========================
-  // SCROLL RESET LOGIC
-  // =========================
-
-  function handleScroll(): void {
-    const sectionTop = root.getBoundingClientRect().top
-    const scrolledWayBackUp = sectionTop > window.innerHeight
-
-    if (!scrolledWayBackUp) {
-      if (resetTimer !== null) {
-        clearTimeout(resetTimer)
-        resetTimer = null
-      }
-
-      return
-    }
-
-    if (!hasPlayed || resetTimer !== null) return
-
-    resetTimer = setTimeout(() => {
-      const stillAboveSection =
-        root.getBoundingClientRect().top > window.innerHeight
-
-      if (stillAboveSection) {
-        animatedElements.forEach((element) => {
-          element.classList.remove('visible')
-        })
-
-        hasPlayed = false
-
-        observer.disconnect()
-        observeCards()
-      }
-
-      resetTimer = null
-    }, RESET_DELAY)
-  }
-
-  window.addEventListener('scroll', handleScroll, {
-    passive: true,
-  })
+  initObserver()
 
   // =========================
   // CLEANUP
   // =========================
 
   return () => {
-    observer.disconnect()
-
-    window.removeEventListener('scroll', handleScroll)
-
-    if (resetTimer !== null) {
-      clearTimeout(resetTimer)
-      resetTimer = null
+    if (observer) {
+      observer.disconnect()
     }
 
-    // Keep the section container in the DOM.
     root.replaceChildren()
   }
 }

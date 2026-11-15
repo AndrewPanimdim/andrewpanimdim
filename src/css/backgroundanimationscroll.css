@@ -1,0 +1,11 @@
+.Projects div {
+    text-align: center;
+    transition: 
+        text-shadow 0.5s cubic-bezier(0.4,0,0.2,1),
+        transform 0.5s cubic-bezier(0.4,0,0.2,1);
+    cursor: pointer;
+    animation: appearright 5s linear;
+    animation-timeline:view();
+    animation-range: entry 0% cover 44%;
+
+}

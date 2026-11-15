@@ -1,10 +1,3 @@
-// Each card shows a GIF, a title, and a row of tech-stack chips.
-//
-// title: Name displayed under the GIF.
-// gif: File name inside public/gif.
-// repo: GitHub repository name under GITHUB_USER.
-// stack: Fallback technology chips.
-
 const GITHUB_USER = 'AndrewPanimdim'
 
 interface Card {
@@ -64,7 +57,6 @@ const CACHE_MS = 60 * 60 * 1000
 
 const SHOW_WHEN_VISIBLE = 0.2
 const BOTTOM_MARGIN = '12%'
-const RESET_DELAY = 8000
 
 // =========================
 // GITHUB API
@@ -265,25 +257,18 @@ export function setmoreaboutme(): () => void {
   // =========================
 
   const cards = root.querySelectorAll<HTMLElement>('.am-card')
-
-  let resetTimer: ReturnType<typeof setTimeout> | null = null
-
   let observer: IntersectionObserver
 
-  let hasPlayed = false
-
-  function observeCards(): void {
+  function initObserver(): void {
     observer = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
-          if (!entry.isIntersecting) continue
-
-          entry.target.classList.add('visible')
-
-          observer.unobserve(entry.target)
-
-          hasPlayed = true
-        }
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+          } else {
+            entry.target.classList.remove('visible')
+          }
+        })
       },
       {
         threshold: SHOW_WHEN_VISIBLE,
@@ -296,51 +281,7 @@ export function setmoreaboutme(): () => void {
     })
   }
 
-  observeCards()
-
-  // =========================
-  // SCROLL RESET
-  // =========================
-
-  function handleScroll(): void {
-    const sectionTop = root.getBoundingClientRect().top
-
-    const scrolledWayBackUp = sectionTop > window.innerHeight
-
-    if (!scrolledWayBackUp) {
-      if (resetTimer !== null) {
-        clearTimeout(resetTimer)
-        resetTimer = null
-      }
-
-      return
-    }
-
-    if (!hasPlayed || resetTimer !== null) return
-
-    resetTimer = setTimeout(() => {
-      const stillAboveSection =
-        root.getBoundingClientRect().top > window.innerHeight
-
-      if (stillAboveSection) {
-        cards.forEach((card) => {
-          card.classList.remove('visible')
-        })
-
-        hasPlayed = false
-
-        observer.disconnect()
-
-        observeCards()
-      }
-
-      resetTimer = null
-    }, RESET_DELAY)
-  }
-
-  window.addEventListener('scroll', handleScroll, {
-    passive: true,
-  })
+  initObserver()
 
   // =========================
   // CLEANUP
@@ -349,13 +290,8 @@ export function setmoreaboutme(): () => void {
   return () => {
     stopped = true
 
-    observer.disconnect()
-
-    window.removeEventListener('scroll', handleScroll)
-
-    if (resetTimer !== null) {
-      clearTimeout(resetTimer)
-      resetTimer = null
+    if (observer) {
+      observer.disconnect()
     }
 
     root.replaceChildren()
