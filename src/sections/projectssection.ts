@@ -187,7 +187,7 @@ function createProjectCard(
 
   const openLabel = document.createElement('span')
   openLabel.className = 'project-open'
-  openLabel.textContent = 'View project ↗'
+  openLabel.textContent = 'View project'
 
   mediaLink.append(image, openLabel)
 

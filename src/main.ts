@@ -1,8 +1,9 @@
+
 import './global.css'
 import './css/aboutmesections.css'
 import './css/experience.css'
 import './css/moream.css'
-import './css/projectssection.css' // Add your stylesheet here
+import './css/projectssection.css'
 
 import { setupAboutMe } from './sections/aboutme.ts'
 import { setupFloat } from './sections/float.ts'
@@ -15,8 +16,7 @@ import { initScrollDelay } from './sections/scrolldelay.ts'
 import { setAboutMeSection } from './sections/aboutmesection.ts'
 import { setExperienceSection } from './sections/experiencesection.ts'
 import { setmoreaboutme } from './sections/moreAM.ts'
-import { setupDivScrollAnimation } from './sections/backgroundanimationscroll.ts' // Import your setup function
-
+import { setupDivScrollAnimation } from './sections/backgroundanimationscroll.ts'
 
 // =========================
 // APPLICATION INITIALIZATION
@@ -44,7 +44,6 @@ app.innerHTML = `
 
     <section id="moreAM"></section>
 
-    <!-- Added target element for setupDivScrollAnimation -->
     <div id="name"></div>
 
     <div id="float" class="liquid-glass">float</div>
@@ -62,7 +61,11 @@ setupFloat()
 setupAboutMe()
 
 initCurserTrack()
-initTopNav()
+
+// Initialize navbar and retain its cleanup function.
+const cleanupTopNav = initTopNav()
+
+// Initialize scroll behavior.
 initScrollDelay()
 
 // =========================
@@ -78,5 +81,14 @@ setmoreaboutme()
 // =========================
 
 initGithubBadge()
-
 setupDivScrollAnimation()
+
+// =========================
+// VITE HOT MODULE REPLACEMENT
+// =========================
+
+if (import.meta.hot) {
+  import.meta.hot.dispose(() => {
+    cleanupTopNav()
+  })
+}

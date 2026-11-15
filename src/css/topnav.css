@@ -3,6 +3,7 @@
    TOP NAVIGATION
    ===================================================== */
 
+
 #topnav {
   --nav-height: 52px;
   --nav-radius: 999px;
@@ -36,11 +37,17 @@
   isolation: isolate;
   transform: translateX(-50%);
 
+  pointer-events: auto;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+
   transition:
     width 380ms cubic-bezier(0.2, 0.8, 0.2, 1),
     background-color 250ms ease,
     box-shadow 250ms ease;
 }
+
+/* Cursor behavior */
 
 #topnav,
 #topnav * {
@@ -67,7 +74,9 @@
   pointer-events: none;
 }
 
-/* Full navigation */
+/* =====================================================
+   FULL NAVIGATION
+   ===================================================== */
 
 #topnav .tn-full {
   position: absolute;
@@ -80,6 +89,9 @@
   gap: 4px;
   padding: 5px;
   white-space: nowrap;
+
+  pointer-events: auto;
+  touch-action: manipulation;
 
   transition:
     opacity 180ms ease,
@@ -144,6 +156,14 @@
   text-decoration: none;
   opacity: 1;
 
+  pointer-events: auto;
+  touch-action: manipulation;
+
+  user-select: none;
+  -webkit-user-select: none;
+
+  -webkit-tap-highlight-color: transparent;
+
   transition: color 180ms ease;
 }
 
@@ -159,7 +179,9 @@
   outline-offset: -3px;
 }
 
-/* Compact label */
+/* =====================================================
+   COMPACT NAVIGATION
+   ===================================================== */
 
 #topnav .tn-mini {
   max-width: calc(100% - 24px);
@@ -184,12 +206,14 @@
   visibility: hidden;
   pointer-events: none;
 
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+
   transition:
     opacity 160ms ease,
     visibility 160ms ease;
 }
-
-/* Compact navbar */
 
 #topnav.compact {
   width: 132px;
@@ -211,12 +235,16 @@
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
+
+  cursor: none !important;
 }
 
-/* Entrance animation */
+/* =====================================================
+   ENTRANCE ANIMATION
+   ===================================================== */
 
 .topnav-intro #topnav {
-  animation: topnav-enter 650ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  animation: slidedownnav 1s ease-in-out both;
 }
 
 .topnav-no-intro #topnav {
@@ -224,7 +252,7 @@
   opacity: 1;
 }
 
-@keyframes topnav-enter {
+@keyframes slidedownnav {
   from {
     opacity: 0;
     translate: 0 -14px;
@@ -236,11 +264,7 @@
   }
 }
 
-/* First-visit navigation intro */
-
-.topnav-intro #topnav {
-  animation: slidedownnav 1s ease-in-out both;
-}
+/* First-visit button animations */
 
 .topnav-intro #topnav .tn-card {
   opacity: 0;
@@ -276,7 +300,7 @@
   }
 }
 
-/* Later visits: no entrance animation */
+/* Later visits */
 
 .topnav-no-intro #topnav .tn-card {
   animation: none !important;
@@ -284,26 +308,8 @@
   transform: none;
 }
 
-/* Responsive: small screens */
-
-@media (max-width: 640px) {
-  #topnav {
-    width: min(94vw, 360px);
-    height: 48px;
-  }
-
-  #topnav .tn-card {
-    padding-inline: 7px;
-    font-size: 10px;
-  }
-
-  #topnav.compact {
-    width: 120px;
-  }
-}
-
 /* =====================================================
-   MOBILE BOTTOM NAVIGATION
+   RESPONSIVE NAVIGATION
    ===================================================== */
 
 @media (max-width: 900px) {
@@ -322,17 +328,28 @@
 
     border-radius: 999px;
     z-index: 1000;
+
+    pointer-events: auto;
+    touch-action: manipulation;
   }
 
   #topnav .tn-full {
     padding: 5px;
     gap: 3px;
+
+    pointer-events: auto;
   }
 
   #topnav .tn-card {
     padding-inline: 5px;
+
     font-size: 10px;
     letter-spacing: 0.025em;
+
+    pointer-events: auto;
+    touch-action: manipulation;
+
+    min-height: 44px;
   }
 
   #topnav.compact {
@@ -344,15 +361,38 @@
     font-size: 11px;
   }
 
+  /* Keep mobile navigation expanded. */
+
   .topnav-no-intro #topnav {
     top: auto !important;
     bottom: max(10px, env(safe-area-inset-bottom)) !important;
+
     animation: none !important;
     opacity: 1;
   }
 }
 
-/* Reduced motion */
+/* Smaller screens */
+
+@media (max-width: 640px) {
+  #topnav {
+    width: min(94vw, 360px);
+    height: 48px;
+  }
+
+  #topnav .tn-card {
+    padding-inline: 7px;
+    font-size: 10px;
+  }
+
+  #topnav.compact {
+    width: 120px;
+  }
+}
+
+/* =====================================================
+   REDUCED MOTION
+   ===================================================== */
 
 @media (prefers-reduced-motion: reduce) {
   #topnav,
