@@ -30,18 +30,21 @@ const NAV_SECTIONS: NavSection[] = [
   },
 ]
 
+let previousCleanup: (() => void) | null = null
+
 export function initTopNav(): () => void {
-  // Prevent duplicate navigation instances.
+  // Clean up an existing instance before initializing another.
+  previousCleanup?.()
+  previousCleanup = null
+
   document.getElementById('topnav')?.remove()
 
   const nav = document.createElement('nav')
   nav.id = 'topnav'
 
-  // Intro animation.
   document.documentElement.classList.remove('topnav-no-intro')
   document.documentElement.classList.add('topnav-intro')
 
-  // Generate navigation.
   nav.innerHTML = `
     <div class="tn-full">
       <div class="tn-indicator" aria-hidden="true"></div>
@@ -88,7 +91,9 @@ export function initTopNav(): () => void {
   let destroyed = false
   let miniTimer: number | undefined
 
-  // Find sections dynamically.
+  const isTouchDevice = () =>
+    window.matchMedia('(pointer: coarse)').matches
+
   const getSections = () => {
     return NAV_SECTIONS
       .map((item) => {
@@ -113,7 +118,7 @@ export function initTopNav(): () => void {
       .sort((a, b) => a.top - b.top)
   }
 
-  // Position active indicator.
+  // Move active indicator.
   const moveIndicator = (card: HTMLAnchorElement) => {
     if (!indicator || nav.classList.contains('compact')) return
 
@@ -121,11 +126,11 @@ export function initTopNav(): () => void {
     indicator.style.transform = `translateX(${card.offsetLeft}px)`
   }
 
-  // Clear all highlights.
+  // Clear active navigation.
   const clearActive = () => {
-    cards.forEach((item) => {
-      item.classList.remove('active')
-      item.removeAttribute('aria-current')
+    cards.forEach((card) => {
+      card.classList.remove('active')
+      card.removeAttribute('aria-current')
     })
 
     activeCard = null
@@ -154,6 +159,7 @@ export function initTopNav(): () => void {
 
     card.classList.add('active')
     card.setAttribute('aria-current', 'location')
+
     activeCard = card
 
     if (indicator) {
@@ -187,7 +193,7 @@ export function initTopNav(): () => void {
     })
   }
 
-  // Detect currently visible section.
+  // Detect the currently visible section.
   const updateActiveSection = () => {
     const sections = getSections()
 
@@ -206,7 +212,6 @@ export function initTopNav(): () => void {
       }
     }
 
-    // Activate the last section at page bottom.
     const atBottom =
       window.innerHeight + window.scrollY >=
       document.documentElement.scrollHeight - 2
@@ -222,40 +227,36 @@ export function initTopNav(): () => void {
     }
   }
 
-  // Navigate to target using the shared scroll controller.
+  // Navigate to a section.
   const scrollToSection = (target: string) => {
     const section = document.getElementById(target)
 
     if (!section) {
-      console.warn(
-        `[TopNav] Target #${target} does not exist.`,
-      )
+      console.warn(`[TopNav] Target #${target} does not exist.`)
       return
     }
 
     const destination =
       section.getBoundingClientRect().top + window.scrollY
 
+    // Use the shared scroll controller when available.
     if (
-      window.matchMedia(
-        '(prefers-reduced-motion: reduce)',
-      ).matches
+      !window.matchMedia('(prefers-reduced-motion: reduce)').matches
     ) {
+      window.dispatchEvent(
+        new CustomEvent<number>('portfolio:scroll-to', {
+          detail: destination,
+        }),
+      )
+    } else {
       window.scrollTo({
         top: destination,
         behavior: 'auto',
       })
-      return
     }
-
-    window.dispatchEvent(
-      new CustomEvent<number>('portfolio:scroll-to', {
-        detail: destination,
-      }),
-    )
   }
 
-  // Navigation click.
+  // Handle navigation button clicks.
   const onNavClick = (event: MouseEvent) => {
     const target = event.target
 
@@ -263,7 +264,7 @@ export function initTopNav(): () => void {
 
     const card = target.closest<HTMLAnchorElement>('.tn-card')
 
-    if (!card) return
+    if (!card || !full?.contains(card)) return
 
     event.preventDefault()
 
@@ -276,7 +277,7 @@ export function initTopNav(): () => void {
 
   full?.addEventListener('click', onNavClick)
 
-  // Indicator hover effects.
+  // Desktop indicator hover.
   cards.forEach((card) => {
     card.addEventListener('mouseenter', () => {
       if (destroyed || nav.classList.contains('compact')) return
@@ -303,18 +304,19 @@ export function initTopNav(): () => void {
     }
   })
 
-  // Expand compact navigation.
+  // Expand navigation from the mini control only.
   const expandNav = () => {
     nav.classList.remove('compact')
     directionTravel = 0
     lastDirection = null
   }
 
-  const onCompactClick = (event: MouseEvent) => {
-    if (!nav.classList.contains('compact')) return
-
+  const onMiniClick = (event: MouseEvent) => {
     event.stopPropagation()
-    expandNav()
+
+    if (nav.classList.contains('compact')) {
+      expandNav()
+    }
   }
 
   const onMiniKey = (event: KeyboardEvent) => {
@@ -324,10 +326,10 @@ export function initTopNav(): () => void {
     expandNav()
   }
 
-  nav.addEventListener('click', onCompactClick, true)
+  mini?.addEventListener('click', onMiniClick)
   mini?.addEventListener('keydown', onMiniKey)
 
-  // Reposition indicator after navbar width transition.
+  // Reposition indicator after navbar transition.
   const onNavTransitionEnd = (event: TransitionEvent) => {
     if (event.target !== nav) return
     if (event.propertyName !== 'width') return
@@ -344,7 +346,7 @@ export function initTopNav(): () => void {
 
   nav.addEventListener('transitionend', onNavTransitionEnd)
 
-  // Resize handling.
+  // Handle viewport changes.
   const onResize = () => {
     lastY = Math.max(0, window.scrollY)
     directionTravel = 0
@@ -357,7 +359,7 @@ export function initTopNav(): () => void {
     }
   }
 
-  // Detect scroll direction and update navbar state.
+  // Scroll state controller.
   const update = () => {
     scrollFrame = 0
 
@@ -366,7 +368,7 @@ export function initTopNav(): () => void {
     const y = Math.max(0, window.scrollY)
     const delta = y - lastY
 
-    // Always show full navigation near the top.
+    // Always show full navbar near the top.
     if (y <= 10) {
       nav.classList.remove('compact')
       directionTravel = 0
@@ -375,7 +377,7 @@ export function initTopNav(): () => void {
       const newDirection: 'up' | 'down' =
         delta > 0 ? 'down' : 'up'
 
-      // Reset accumulated distance when direction changes.
+      // Reset movement when direction changes.
       if (newDirection !== lastDirection) {
         lastDirection = newDirection
         directionTravel = 0
@@ -383,12 +385,9 @@ export function initTopNav(): () => void {
 
       directionTravel += Math.abs(delta)
 
-      // Smaller threshold for touch devices.
-      const threshold = window.matchMedia('(pointer: coarse)').matches
-        ? 12
-        : 14
+      // Touch devices get a slightly lower threshold.
+      const threshold = isTouchDevice() ? 8 : 14
 
-      // Scrolling down: collapse navbar.
       if (
         newDirection === 'down' &&
         directionTravel >= threshold
@@ -397,7 +396,6 @@ export function initTopNav(): () => void {
         directionTravel = 0
       }
 
-      // Scrolling up: expand navbar.
       if (
         newDirection === 'up' &&
         directionTravel >= threshold
@@ -412,7 +410,6 @@ export function initTopNav(): () => void {
     updateActiveSection()
   }
 
-  // Schedule one update per animation frame.
   const onScroll = () => {
     if (scrollFrame) return
 
@@ -439,7 +436,9 @@ export function initTopNav(): () => void {
   })
 
   // Cleanup.
-  return () => {
+  const destroy = () => {
+    if (destroyed) return
+
     destroyed = true
 
     window.clearTimeout(miniTimer)
@@ -449,13 +448,10 @@ export function initTopNav(): () => void {
     window.removeEventListener('resize', onResize)
 
     full?.removeEventListener('click', onNavClick)
-    nav.removeEventListener('click', onCompactClick, true)
+    mini?.removeEventListener('click', onMiniClick)
     mini?.removeEventListener('keydown', onMiniKey)
 
-    nav.removeEventListener(
-      'transitionend',
-      onNavTransitionEnd,
-    )
+    nav.removeEventListener('transitionend', onNavTransitionEnd)
 
     nav.remove()
 
@@ -463,5 +459,13 @@ export function initTopNav(): () => void {
       'topnav-intro',
       'topnav-no-intro',
     )
+
+    if (previousCleanup === destroy) {
+      previousCleanup = null
+    }
   }
+
+  previousCleanup = destroy
+
+  return destroy
 }
