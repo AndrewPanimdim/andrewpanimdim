@@ -14,7 +14,7 @@
   bottom: 16px;
   left: 50%;
 
-  width: min(92vw, 390px);
+  width: min(92vw, 330px);
   height: var(--nav-height);
 
   display: flex;

@@ -18,14 +18,13 @@
 
 }
 
-html, body {
+html {
   overflow-x: hidden;
-  max-width: 100vw;
-  position: relative;
-
-  -ms-overflow-style: none;
   scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+
+
 
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
@@ -45,9 +44,6 @@ body {
   color: #fff;
 
   cursor: none;
-
-  overflow-x: hidden;
-
   
 
 }

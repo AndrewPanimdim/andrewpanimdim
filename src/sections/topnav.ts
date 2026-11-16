@@ -1,10 +1,11 @@
-
 import '../css/topnav.css'
 
 interface NavSection {
   label: string
   target: string
   className: string
+  /** Optional: link to another page instead of scrolling to a section. */
+  href?: string
 }
 
 const NAV_SECTIONS: NavSection[] = [
@@ -27,6 +28,9 @@ const NAV_SECTIONS: NavSection[] = [
     label: 'DOCS',
     target: 'docs',
     className: 'tn-docs',
+    // There is no #docs element on this page. Either add one, or set a page
+    // link here so the button works, for example:
+    // href: `${import.meta.env.BASE_URL}docs.html`,
   },
 ]
 
@@ -39,6 +43,12 @@ export function initTopNav(): () => void {
 
   document.getElementById('topnav')?.remove()
 
+  // Only show buttons that can actually do something:
+  // a page link, or a section that exists on this page.
+  const sectionsToRender = NAV_SECTIONS.filter(
+    (item) => item.href || document.getElementById(item.target),
+  )
+
   const nav = document.createElement('nav')
   nav.id = 'topnav'
 
@@ -49,17 +59,20 @@ export function initTopNav(): () => void {
     <div class="tn-full">
       <div class="tn-indicator" aria-hidden="true"></div>
 
-      ${NAV_SECTIONS.map(
-        ({ label, target, className }) => `
+      ${sectionsToRender
+        .map(
+          ({ label, target, className, href }) => `
           <a
             class="tn-card ${className}"
-            href="#${target}"
+            href="${href ?? `#${target}`}"
             data-section="${target}"
+            ${href ? `data-href="${href}"` : ''}
           >
             <span>${label}</span>
           </a>
         `,
-      ).join('')}
+        )
+        .join('')}
     </div>
 
     <div
@@ -94,8 +107,12 @@ export function initTopNav(): () => void {
   const isTouchDevice = () =>
     window.matchMedia('(pointer: coarse)').matches
 
+  const prefersReducedMotion = () =>
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
   const getSections = () => {
-    return NAV_SECTIONS
+    return sectionsToRender
+      .filter((item) => !item.href)
       .map((item) => {
         const element = document.getElementById(item.target)
 
@@ -239,21 +256,25 @@ export function initTopNav(): () => void {
     const destination =
       section.getBoundingClientRect().top + window.scrollY
 
-    // Use the shared scroll controller when available.
-    if (
-      !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    ) {
-      window.dispatchEvent(
-        new CustomEvent<number>('portfolio:scroll-to', {
-          detail: destination,
-        }),
-      )
-    } else {
-      window.scrollTo({
-        top: destination,
-        behavior: 'auto',
-      })
+    // Reduced motion: jump instantly.
+    if (prefersReducedMotion()) {
+      window.scrollTo({ top: destination, behavior: 'auto' })
+      return
     }
+
+    // Touch devices: the custom wheel-based scroll controller does not
+    // apply, so use the browser's native smooth scrolling.
+    if (isTouchDevice()) {
+      window.scrollTo({ top: destination, behavior: 'smooth' })
+      return
+    }
+
+    // Desktop: use the shared scroll controller (scrolldelay.ts).
+    window.dispatchEvent(
+      new CustomEvent<number>('portfolio:scroll-to', {
+        detail: destination,
+      }),
+    )
   }
 
   // Handle navigation button clicks.
@@ -267,6 +288,14 @@ export function initTopNav(): () => void {
     if (!card || !full?.contains(card)) return
 
     event.preventDefault()
+
+    // Link to another page.
+    const pageHref = card.dataset.href
+
+    if (pageHref) {
+      window.location.href = pageHref
+      return
+    }
 
     const sectionId = card.dataset.section
 
