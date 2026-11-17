@@ -19,17 +19,7 @@ const MY_EXPERIENCES: ExperienceCard[] = [
       'I was responsible for designing the whole UI of the App apk used in the election, and creating the header and footer of the official NAMFRELL-APC website. ',
     period: 'FINISHED',
     InTransition: 'opacity: 0; transform: translateX(150px);',
-  },
-  {
-    id: 'exp-02',
-    category: '',
-    title: 'Google Developer',
-    description: '',
-    detail:
-      'kunware hahaha',
-    period: 'ONGOING',
-    InTransition: 'opacity: 0; transform: translateY(50px);',
-  },
+  }
 ]
 
 const EXPERIENCE_THRESHOLD = 0.2

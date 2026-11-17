@@ -25,16 +25,7 @@ const ABOUT_CARDS: AboutCard[] = [
       'outside of being a tech student, i am a coffee and music enthusiast, i like math and being physically active, though my math skills are not impressive, but i do find learning math fun and interesting. in my free time i play basketball, spendtime with friends, and try to work on projects that genuinely interests me',
     InTransition: 'opacity: 0; transform: translateX(-150px);',
     transition: 'transition: transform 1s cubic-bezier(0.2, 0.8, 0.2, 1),',
-  },
-  {
-    id: 'about-goals',
-    title: 'FUTURE',
-    description: '',
-    detail:
-      'i am aiming to be a future software dev, cyberscurity, and ai engineer',
-    InTransition: 'opacity: 0; transform: translate(100px);',
-    transition: 'transition: transform 2s cubic-bezier(0.2, 0.8, 0.2, 1),',
-  },
+  }
 ]
 
 const SHOW_WHEN_VISIBLE = 0.2
